@@ -1,3 +1,4 @@
+using ScreenCaptureApp.UI;
 namespace ScreenCaptureApp
 {
   internal static class Program

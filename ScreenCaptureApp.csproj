@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <None Update="Resource\End\end.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resource\Start\start_juexin.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

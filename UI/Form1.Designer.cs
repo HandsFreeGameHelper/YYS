@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using static ScreenCaptureApp.Main.ChallengeFactory;
 using static ScreenCaptureApp.Utils.Contains;
 
-namespace ScreenCaptureApp
+namespace ScreenCaptureApp.UI
 {
   partial class Form1
   {

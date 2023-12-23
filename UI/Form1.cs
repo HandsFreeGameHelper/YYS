@@ -1,7 +1,7 @@
 using ScreenCaptureApp.Main;
 using ScreenCaptureApp.Utils;
 
-namespace ScreenCaptureApp
+namespace ScreenCaptureApp.UI
 {
   public partial class Form1 : Form
   {
