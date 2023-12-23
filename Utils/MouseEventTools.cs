@@ -16,8 +16,11 @@ public static class MouseEventTools
     }
     random.SmoothlyMove(mousePosition, eventPoint);
     Thread.Sleep(50);
-    PressAndHoldMouseLeftButton(20);
+    PressAndHoldMouseLeftButton(random.Next(100,150));
     Thread.Sleep(50);
+    PressAndHoldMouseLeftButton(random.Next(100, 150));
+    Thread.Sleep(50);
+    Console.WriteLine(@"鼠标双击");
   }
 
   public static void SmoothlyMove(this Random random, Point start, Point end)
@@ -42,7 +45,6 @@ public static class MouseEventTools
         break;
       }
     }
-    Console.WriteLine($@"模拟手动移动至({start.X},{start.Y})");
     Thread.Sleep(random.Next(1, 25));
     SystemRuntimes.SetCursorPos(start.X, start.Y);
     Thread.Sleep(random.Next(1, 25));

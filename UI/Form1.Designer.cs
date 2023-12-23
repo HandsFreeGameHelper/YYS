@@ -53,6 +53,8 @@ namespace ScreenCaptureApp.UI
       label5 = new Label();
       label6 = new Label();
       button5 = new Button();
+      label7 = new Label();
+      label8 = new Label();
       ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
       SuspendLayout();
       // 
@@ -105,7 +107,7 @@ namespace ScreenCaptureApp.UI
       // comboBox1
       // 
       comboBox1.FormattingEnabled = true;
-      comboBox1.Items.AddRange(new object[] {"", "普通副本" });
+      comboBox1.Items.AddRange(new object[] { "", "普通副本" });
       comboBox1.Location = new Point(30, 371);
       comboBox1.Name = "comboBox1";
       comboBox1.Size = new Size(121, 25);
@@ -123,7 +125,7 @@ namespace ScreenCaptureApp.UI
       // comboBox2
       // 
       comboBox2.FormattingEnabled = true;
-      comboBox2.Items.AddRange(new object[] {"", "觉醒副本任意层", "御灵任意层", "八岐大蛇1-10层", "八岐大蛇11层", "八岐大蛇12层", "卑弥呼1层", "卑弥呼2层", "卑弥呼3层", "业原火贪", "业原火嗔", "业原火痴", "永生之海1层", "永生之海2层", "永生之海3-4层" });
+      comboBox2.Items.AddRange(new object[] { "", "觉醒副本任意层", "御灵任意层", "八岐大蛇1-10层", "八岐大蛇11层", "八岐大蛇12层", "卑弥呼1层", "卑弥呼2层", "卑弥呼3层", "业原火贪", "业原火嗔", "业原火痴", "永生之海1层", "永生之海2层", "永生之海3-4层" });
       comboBox2.Location = new Point(179, 371);
       comboBox2.Name = "comboBox2";
       comboBox2.Size = new Size(121, 25);
@@ -202,11 +204,31 @@ namespace ScreenCaptureApp.UI
       button5.UseVisualStyleBackColor = true;
       button5.Click += button5_Click;
       // 
+      // label7
+      // 
+      label7.AutoSize = true;
+      label7.Location = new Point(459, 347);
+      label7.Name = "label7";
+      label7.Size = new Size(56, 17);
+      label7.TabIndex = 16;
+      label7.Text = "挑战进度";
+      // 
+      // label8
+      // 
+      label8.AutoSize = true;
+      label8.Location = new Point(472, 379);
+      label8.Name = "label8";
+      label8.Size = new Size(27, 17);
+      label8.TabIndex = 17;
+      label8.Text = "0/0";
+      // 
       // Form1
       // 
       AutoScaleDimensions = new SizeF(7F, 17F);
       AutoScaleMode = AutoScaleMode.Font;
       ClientSize = new Size(1032, 484);
+      Controls.Add(label8);
+      Controls.Add(label7);
       Controls.Add(button5);
       Controls.Add(label6);
       Controls.Add(label5);
@@ -245,5 +267,7 @@ namespace ScreenCaptureApp.UI
     private Label label5;
     private Label label6;
     private Button button5;
+    private Label label7;
+    private Label label8;
   }
 }

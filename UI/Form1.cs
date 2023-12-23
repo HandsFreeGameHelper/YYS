@@ -5,7 +5,7 @@ namespace ScreenCaptureApp.UI
 {
   public partial class Form1 : Form
   {
-    private int MaxCount = 50;
+    private int MaxCount = 0;
     private int RCount = 0;
     private Random Random = new Random();
     private System.Windows.Forms.Timer timer;
@@ -41,11 +41,7 @@ namespace ScreenCaptureApp.UI
           {
             Thread.Sleep(10);
           }
-          if (RCount >= MaxCount)
-          {
-            Console.WriteLine($@"挑战结束");
-            timer.Stop();
-          }
+
           SystemRuntimes.RECT windowRect;
           SystemRuntimes.GetWindowRect(targetHWnd, out windowRect);
 
@@ -58,10 +54,8 @@ namespace ScreenCaptureApp.UI
 
           WindowsRuntimes.BitBlt(hdcMemDC, 0, 0, width, height, hdcWindow, 0, 0, 13369376); // 13369376 is SRCCOPY constant
 
-          if (pictureBox1.Image != null)
-          {
-            pictureBox1.Image.Dispose();
-          }
+          pictureBox1.Image = pictureBox1.Image.ReMoveImage();
+
           using (Bitmap bmp = Bitmap.FromHbitmap(hBitmap))
           {
             int newWidth = (int)(bmp.Width * 0.5);
@@ -72,12 +66,31 @@ namespace ScreenCaptureApp.UI
             WindowsRuntimes.DeleteObject(hBitmap);
             WindowsRuntimes.DeleteDC(hdcMemDC);
             SystemRuntimes.ReleaseDC(targetHWnd, hdcWindow);
-            if (Random.Challenge(CType, this.CEnergyValue, windowRect, scaledBmp))
+            pictureBox1.Image = scaledBmp;
+            if (Random.ChallengeStart(CType, this.CEnergyValue, windowRect, scaledBmp))
             {
+              for (var i = 0; i < Random.Next(1,6); i++)
+              {
+                Console.WriteLine($@"休息{i + 1}秒");
+                Thread.Sleep(1000);
+              }
+            }
+            if (Random.ChallengeEnd(CType, this.CEnergyValue, windowRect, scaledBmp))
+            {
+              for (var i = 0; i < Random.Next(1, 6); i++)
+              {
+                Console.WriteLine($@"休息{i + 1}秒");
+                Thread.Sleep(1000);
+              }
               RCount++;
               Console.WriteLine($@"已成功挑战{RCount}次");
             }
-            pictureBox1.Image = scaledBmp;
+            if (RCount >= MaxCount)
+            {
+              Console.WriteLine($@"挑战结束");
+              timer.Stop();
+            }
+            UpdateLable8();
           }
           GC.Collect();
         }
@@ -90,7 +103,6 @@ namespace ScreenCaptureApp.UI
     private void button1_Click(object sender, EventArgs e)
     {
       Console.WriteLine($@"开始");
-      this.RCount = 0;
       timer.Start();
     }
 
@@ -98,7 +110,6 @@ namespace ScreenCaptureApp.UI
     {
       pictureBox1.Image = pictureBox1.Image.ReMoveImage();
       Console.WriteLine($@"停止");
-      this.RCount = 0;
       timer.Stop();
     }
 
@@ -128,6 +139,7 @@ namespace ScreenCaptureApp.UI
           this.CEnergyValue = energyValue;
           label5.ForeColor = Color.Green;
           label5.Text = $@"设置成功 当前选择的是进行 {this.CType} 模式下 的 {selection} 关卡 挑战 {this.MaxCount} 次，请点击开始";
+          UpdateLable8();
         }
       }
       catch (Exception)
@@ -135,6 +147,7 @@ namespace ScreenCaptureApp.UI
         label5.Location = new Point(70, 460);
         label5.ForeColor = Color.Red;
         label5.Text = "请输入正确的挑战次数，例：30";
+        UpdateLable8();
       }
 
     }
@@ -147,11 +160,17 @@ namespace ScreenCaptureApp.UI
       comboBox1.SelectedItem = Utils.Contains.EMPTY;
       comboBox2.SelectedItem = Utils.Contains.EMPTY;
       this.RCount = 0;
+      this.MaxCount = 0;
       this.CType = Utils.Contains.EMPTY;
       this.CEnergyValue = Utils.Contains.EMPTY;
       richTextBox1.Clear();
       pictureBox1.Image = pictureBox1.Image.ReMoveImage();
+      UpdateLable8();
     }
 
+    private void UpdateLable8()
+    {
+      this.label8.Text = $@"{this.RCount}/{this.MaxCount}";
+    }
   }
 }

@@ -7,23 +7,40 @@ namespace ScreenCaptureApp.Main;
 public static class ChallengeFactory
 {
 
-  public static bool Challenge(this Random random, string? type, string? energyValue , RECT windowRect , Bitmap scaledBmp) 
+  public static bool ChallengeStart(this Random random, string? type, string? energyValue , RECT windowRect , Bitmap scaledBmp) 
   {
     if (ChallengeType.NOMAL.Equals(type))
     {
-      Point elementPosition_end = new Point(236, 200);
       Point elementPosition_start = new Point(498, 259);
       var startPosition = random.GetRandomPoint(windowRect.Right - 154, windowRect.Right - 82, windowRect.Bottom - 105, windowRect.Bottom - 30);
-      var endclickPoint = random.GetRandomPoint(windowRect.Right - 374, windowRect.Right, windowRect.Bottom - 324, windowRect.Bottom);
-      ExcuteEnvent(random, $@"./Resource/Start/start_{energyValue}.png", scaledBmp, elementPosition_start, startPosition);
-      if (ExcuteEnvent(random, $@"./Resource/End/end.png", scaledBmp, elementPosition_end, endclickPoint)) 
+      if (ExcuteEnvent(random, $@"./Resource/Start/start_{energyValue}.png", scaledBmp, elementPosition_start, startPosition)) 
       {
+        Console.WriteLine(@"该轮挑战开始");
         return true;
       };
       return false;
     }
     else if(ChallengeType.ACTIVITIES.Equals(type))
     { 
+      return false;
+    }
+    return false;
+  }
+  public static bool ChallengeEnd(this Random random, string? type, string? energyValue, RECT windowRect, Bitmap scaledBmp)
+  {
+    if (ChallengeType.NOMAL.Equals(type))
+    {
+      Point elementPosition_end = new Point(236, 200);
+      var endclickPoint = random.GetRandomPoint(windowRect.Right - 374, windowRect.Right, windowRect.Bottom - 324, windowRect.Bottom);
+      if (ExcuteEnvent(random, $@"./Resource/End/end.png", scaledBmp, elementPosition_end, endclickPoint))
+      {
+        Console.WriteLine(@"该轮挑战结束");
+        return true;
+      };
+      return false;
+    }
+    else if (ChallengeType.ACTIVITIES.Equals(type))
+    {
       return false;
     }
     return false;
