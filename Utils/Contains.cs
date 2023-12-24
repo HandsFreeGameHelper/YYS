@@ -4,7 +4,7 @@ public static class Contains
 {
   public static string NONE = "无";
   public static string EMPTY = string.Empty;
-  public static class EnergyValue 
+  public static class EnergyValue
   {
     public static readonly string SIX = "6";
     public static readonly string NINE = "9";
@@ -34,13 +34,13 @@ public static class Contains
     public static readonly string BAQI_11 = "八岐大蛇11层";
     public static readonly string BAQI_12 = "八岐大蛇12层";
     public static readonly string BEIMIHU_1 = "卑弥呼1层";
-    public static readonly string BEIMIHU_2= "卑弥呼2层";
+    public static readonly string BEIMIHU_2 = "卑弥呼2层";
     public static readonly string BEIMIHU_3 = "卑弥呼3层";
-    public static readonly string YEYUANHUO_TAN= "业原火贪";
-    public static readonly string YEYUANHUO_CHEN= "业原火嗔";
-    public static readonly string YEYUANHUO_CHI= "业原火痴";
-    public static readonly string YONGSHEN_1= "永生之海1层";
-    public static readonly string YONGSHEN_2= "永生之海2层";
-    public static readonly string YONGSHEN_3_4= "永生之海3-4层";
+    public static readonly string YEYUANHUO_TAN = "业原火贪";
+    public static readonly string YEYUANHUO_CHEN = "业原火嗔";
+    public static readonly string YEYUANHUO_CHI = "业原火痴";
+    public static readonly string YONGSHEN_1 = "永生之海1层";
+    public static readonly string YONGSHEN_2 = "永生之海2层";
+    public static readonly string YONGSHEN_3_4 = "永生之海3-4层";
   }
 }

@@ -12,7 +12,7 @@ public static class CalculateTools
     return dir ? currentNum < borderNum ? borderNum : currentNum : currentNum > borderNum ? borderNum : currentNum;
   }
 
-  public static bool  IsInRange(this int currentNum, bool dir, int borderNum)
+  public static bool IsInRange(this int currentNum, bool dir, int borderNum)
   {
     return dir ? currentNum < borderNum : currentNum > borderNum;
   }

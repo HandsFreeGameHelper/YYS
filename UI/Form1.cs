@@ -67,15 +67,15 @@ namespace ScreenCaptureApp.UI
             WindowsRuntimes.DeleteDC(hdcMemDC);
             SystemRuntimes.ReleaseDC(targetHWnd, hdcWindow);
             pictureBox1.Image = scaledBmp;
-            if (Random.ChallengeStart(CType, this.CEnergyValue, windowRect, scaledBmp))
+            if (Random.Challenge(CType, windowRect, scaledBmp, this.CEnergyValue))
             {
-              for (var i = 0; i < Random.Next(1,6); i++)
+              for (var i = 0; i < Random.Next(1, 6); i++)
               {
                 Console.WriteLine($@"ÐÝÏ¢{i + 1}Ãë");
                 Thread.Sleep(1000);
               }
             }
-            if (Random.ChallengeEnd(CType, this.CEnergyValue, windowRect, scaledBmp))
+            if (Random.Challenge(CType, windowRect, scaledBmp))
             {
               for (var i = 0; i < Random.Next(1, 6); i++)
               {

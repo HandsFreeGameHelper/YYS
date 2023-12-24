@@ -57,7 +57,7 @@ public static class ImageTools
     return totalDifference <= threshold;
   }
 
-  public static Image? ReMoveImage(this Image? image) 
+  public static Image? ReMoveImage(this Image? image)
   {
     if (image != null)
     {

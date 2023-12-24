@@ -1,22 +1,24 @@
-﻿namespace ScreenCaptureApp.Utils;
+﻿using static ScreenCaptureApp.Utils.SystemRuntimes;
+
+namespace ScreenCaptureApp.Utils;
 
 public static class MouseEventTools
 {
   private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
   private const uint MOUSEEVENTF_LEFTUP = 0x0004;
 
-  public static void MoveAndClick(this Random random, Point eventPoint, int randomPointCount = 3)
+  public static void MoveAndClick(this Random random, Point eventPoint, RECT windowRect, int randomPointCount = 3)
   {
     Point mousePosition = Cursor.Position;
     for (int i = 0; i < randomPointCount; i++)
     {
-      var p = random.GetRandomPoint();
+      var p = random.GetRandomPoint(windowRect.Left, windowRect.Right, windowRect.Top - 105, windowRect.Bottom);
       random.SmoothlyMove(mousePosition, p);
       Thread.Sleep(10);
     }
     random.SmoothlyMove(mousePosition, eventPoint);
     Thread.Sleep(50);
-    PressAndHoldMouseLeftButton(random.Next(100,150));
+    PressAndHoldMouseLeftButton(random.Next(100, 150));
     Thread.Sleep(50);
     PressAndHoldMouseLeftButton(random.Next(100, 150));
     Thread.Sleep(50);
@@ -38,10 +40,10 @@ public static class MouseEventTools
       start.Y = tempy.GetInRangeNum(isUp, end.Y);
       SystemRuntimes.SetCursorPos(start.X, start.Y);
       Thread.Sleep(random.Next(1, 50));
-      if (!start.X.IsInRange(isLeft,end.X) || !start.Y.IsInRange(isUp,end.Y))
+      if (!start.X.IsInRange(isLeft, end.X) || !start.Y.IsInRange(isUp, end.Y))
       {
-        start.X =end.X; 
-        start.Y =end.Y;
+        start.X = end.X;
+        start.Y = end.Y;
         break;
       }
     }
