@@ -12,35 +12,35 @@ public static class MouseEventTools
     Point mousePosition = Cursor.Position;
     for (int i = 0; i < randomPointCount; i++)
     {
-      var p = random.GetRandomPoint(windowRect.Left, windowRect.Right, windowRect.Top - 105, windowRect.Bottom);
+      var p = random.GetRandomPoint(windowRect.Left + 200, windowRect.Right - 200, windowRect.Top + 205, windowRect.Bottom - 200);
       random.SmoothlyMove(mousePosition, p);
       Thread.Sleep(10);
     }
     random.SmoothlyMove(mousePosition, eventPoint);
-    Thread.Sleep(50);
+    Thread.Sleep(random.Next(100, 150));
     PressAndHoldMouseLeftButton(random.Next(100, 150));
     Thread.Sleep(50);
     PressAndHoldMouseLeftButton(random.Next(100, 150));
-    Thread.Sleep(50);
+    Thread.Sleep(random.Next(100, 150));
     Console.WriteLine(@"鼠标双击");
   }
 
   public static void SmoothlyMove(this Random random, Point start, Point end)
   {
-    var isLeft = end.X - start.X >= 0;
-    var isUp = end.Y - start.Y >= 0;
+    var isRight = end.X - start.X >= 0;
+    var isDown = end.Y - start.Y >= 0;
     var lx = Math.Abs(end.X - start.X);
     var ly = Math.Abs(end.Y - start.Y);
     var times = Math.Min(lx, ly);
     for (int i = 0; i < times; i++)
     {
-      var tempx = start.X.Add(random.Next(10, 400), isLeft);
-      var tempy = start.Y.Add(random.Next(10, 600), isUp);
-      start.X = tempx.GetInRangeNum(isLeft, end.X);
-      start.Y = tempy.GetInRangeNum(isUp, end.Y);
+      var tempx = start.X.Add(random.Next(10, 400), isRight);
+      var tempy = start.Y.Add(random.Next(10, 600), isDown);
+      start.X = tempx.GetInRangeNum(isRight, end.X);
+      start.Y = tempy.GetInRangeNum(isDown, end.Y);
       SystemRuntimes.SetCursorPos(start.X, start.Y);
       Thread.Sleep(random.Next(1, 50));
-      if (!start.X.IsInRange(isLeft, end.X) || !start.Y.IsInRange(isUp, end.Y))
+      if (!start.X.IsInRange(isRight, end.X) || !start.Y.IsInRange(isDown, end.Y))
       {
         start.X = end.X;
         start.Y = end.Y;

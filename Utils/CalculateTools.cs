@@ -9,7 +9,7 @@ public static class CalculateTools
 
   public static int GetInRangeNum(this int currentNum, bool dir, int borderNum)
   {
-    return dir ? currentNum < borderNum ? borderNum : currentNum : currentNum > borderNum ? borderNum : currentNum;
+    return currentNum.IsInRange(dir, borderNum) ? borderNum : currentNum;
   }
 
   public static bool IsInRange(this int currentNum, bool dir, int borderNum)
