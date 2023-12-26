@@ -10,57 +10,16 @@ public static class MouseEventTools
     for (int i = 0; i < randomPointCount; i++)
     {
       var p = random.GetRandomPoint(windowRect.Left + 200, windowRect.Right - 200, windowRect.Top + 205, windowRect.Bottom - 200);
-      //random.SmoothlyMove(mousePosition, p);
-      mousePosition.MoveTo(p.X, p.Y, random.Next(1, 9) / 10.0);
+      mousePosition = mousePosition.MoveTo(p, random.NextDouble());
       Thread.Sleep(10);
     }
-    //random.SmoothlyMove(mousePosition, eventPoint);
-    mousePosition.MoveTo(eventPoint.X, eventPoint.Y, random.Next(1, 9) / 10.0);
+    mousePosition.MoveTo(eventPoint, random.NextDouble());
     Thread.Sleep(random.Next(100, 150));
-    PressAndHoldMouseLeftButton(random.Next(100, 150));
+    PressAndHoldMouseLeftButton(random.Next(10, 50));
     Thread.Sleep(50);
-    PressAndHoldMouseLeftButton(random.Next(100, 150));
+    PressAndHoldMouseLeftButton(random.Next(10, 50));
     Thread.Sleep(random.Next(100, 150));
     Console.WriteLine(@"鼠标双击");
-  }
-
-  public static void SmoothlyMove(this Random random, Point start, Point end)
-  {
-    var isRight = end.X - start.X >= 0;
-    var isDown = end.Y - start.Y >= 0;
-    var lx = Math.Abs(end.X - start.X);
-    var ly = Math.Abs(end.Y - start.Y);
-    var times = Math.Min(lx, ly);
-    for (int i = 0; i < times; i++)
-    {
-      var tempx = start.X.Add(random.Next(10, 60), isRight);
-      var tempy = start.Y.Add(random.Next(10, 40), isDown);
-      start.X = tempx.GetInRangeNum(isRight, end.X);
-      start.Y = tempy.GetInRangeNum(isDown, end.Y);
-      SystemRuntimes.SetCursorPos(start.X, start.Y);
-      Thread.Sleep(random.Next(1, 50));
-      if (!start.X.IsInRange(isRight, end.X) || !start.Y.IsInRange(isDown, end.Y))
-      {
-        start.X = end.X;
-        start.Y = end.Y;
-        break;
-      }
-    }
-    Thread.Sleep(random.Next(1, 25));
-    SystemRuntimes.SetCursorPos(start.X, start.Y);
-    Thread.Sleep(random.Next(1, 25));
-  }
-
-  private static void PressAndHoldMouseLeftButton(int delayMilliseconds)
-  {
-    // 模拟鼠标按下
-    SystemRuntimes.mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-
-    // 延迟一段时间（按住鼠标左键的时间）
-    Thread.Sleep(delayMilliseconds);
-
-    // 模拟鼠标松开
-    SystemRuntimes.mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
   }
 
   /// <summary>
@@ -69,13 +28,12 @@ public static class MouseEventTools
   /// <param name="x">坐标x</param>
   /// <param name="y">坐标y</param>
   /// <param name="duration">移动的速度，默认0为瞬间移动过去</param>
-  public static void MoveTo(this Point point, int x, int y, double duration = 0.0)
+  public static Point MoveTo(this Point point, Point end, double duration = 0.0)
   {
-
     if (duration >= 0.1)
     {
-      int xDis = point.X - x;
-      int yDis = point.Y - y;
+      int xDis = point.X - end.X;
+      int yDis = point.Y - end.Y;
 
       int absX = Math.Abs(xDis / 50);
       int absY = Math.Abs(yDis / 50);
@@ -93,10 +51,51 @@ public static class MouseEventTools
         SetCursorPosFun((int)(point.X - stepx * i), (int)(point.Y - stepy * i));
         Thread.Sleep((int)(sleep_amount * 1000));
       }
-
     }
     else
-      SetCursorPosFun(x, y, 0);
+    {
+      SetCursorPosFun(end.X, end.Y, 0);
+    }
+    return end;
+  }
+
+  public static void SmoothlyMove(this Random random, Point start, Point end)
+  {
+    var isRight = end.X - start.X >= 0;
+    var isDown = end.Y - start.Y >= 0;
+    var lx = Math.Abs(end.X - start.X);
+    var ly = Math.Abs(end.Y - start.Y);
+    var times = Math.Min(lx, ly);
+    for (int i = 0; i < times; i++)
+    {
+      var tempx = start.X.Add(random.Next(10, 60), isRight);
+      var tempy = start.Y.Add(random.Next(10, 40), isDown);
+      start.X = tempx.GetInRangeNum(isRight, end.X);
+      start.Y = tempy.GetInRangeNum(isDown, end.Y);
+      SetCursorPos(start.X, start.Y);
+      Thread.Sleep(random.Next(1, 50));
+      if (!start.X.IsInRange(isRight, end.X) || !start.Y.IsInRange(isDown, end.Y))
+      {
+        start.X = end.X;
+        start.Y = end.Y;
+        break;
+      }
+    }
+    Thread.Sleep(random.Next(1, 25));
+    SetCursorPos(start.X, start.Y);
+    Thread.Sleep(random.Next(1, 25));
+  }
+
+  private static void PressAndHoldMouseLeftButton(int delayMilliseconds)
+  {
+    // 模拟鼠标按下
+    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+
+    // 延迟一段时间（按住鼠标左键的时间）
+    Thread.Sleep(delayMilliseconds);
+
+    // 模拟鼠标松开
+    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
   }
 
   /// <summary>
