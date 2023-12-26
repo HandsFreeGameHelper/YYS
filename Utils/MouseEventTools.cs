@@ -34,8 +34,8 @@ public static class MouseEventTools
     var times = Math.Min(lx, ly);
     for (int i = 0; i < times; i++)
     {
-      var tempx = start.X.Add(random.Next(10, 400), isRight);
-      var tempy = start.Y.Add(random.Next(10, 600), isDown);
+      var tempx = start.X.Add(random.Next(10, 60), isRight);
+      var tempy = start.Y.Add(random.Next(10, 40), isDown);
       start.X = tempx.GetInRangeNum(isRight, end.X);
       start.Y = tempy.GetInRangeNum(isDown, end.Y);
       SystemRuntimes.SetCursorPos(start.X, start.Y);
