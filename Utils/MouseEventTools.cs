@@ -6,7 +6,7 @@ public static class MouseEventTools
 {
   public static void MoveAndClick(this Random random, Point eventPoint, RECT windowRect, int randomPointCount = 3)
   {
-    Point mousePosition = Cursor.Position;
+    Point mousePosition = Control.MousePosition;
     for (int i = 0; i < randomPointCount; i++)
     {
       var p = random.GetRandomPoint(windowRect.Left + 200, windowRect.Right - 200, windowRect.Top + 205, windowRect.Bottom - 200);

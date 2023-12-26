@@ -29,71 +29,76 @@ namespace ScreenCaptureApp.UI
 
     private void Timer_Tick(object sender, EventArgs e)
     {
-      if (sender != null)
+      try
       {
-        if (targetHWnd != IntPtr.Zero)
+        if (sender != null)
         {
-          if (this.richTextBox1.TextLength > 524288)
+          if (targetHWnd != IntPtr.Zero)
           {
-            this.richTextBox1.Clear();
+            if (this.richTextBox1.TextLength > 524288)
+            {
+              this.richTextBox1.Clear();
+            }
+            if (!string.IsNullOrEmpty(this.CType))
+            {
+              Thread.Sleep(10);
+            }
+
+            SystemRuntimes.RECT windowRect;
+            SystemRuntimes.GetWindowRect(targetHWnd, out windowRect);
+
+            int width = windowRect.Right - windowRect.Left;
+            int height = windowRect.Bottom - windowRect.Top;
+            IntPtr hdcWindow = SystemRuntimes.GetDC(targetHWnd);
+            IntPtr hdcMemDC = WindowsRuntimes.CreateCompatibleDC(hdcWindow);
+            IntPtr hBitmap = WindowsRuntimes.CreateCompatibleBitmap(hdcWindow, width, height);
+            IntPtr hOld = WindowsRuntimes.SelectObject(hdcMemDC, hBitmap);
+
+            WindowsRuntimes.BitBlt(hdcMemDC, 0, 0, width, height, hdcWindow, 0, 0, 13369376); // 13369376 is SRCCOPY constant
+
+            pictureBox1.Image = pictureBox1.Image.ReMoveImage();
+
+            using (Bitmap bmp = Bitmap.FromHbitmap(hBitmap))
+            {
+              int newWidth = (int)(bmp.Width * 0.5);
+              int newHeight = (int)(bmp.Height * 0.5);
+              Bitmap scaledBmp = new Bitmap(bmp, newWidth, newHeight);
+
+              WindowsRuntimes.SelectObject(hdcMemDC, hOld);
+              WindowsRuntimes.DeleteObject(hBitmap);
+              WindowsRuntimes.DeleteDC(hdcMemDC);
+              SystemRuntimes.ReleaseDC(targetHWnd, hdcWindow);
+              pictureBox1.Image = scaledBmp;
+              var slp = Random.Next(1, 6);
+              if (Random.Challenge(CType, windowRect, scaledBmp, this.CEnergyValue))
+              {
+                Console.WriteLine($@"休息{slp}秒");
+                Thread.Sleep(slp * 1000);
+              }
+              if (Random.Challenge(CType, windowRect, scaledBmp))
+              {
+                Console.WriteLine($@"休息{slp}秒");
+                Thread.Sleep(slp * 1000);
+                RCount++;
+                Console.WriteLine($@"已成功挑战{RCount}次");
+              }
+              if (RCount >= MaxCount)
+              {
+                Console.WriteLine($@"挑战结束");
+                button2_Click(sender, e);
+              }
+              UpdateLable8();
+            }
+            GC.Collect();
           }
-          if (!string.IsNullOrEmpty(this.CType))
+          else
           {
-            Thread.Sleep(10);
+            Console.WriteLine("Window not found.");
+            button2_Click(sender, e);
           }
-
-          SystemRuntimes.RECT windowRect;
-          SystemRuntimes.GetWindowRect(targetHWnd, out windowRect);
-
-          int width = windowRect.Right - windowRect.Left;
-          int height = windowRect.Bottom - windowRect.Top;
-          IntPtr hdcWindow = SystemRuntimes.GetDC(targetHWnd);
-          IntPtr hdcMemDC = WindowsRuntimes.CreateCompatibleDC(hdcWindow);
-          IntPtr hBitmap = WindowsRuntimes.CreateCompatibleBitmap(hdcWindow, width, height);
-          IntPtr hOld = WindowsRuntimes.SelectObject(hdcMemDC, hBitmap);
-
-          WindowsRuntimes.BitBlt(hdcMemDC, 0, 0, width, height, hdcWindow, 0, 0, 13369376); // 13369376 is SRCCOPY constant
-
-          pictureBox1.Image = pictureBox1.Image.ReMoveImage();
-
-          using (Bitmap bmp = Bitmap.FromHbitmap(hBitmap))
-          {
-            int newWidth = (int)(bmp.Width * 0.5);
-            int newHeight = (int)(bmp.Height * 0.5);
-            Bitmap scaledBmp = new Bitmap(bmp, newWidth, newHeight);
-
-            WindowsRuntimes.SelectObject(hdcMemDC, hOld);
-            WindowsRuntimes.DeleteObject(hBitmap);
-            WindowsRuntimes.DeleteDC(hdcMemDC);
-            SystemRuntimes.ReleaseDC(targetHWnd, hdcWindow);
-            pictureBox1.Image = scaledBmp;
-            var slp = Random.Next(1, 6);
-            if (Random.Challenge(CType, windowRect, scaledBmp, this.CEnergyValue))
-            {
-              Console.WriteLine($@"休息{slp}秒");
-              Thread.Sleep(slp * 1000);
-            }
-            if (Random.Challenge(CType, windowRect, scaledBmp))
-            {
-              Console.WriteLine($@"休息{slp}秒");
-              Thread.Sleep(slp * 1000);
-              RCount++;
-              Console.WriteLine($@"已成功挑战{RCount}次");
-            }
-            if (RCount >= MaxCount)
-            {
-              Console.WriteLine($@"挑战结束");
-              timer.Stop();
-            }
-            UpdateLable8();
-          }
-          GC.Collect();
-        }
-        else
-        {
-          Console.WriteLine("Window not found.");
         }
       }
+      catch { }
     }
     private void button1_Click(object sender, EventArgs e)
     {
@@ -149,7 +154,7 @@ namespace ScreenCaptureApp.UI
 
     private void button5_Click(object sender, EventArgs e)
     {
-      timer.Stop();
+      button2_Click(sender, e);
       this.label5.Text = Utils.Contains.EMPTY;
       this.textBox1.Clear();
       comboBox1.SelectedItem = Utils.Contains.EMPTY;
@@ -159,8 +164,8 @@ namespace ScreenCaptureApp.UI
       this.CType = Utils.Contains.EMPTY;
       this.CEnergyValue = Utils.Contains.EMPTY;
       richTextBox1.Clear();
-      pictureBox1.Image = pictureBox1.Image.ReMoveImage();
       UpdateLable8();
+      Console.WriteLine(@"已重置");
     }
 
     private void UpdateLable8()
