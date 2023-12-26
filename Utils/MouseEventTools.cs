@@ -4,19 +4,18 @@ namespace ScreenCaptureApp.Utils;
 
 public static class MouseEventTools
 {
-  private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
-  private const uint MOUSEEVENTF_LEFTUP = 0x0004;
-
   public static void MoveAndClick(this Random random, Point eventPoint, RECT windowRect, int randomPointCount = 3)
   {
     Point mousePosition = Cursor.Position;
     for (int i = 0; i < randomPointCount; i++)
     {
       var p = random.GetRandomPoint(windowRect.Left + 200, windowRect.Right - 200, windowRect.Top + 205, windowRect.Bottom - 200);
-      random.SmoothlyMove(mousePosition, p);
+      //random.SmoothlyMove(mousePosition, p);
+      mousePosition.MoveTo(p.X, p.Y, random.Next(1, 9) / 10.0);
       Thread.Sleep(10);
     }
-    random.SmoothlyMove(mousePosition, eventPoint);
+    //random.SmoothlyMove(mousePosition, eventPoint);
+    mousePosition.MoveTo(eventPoint.X, eventPoint.Y, random.Next(1, 9) / 10.0);
     Thread.Sleep(random.Next(100, 150));
     PressAndHoldMouseLeftButton(random.Next(100, 150));
     Thread.Sleep(50);
@@ -62,5 +61,89 @@ public static class MouseEventTools
 
     // 模拟鼠标松开
     SystemRuntimes.mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+  }
+
+  /// <summary>
+  /// 鼠标移动到设置的坐标
+  /// </summary>
+  /// <param name="x">坐标x</param>
+  /// <param name="y">坐标y</param>
+  /// <param name="duration">移动的速度，默认0为瞬间移动过去</param>
+  public static void MoveTo(this Point point, int x, int y, double duration = 0.0)
+  {
+
+    if (duration >= 0.1)
+    {
+      int xDis = point.X - x;
+      int yDis = point.Y - y;
+
+      int absX = Math.Abs(xDis / 50);
+      int absY = Math.Abs(yDis / 50);
+
+      int num_steps = absX > absY ? absX : absY;
+      if (num_steps == 0) num_steps = 1;
+      double sleep_amount = duration / num_steps;
+
+
+      double stepx = xDis / num_steps;
+      double stepy = yDis / num_steps;
+
+      for (int i = 1; i <= num_steps; i++)
+      {
+        SetCursorPosFun((int)(point.X - stepx * i), (int)(point.Y - stepy * i));
+        Thread.Sleep((int)(sleep_amount * 1000));
+      }
+
+    }
+    else
+      SetCursorPosFun(x, y, 0);
+  }
+
+  /// <summary>
+  /// 把鼠标移到当前坐标
+  /// </summary>
+  /// <param name="X">X坐标</param>
+  /// <param name="Y">Y坐标</param>
+  public static void SetCursorPosFun(int X, int Y)
+  {
+    SetCursorPos(X, Y);
+  }
+  /// <summary>
+  /// 把鼠标移到当前坐标
+  /// </summary>
+  /// <param name="X">X坐标</param>
+  /// <param name="Y">Y坐标</param>
+  public static void SetCursorPosFun(int X, int Y, int flag)
+  {
+    if (flag == 0)
+    {
+      SetCursorPos(X, Y);
+
+    }
+    else
+    {
+      MouseMoveFun(X, Y);
+    }
+
+  }
+  /// <summary>
+  /// 把鼠标移到相对坐标
+  /// </summary>
+  /// <param name="X">X坐标</param>
+  /// <param name="Y">Y坐标</param>
+  public static void SetCursorFun(int X, int Y)
+  {
+    mouse_event(MOUSEEVENTF_MOVE, X, Y, 0, 0);
+  }
+
+  /// <summary>
+  /// 鼠标移动坐标
+  /// </summary>
+  /// <param name="_x">移动的X</param>
+  /// <param name="_y">移动的Y</param>
+  public static void MouseMoveFun(int _x, int _y)
+  {
+    mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, _x * 65535 / Screen.PrimaryScreen.Bounds.Width, _y * 65535 / Screen.PrimaryScreen.Bounds.Height, 0, 0);
+
   }
 }
