@@ -1,4 +1,6 @@
-﻿namespace ScreenCaptureApp.Utils;
+﻿using static ScreenCaptureApp.Utils.SystemRuntimes;
+
+namespace ScreenCaptureApp.Utils;
 
 public static class CalculateTools
 {
@@ -15,6 +17,18 @@ public static class CalculateTools
   public static bool IsInRange(this int currentNum, bool dir, int borderNum)
   {
     return dir ? currentNum < borderNum : currentNum > borderNum;
+  }
+  public static bool IsInRange(this Point currentPoint, RECT windowRect, Point eventPoint, out (bool,bool) xOrY )
+  {
+    xOrY.Item1 = Math.Abs(currentPoint.X - eventPoint.X) >= 10 ;
+    xOrY.Item2 = Math.Abs(currentPoint.Y - eventPoint.Y) >= 10 ;
+
+    return currentPoint.X >= windowRect.Left &&
+           currentPoint.X <= windowRect.Right &&
+           currentPoint.Y >= windowRect.Top &&
+           currentPoint.Y <= windowRect.Bottom &&
+           Math.Abs(currentPoint.X - eventPoint.X) < 10 &&
+           Math.Abs(currentPoint.Y - eventPoint.Y) < 10;
   }
 
   public static Point GetRandomPoint(this Random random, int start_x = -1, int end_x = -1, int start_y = -1, int end_y = -1)

@@ -6,20 +6,28 @@ public static class MouseEventTools
 {
   public static void MoveAndClick(this Random random, Point eventPoint, RECT windowRect, int randomPointCount = 3)
   {
-    Point mousePosition = Control.MousePosition;
+    Point mousePosition = Cursor.Position;
     for (int i = 0; i < randomPointCount; i++)
     {
       var p = random.GetRandomPoint(windowRect.Left + 200, windowRect.Right - 200, windowRect.Top + 205, windowRect.Bottom - 200);
       mousePosition = mousePosition.MoveTo(p, random.NextDouble());
       Thread.Sleep(10);
     }
-    mousePosition.MoveTo(eventPoint, random.NextDouble());
-    Thread.Sleep(random.Next(100, 150));
+    mousePosition = mousePosition.MoveTo(eventPoint, random.NextDouble());
+    Point currentPoint = Cursor.Position;
+    (bool, bool) xOrY = new();
+    if (!currentPoint.IsInRange(windowRect,eventPoint ,out xOrY))
+    {
+      SetCursorPos(xOrY.Item1 ? mousePosition.X : currentPoint.X, xOrY.Item2 ? mousePosition.Y : currentPoint.Y);
+      //Console.WriteLine(@$"强制重置 X:{xOrY.Item1} Y:{xOrY.Item2} ");
+    }
+    //Thread.Sleep(random.Next(100, 150));
     PressAndHoldMouseLeftButton(random.Next(10, 50));
-    Thread.Sleep(50);
+    //Thread.Sleep(50);
     PressAndHoldMouseLeftButton(random.Next(10, 50));
-    Thread.Sleep(random.Next(100, 150));
-    Console.WriteLine(@"鼠标双击");
+    //Thread.Sleep(random.Next(100, 150));
+    currentPoint = Cursor.Position;
+    Console.WriteLine(@$"鼠标双击({mousePosition.X},{mousePosition.Y})({currentPoint.X},{currentPoint.Y})");
   }
 
   /// <summary>

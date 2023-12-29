@@ -1,5 +1,4 @@
-﻿using AForge.Imaging.Filters;
-using ScreenCaptureApp.Utils;
+﻿using ScreenCaptureApp.Utils;
 using System.Windows.Forms;
 using static ScreenCaptureApp.Main.ChallengeFactory;
 using static ScreenCaptureApp.Utils.Contains;
