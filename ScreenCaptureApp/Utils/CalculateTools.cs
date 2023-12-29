@@ -44,4 +44,12 @@ public static class CalculateTools
                       random.Next(end_y, start_y) :
                       random.Next(start_y, end_y)); ;
   }
+
+  public static (int, int) GetWidthAndHeight(this RECT windowRect)
+  {
+    (int, int) res = new();
+    res.Item1 = windowRect.Right - windowRect.Left;
+    res.Item2 = windowRect.Bottom - windowRect.Top;
+    return res;
+  }
 }
