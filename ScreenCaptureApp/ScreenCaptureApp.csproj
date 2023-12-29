@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AForge.Imaging" Version="2.2.5" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Resource\End\end.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -1,6 +1,13 @@
 ######################################################################
-bin/*
 .vs/*
-obj/*
-Properties/*
-ScreenCaptureApp.csproj.user
+ScreenCaptureApp/bin/*
+ScreenCaptureApp/.vs/*
+ScreenCaptureApp/obj/*
+ScreenCaptureApp/Properties/*
+ScreenCaptureApp/ScreenCaptureApp.csproj.user
+ScreenCaptureAppTest/bin/*
+ScreenCaptureAppTest/obj/*
+ScreenCaptureAppTest/.vs/*
+ScreenCaptureAppTest/Properties/*
+
+

@@ -1,5 +1,4 @@
-﻿using AForge.Imaging.Filters;
-using ScreenCaptureApp.Utils;
+﻿using ScreenCaptureApp.Utils;
 using System.Windows.Forms;
 using static ScreenCaptureApp.Main.ChallengeFactory;
 using static ScreenCaptureApp.Utils.Contains;
@@ -106,12 +105,14 @@ namespace ScreenCaptureApp.UI
       // 
       // comboBox1
       // 
+      comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
       comboBox1.FormattingEnabled = true;
       comboBox1.Items.AddRange(new object[] { "", "普通副本" });
       comboBox1.Location = new Point(30, 371);
       comboBox1.Name = "comboBox1";
       comboBox1.Size = new Size(121, 25);
       comboBox1.TabIndex = 5;
+      comboBox1.SelectedItem = "普通副本";
       // 
       // label1
       // 
@@ -124,12 +125,14 @@ namespace ScreenCaptureApp.UI
       // 
       // comboBox2
       // 
+      comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
       comboBox2.FormattingEnabled = true;
       comboBox2.Items.AddRange(new object[] { "", "觉醒副本任意层", "御灵任意层", "八岐大蛇1-10层", "八岐大蛇11层", "八岐大蛇12层", "卑弥呼1层", "卑弥呼2层", "卑弥呼3层", "业原火贪", "业原火嗔", "业原火痴", "永生之海1层", "永生之海2层", "永生之海3-4层" });
       comboBox2.Location = new Point(179, 371);
       comboBox2.Name = "comboBox2";
       comboBox2.Size = new Size(121, 25);
       comboBox2.TabIndex = 7;
+      comboBox2.SelectedItem = "八岐大蛇11层";
       // 
       // label2
       // 
