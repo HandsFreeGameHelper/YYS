@@ -9,10 +9,15 @@ public static class ChallengeFactory
 
   public static bool Challenge(this Random random, string? type, RECT windowRect, Bitmap scaledBmp, string? energyValue)
   {
+    var widthAndHeight = windowRect.GetWidthAndHeight();
     if (ChallengeType.NOMAL.Equals(type))
     {
-      Point elementPosition_start = new Point(498, 259);
-      var startPosition = random.GetRandomPoint(windowRect.Right - 154, windowRect.Right - 82, windowRect.Bottom - 105, windowRect.Bottom - 30);
+      Point elementPosition_start = new Point(ImagesConfig.RegionStartX, ImagesConfig.RegionStartY);
+      var startPosition = random.GetRandomPoint(
+          windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.StartPointXLeftRate), 
+          windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.StartPointXRightRate), 
+          windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYTopRate), 
+          windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYBottomRate));
       if (ExcuteEnvent(random, $@"./Resource/Start/start_{energyValue}.png", scaledBmp, elementPosition_start, startPosition, windowRect))
       {
         Console.WriteLine(@"该轮挑战开始");
@@ -28,10 +33,15 @@ public static class ChallengeFactory
   }
   public static bool Challenge(this Random random, string? type, RECT windowRect, Bitmap scaledBmp)
   {
+    var widthAndHeight = windowRect.GetWidthAndHeight();
     if (ChallengeType.NOMAL.Equals(type))
     {
-      Point elementPosition_end = new Point(236, 200);
-      var endclickPoint = random.GetRandomPoint(windowRect.Right - 374, windowRect.Right, windowRect.Bottom - 324, windowRect.Bottom);
+      Point elementPosition_end = new Point(ImagesConfig.RegionEndX, ImagesConfig.RegionEndY);
+      var endclickPoint = random.GetRandomPoint(
+          windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.EndPointXLeftRate), 
+          windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.EndPointXRightRate), 
+          windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.EndPointYTopRate), 
+          windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.EndPointYBottomRate));
       if (ExcuteEnvent(random, $@"./Resource/End/end.png", scaledBmp, elementPosition_end, endclickPoint, windowRect))
       {
         Console.WriteLine(@"该轮挑战结束");
@@ -69,7 +79,7 @@ public static class ChallengeFactory
     }
     outPut = type.Equals(ChallengeType.NOMAL) ?
                 challengeSelection.Equals(ChallengeSelection.JUEXIN_ANY) ?
-                EnergyValue.JUEXIN :
+                EnergyValue.JUEXING :
                 challengeSelection.Equals(ChallengeSelection.BAQI_1_10) ||
                 challengeSelection.Equals(ChallengeSelection.BAQI_11) ||
                 challengeSelection.Equals(ChallengeSelection.BAQI_12) ||

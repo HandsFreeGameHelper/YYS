@@ -1,5 +1,6 @@
 using ScreenCaptureApp.Main;
 using ScreenCaptureApp.Utils;
+using static ScreenCaptureApp.Utils.Contains;
 
 namespace ScreenCaptureApp.UI
 {
@@ -12,7 +13,10 @@ namespace ScreenCaptureApp.UI
     private IntPtr targetHWnd;
     private string? CType { get; set; } = new(Utils.Contains.EMPTY);
     private string? CEnergyValue { get; set; } = new(Utils.Contains.EMPTY);
-
+    private string? RestType { get; set; } = new(Utils.Contains.EMPTY);
+    private string? RestModel { get; set; } = new(Utils.Contains.EMPTY);
+    private bool islocked = false;
+    private bool isRestModel = false;
     public Form1()
     {
       InitializeComponent();
@@ -21,7 +25,8 @@ namespace ScreenCaptureApp.UI
       timer = new System.Windows.Forms.Timer();
       timer.Interval = 1; // 设置定时器间隔，单位为毫秒
       timer.Tick += Timer_Tick!;
-
+      RestLable10();
+      RestSelectBox();
       // 替换窗口标题或类名为目标窗口的标题或类名
       string windowTitle = "阴阳师-网易游戏";
       targetHWnd = SystemRuntimes.FindWindow(null, windowTitle);
@@ -35,33 +40,23 @@ namespace ScreenCaptureApp.UI
         {
           if (targetHWnd != IntPtr.Zero)
           {
-            if (this.richTextBox1.TextLength > 524288)
-            {
-              this.richTextBox1.Clear();
-            }
-            if (!string.IsNullOrEmpty(this.CType))
-            {
-              Thread.Sleep(10);
-            }
-
             SystemRuntimes.RECT windowRect;
             SystemRuntimes.GetWindowRect(targetHWnd, out windowRect);
 
-            int width = windowRect.Right - windowRect.Left;
-            int height = windowRect.Bottom - windowRect.Top;
+            var widthAndHeight = windowRect.GetWidthAndHeight();
             IntPtr hdcWindow = SystemRuntimes.GetDC(targetHWnd);
             IntPtr hdcMemDC = WindowsRuntimes.CreateCompatibleDC(hdcWindow);
-            IntPtr hBitmap = WindowsRuntimes.CreateCompatibleBitmap(hdcWindow, width, height);
+            IntPtr hBitmap = WindowsRuntimes.CreateCompatibleBitmap(hdcWindow, widthAndHeight.Item1, widthAndHeight.Item2);
             IntPtr hOld = WindowsRuntimes.SelectObject(hdcMemDC, hBitmap);
 
-            WindowsRuntimes.BitBlt(hdcMemDC, 0, 0, width, height, hdcWindow, 0, 0, 13369376); // 13369376 is SRCCOPY constant
+            WindowsRuntimes.BitBlt(hdcMemDC, 0, 0, widthAndHeight.Item1, widthAndHeight.Item2, hdcWindow, 0, 0, 13369376); // 13369376 is SRCCOPY constant
 
             pictureBox1.Image = pictureBox1.Image.ReMoveImage();
 
             using (Bitmap bmp = Bitmap.FromHbitmap(hBitmap))
             {
-              int newWidth = (int)(bmp.Width * 0.5);
-              int newHeight = (int)(bmp.Height * 0.5);
+              int newWidth = (int)(ImagesConfig.RegionWidth * 0.5);
+              int newHeight = (int)(ImagesConfig.RegionHeight * 0.5);
               Bitmap scaledBmp = new Bitmap(bmp, newWidth, newHeight);
 
               WindowsRuntimes.SelectObject(hdcMemDC, hOld);
@@ -69,25 +64,43 @@ namespace ScreenCaptureApp.UI
               WindowsRuntimes.DeleteDC(hdcMemDC);
               SystemRuntimes.ReleaseDC(targetHWnd, hdcWindow);
               pictureBox1.Image = scaledBmp;
-              var slp = Random.Next(1, 6);
-              if (Random.Challenge(CType, windowRect, scaledBmp, this.CEnergyValue))
+              if (!this.isRestModel)
               {
-                Console.WriteLine($@"休息{slp}秒");
-                Thread.Sleep(slp * 1000);
+                if (!islocked && Random.Challenge(CType, windowRect, scaledBmp, this.CEnergyValue))
+                {
+                  islocked = !islocked;
+                  this.label10.ForeColor = Color.Blue;
+                  this.label10.Text = @"挑战开始，等待挑战结束";
+                }
+                if (islocked && Random.Challenge(CType, windowRect, scaledBmp))
+                {
+                  islocked = !islocked;
+                  RCount++;
+                  this.label10.ForeColor = Color.Blue;
+                  this.label10.Text = @"挑战结束，等待挑战开始";
+                  Console.WriteLine($@"已成功挑战{RCount}次");
+                }
+                if (RCount >= MaxCount)
+                {
+                  Console.WriteLine($@"挑战结束");
+                  button2_Click(sender, e);
+                }
+                UpdateLable8();
               }
-              if (Random.Challenge(CType, windowRect, scaledBmp))
+              else
               {
-                Console.WriteLine($@"休息{slp}秒");
-                Thread.Sleep(slp * 1000);
-                RCount++;
-                Console.WriteLine($@"已成功挑战{RCount}次");
+                if (!scaledBmp.RestImages(this.RestType, this.RestModel))
+                {
+                  Console.WriteLine(@"校准失败");
+                  this.label14.ForeColor = Color.Red;
+                  this.label14.Text = $@"校准失败!{Environment.NewLine}请点击 停止 按钮后重试";
+                }
+                Console.WriteLine(@"校准成功");
+                this.label14.ForeColor = Color.Red;
+                this.label14.Text = $@"校准成功!{Environment.NewLine}请设置好参数后开始挑战";
+                this.isRestModel = false;
+                timer.Stop();
               }
-              if (RCount >= MaxCount)
-              {
-                Console.WriteLine($@"挑战结束");
-                button2_Click(sender, e);
-              }
-              UpdateLable8();
             }
             GC.Collect();
           }
@@ -109,6 +122,8 @@ namespace ScreenCaptureApp.UI
     private void button2_Click(object sender, EventArgs e)
     {
       pictureBox1.Image = pictureBox1.Image.ReMoveImage();
+      this.label10.ForeColor = Color.Red;
+      this.label10.Text = @"挑战停止";
       Console.WriteLine($@"停止");
       timer.Stop();
     }
@@ -157,20 +172,44 @@ namespace ScreenCaptureApp.UI
       button2_Click(sender, e);
       this.label5.Text = Utils.Contains.EMPTY;
       this.textBox1.Clear();
-      comboBox1.SelectedItem = Utils.Contains.EMPTY;
-      comboBox2.SelectedItem = Utils.Contains.EMPTY;
       this.RCount = 0;
       this.MaxCount = 0;
       this.CType = Utils.Contains.EMPTY;
       this.CEnergyValue = Utils.Contains.EMPTY;
       richTextBox1.Clear();
+      this.islocked = false;
+      this.isRestModel = false;
       UpdateLable8();
+      RestLable10();
+      RestSelectBox();
       Console.WriteLine(@"已重置");
     }
 
     private void UpdateLable8()
     {
       this.label8.Text = $@"{this.RCount}/{this.MaxCount}";
+    }
+
+    private void RestLable10()
+    {
+      this.label10.ForeColor = Color.Red;
+      this.label10.Text = $@"     等待开始     {Environment.NewLine}开始前请确保在挑战界面";
+    }
+
+    private void RestSelectBox()
+    {
+      comboBox1.SelectedItem = Utils.Contains.ChallengeType.NOMAL;
+      comboBox2.SelectedItem = Utils.Contains.ChallengeSelection.BAQI_11;
+      comboBox3.SelectedItem = Utils.Contains.EMPTY;
+      comboBox4.SelectedItem = Utils.Contains.EMPTY;
+    }
+
+    private void button6_Click(object sender, EventArgs e)
+    {
+      this.isRestModel = true;
+      this.RestType = this.comboBox3.SelectedItem.ToString();
+      this.RestModel = this.comboBox4.SelectedItem.ToString();
+      this.timer.Start();
     }
   }
 }

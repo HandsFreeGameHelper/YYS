@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using static ScreenCaptureApp.Utils.Contains;
+using static ScreenCaptureApp.Utils.SystemRuntimes;
 
 namespace ScreenCaptureApp.Utils;
 
@@ -13,7 +14,6 @@ public static class ImageTools
 
     Rectangle elementRect = new Rectangle(position, elementImage.Size);
     Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
-    //sourceRegion.Save("start_yulin.png", System.Drawing.Imaging.ImageFormat.Png);
 
     if (AreBitmapsEqual(sourceRegion, elementImage))
     {
@@ -64,5 +64,37 @@ public static class ImageTools
       image.Dispose();
     }
     return null;
+  }
+
+  public static bool RestImages(this Bitmap sourceImage, string? restType, string? restModel)
+  {
+    try
+    {
+      if (!EMPTY.Equals(restType) && !EMPTY.Equals(restModel))
+      {
+        var size = ImagesConfig.START.Equals(restModel) ? new Size(ImagesConfig.RegionStartXSize, ImagesConfig.RegionStartYSize) : new Size(ImagesConfig.RegionEndXSize, ImagesConfig.RegionEndYSize);
+        Point position = ImagesConfig.START.Equals(restModel) ? new Point(ImagesConfig.RegionStartX, ImagesConfig.RegionStartY) : new Point(ImagesConfig.RegionEndX, ImagesConfig.RegionEndY);
+        Rectangle elementRect = new Rectangle(position, size);
+        Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
+        var type =
+          ImagesConfig.YUHUN.Equals(restType) ? EnergyValue.YUHUN :
+          ImagesConfig.JUEXIN.Equals(restType) ? EnergyValue.JUEXING :
+          ImagesConfig.YULIN.Equals(restType) ? EnergyValue.YULIN :
+          EMPTY;
+        var path =
+          ImagesConfig.END.Equals(restModel) ? $@"./Resource/end.png" :
+          $@"./Resource/start_{type}.png";
+        sourceRegion.Save(path, System.Drawing.Imaging.ImageFormat.Png);
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    catch
+    {
+      return false;
+    }
   }
 }

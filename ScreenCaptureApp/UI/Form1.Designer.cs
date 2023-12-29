@@ -54,7 +54,19 @@ namespace ScreenCaptureApp.UI
       button5 = new Button();
       label7 = new Label();
       label8 = new Label();
+      label9 = new Label();
+      label10 = new Label();
+      groupBox1 = new GroupBox();
+      label14 = new Label();
+      label13 = new Label();
+      label12 = new Label();
+      button6 = new Button();
+      comboBox4 = new ComboBox();
+      comboBox3 = new ComboBox();
+      label11 = new Label();
+      label15 = new Label();
       ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+      groupBox1.SuspendLayout();
       SuspendLayout();
       // 
       // button1
@@ -89,13 +101,13 @@ namespace ScreenCaptureApp.UI
       // 
       richTextBox1.Location = new Point(593, 12);
       richTextBox1.Name = "richTextBox1";
-      richTextBox1.Size = new Size(422, 292);
+      richTextBox1.Size = new Size(254, 292);
       richTextBox1.TabIndex = 3;
       richTextBox1.Text = "";
       // 
       // button3
       // 
-      button3.Location = new Point(772, 341);
+      button3.Location = new Point(679, 317);
       button3.Name = "button3";
       button3.Size = new Size(75, 23);
       button3.TabIndex = 4;
@@ -112,7 +124,6 @@ namespace ScreenCaptureApp.UI
       comboBox1.Name = "comboBox1";
       comboBox1.Size = new Size(121, 25);
       comboBox1.TabIndex = 5;
-      comboBox1.SelectedItem = "普通副本";
       // 
       // label1
       // 
@@ -127,12 +138,11 @@ namespace ScreenCaptureApp.UI
       // 
       comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
       comboBox2.FormattingEnabled = true;
-      comboBox2.Items.AddRange(new object[] { "", "觉醒副本任意层", "御灵任意层", "八岐大蛇1-10层", "八岐大蛇11层", "八岐大蛇12层", "卑弥呼1层", "卑弥呼2层", "卑弥呼3层", "业原火贪", "业原火嗔", "业原火痴", "永生之海1层", "永生之海2层", "永生之海3-4层" });
+      comboBox2.Items.AddRange(new object[] { "", "觉醒副本任意层", "御灵任意层", "八岐大蛇1-10层", "八岐大蛇11层", "八岐大蛇12层", "卑弥呼1层", "卑弥呼2层", "卑弥呼3层", "业原火贪", "业原火嗔", "业原火痴", "永生之海1层", "永生之海2层", "永生之海3-4层", "", "任意御魂副本通用", "任意御灵副本通用", "任意觉醒副本通用", "", "开始画面", "结算画面" });
       comboBox2.Location = new Point(179, 371);
       comboBox2.Name = "comboBox2";
       comboBox2.Size = new Size(121, 25);
       comboBox2.TabIndex = 7;
-      comboBox2.SelectedItem = "八岐大蛇11层";
       // 
       // label2
       // 
@@ -173,7 +183,7 @@ namespace ScreenCaptureApp.UI
       // 
       label4.AutoSize = true;
       label4.ForeColor = Color.Red;
-      label4.Location = new Point(325, 399);
+      label4.Location = new Point(314, 399);
       label4.Name = "label4";
       label4.Size = new Size(118, 17);
       label4.TabIndex = 12;
@@ -225,11 +235,126 @@ namespace ScreenCaptureApp.UI
       label8.TabIndex = 17;
       label8.Text = "0/0";
       // 
+      // label9
+      // 
+      label9.AutoSize = true;
+      label9.Location = new Point(579, 347);
+      label9.Name = "label9";
+      label9.Size = new Size(56, 17);
+      label9.TabIndex = 18;
+      label9.Text = "当前状态";
+      // 
+      // label10
+      // 
+      label10.AutoSize = true;
+      label10.Location = new Point(564, 379);
+      label10.Name = "label10";
+      label10.Size = new Size(12, 17);
+      label10.TabIndex = 19;
+      label10.Text = " ";
+      // 
+      // groupBox1
+      // 
+      groupBox1.Controls.Add(label15);
+      groupBox1.Controls.Add(label14);
+      groupBox1.Controls.Add(label13);
+      groupBox1.Controls.Add(label12);
+      groupBox1.Controls.Add(button6);
+      groupBox1.Controls.Add(comboBox4);
+      groupBox1.Controls.Add(comboBox3);
+      groupBox1.Location = new Point(853, 43);
+      groupBox1.Name = "groupBox1";
+      groupBox1.Size = new Size(176, 233);
+      groupBox1.TabIndex = 20;
+      groupBox1.TabStop = false;
+      groupBox1.Text = "校准";
+      // 
+      // label14
+      // 
+      label14.AutoSize = true;
+      label14.Location = new Point(0, 150);
+      label14.Name = "label14";
+      label14.Size = new Size(176, 17);
+      label14.TabIndex = 6;
+      label14.Text = "请提前到对应画面后再点击校准";
+      // 
+      // label13
+      // 
+      label13.AutoSize = true;
+      label13.Location = new Point(21, 102);
+      label13.Name = "label13";
+      label13.Size = new Size(61, 17);
+      label13.TabIndex = 5;
+      label13.Text = "开始/结算";
+      // 
+      // label12
+      // 
+      label12.AutoSize = true;
+      label12.Location = new Point(21, 40);
+      label12.Name = "label12";
+      label12.Size = new Size(56, 17);
+      label12.TabIndex = 4;
+      label12.Text = "校准模式";
+      // 
+      // button6
+      // 
+      button6.Location = new Point(42, 194);
+      button6.Name = "button6";
+      button6.Size = new Size(75, 23);
+      button6.TabIndex = 3;
+      button6.Text = "校准";
+      button6.UseVisualStyleBackColor = true;
+      button6.Click += button6_Click;
+      // 
+      // comboBox4
+      // 
+      comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
+      comboBox4.FormattingEnabled = true;
+      comboBox4.Items.AddRange(new object[] { "", "开始画面", "结算画面" });
+      comboBox4.Location = new Point(21, 122);
+      comboBox4.Name = "comboBox4";
+      comboBox4.Size = new Size(121, 25);
+      comboBox4.TabIndex = 1;
+      // 
+      // comboBox3
+      // 
+      comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
+      comboBox3.FormattingEnabled = true;
+      comboBox3.Items.AddRange(new object[] { "", "任意御魂副本通用", "任意觉醒副本通用", "任意御灵副本通用" });
+      comboBox3.Location = new Point(21, 74);
+      comboBox3.Name = "comboBox3";
+      comboBox3.Size = new Size(121, 25);
+      comboBox3.TabIndex = 0;
+      // 
+      // label11
+      // 
+      label11.AutoSize = true;
+      label11.ForeColor = Color.DarkOrange;
+      label11.Location = new Point(853, 23);
+      label11.Name = "label11";
+      label11.Size = new Size(176, 17);
+      label11.TabIndex = 0;
+      label11.Text = "首次使用或开始后无反应时使用";
+      // 
+      // label15
+      // 
+      label15.AutoSize = true;
+      label15.ForeColor = Color.Red;
+      label15.Location = new Point(0, 23);
+      label15.Name = "label15";
+      label15.Size = new Size(178, 17);
+      label15.TabIndex = 7;
+      label15.Text = "画面分辨率760*450~1152*679";
+      // 
       // Form1
       // 
       AutoScaleDimensions = new SizeF(7F, 17F);
       AutoScaleMode = AutoScaleMode.Font;
       ClientSize = new Size(1032, 484);
+      Controls.Add(label11);
+      Controls.Add(groupBox1);
+      Controls.Add(label10);
+      Controls.Add(label9);
       Controls.Add(label8);
       Controls.Add(label7);
       Controls.Add(button5);
@@ -251,6 +376,8 @@ namespace ScreenCaptureApp.UI
       Name = "Form1";
       Text = "Form1";
       ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+      groupBox1.ResumeLayout(false);
+      groupBox1.PerformLayout();
       ResumeLayout(false);
       PerformLayout();
     }
@@ -272,5 +399,16 @@ namespace ScreenCaptureApp.UI
     private Button button5;
     private Label label7;
     private Label label8;
+    private Label label9;
+    private Label label10;
+    private GroupBox groupBox1;
+    private ComboBox comboBox4;
+    private ComboBox comboBox3;
+    private Label label11;
+    private Label label14;
+    private Label label13;
+    private Label label12;
+    private Button button6;
+    private Label label15;
   }
 }
