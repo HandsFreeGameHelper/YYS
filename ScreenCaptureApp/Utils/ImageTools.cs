@@ -72,8 +72,8 @@ public static class ImageTools
     {
       if (!EMPTY.Equals(restType) && !EMPTY.Equals(restModel))
       {
-        var size = ImagesConfig.START.Equals(restModel) ? new Size(ImagesConfig.RegionStartXSize, ImagesConfig.RegionStartYSize) : new Size(ImagesConfig.RegionEndXSize, ImagesConfig.RegionEndYSize);
-        Point position = ImagesConfig.START.Equals(restModel) ? new Point(ImagesConfig.RegionStartX, ImagesConfig.RegionStartY) : new Point(ImagesConfig.RegionEndX, ImagesConfig.RegionEndY);
+        var size = ImagesConfig.START.Equals(restModel) ? new Size((int)(sourceImage.Width * ImagesConfig.StartXSizeRate),(int)(sourceImage.Height * ImagesConfig.StartYSizeRate)) : new Size((int)(sourceImage.Width * ImagesConfig.EndXSizeRate), (int)(sourceImage.Height * ImagesConfig.EndYSizeRate));
+        Point position = ImagesConfig.START.Equals(restModel) ? new Point((int)(sourceImage.Width * ImagesConfig.StartXRate), (int)(sourceImage.Height * ImagesConfig.StartYRate)) : new Point((int)(sourceImage.Width * ImagesConfig.EndXRate), (int)(sourceImage.Height * ImagesConfig.EndYRate));
         Rectangle elementRect = new Rectangle(position, size);
         Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
         var type =
@@ -82,8 +82,8 @@ public static class ImageTools
           ImagesConfig.YULIN.Equals(restType) ? EnergyValue.YULIN :
           EMPTY;
         var path =
-          ImagesConfig.END.Equals(restModel) ? $@"./Resource/end.png" :
-          $@"./Resource/start_{type}.png";
+          ImagesConfig.END.Equals(restModel) ? $@"./Resource/End/end.png" :
+          $@"./Resource/Start/start_{type}.png";
         sourceRegion.Save(path, System.Drawing.Imaging.ImageFormat.Png);
         return true;
       }
