@@ -57,6 +57,7 @@ namespace ScreenCaptureApp.UI
       label9 = new Label();
       label10 = new Label();
       groupBox1 = new GroupBox();
+      label15 = new Label();
       label14 = new Label();
       label13 = new Label();
       label12 = new Label();
@@ -64,7 +65,6 @@ namespace ScreenCaptureApp.UI
       comboBox4 = new ComboBox();
       comboBox3 = new ComboBox();
       label11 = new Label();
-      label15 = new Label();
       ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
       groupBox1.SuspendLayout();
       SuspendLayout();
@@ -269,10 +269,20 @@ namespace ScreenCaptureApp.UI
       groupBox1.TabStop = false;
       groupBox1.Text = "校准";
       // 
+      // label15
+      // 
+      label15.AutoSize = true;
+      label15.ForeColor = Color.Red;
+      label15.Location = new Point(6, 19);
+      label15.Name = "label15";
+      label15.Size = new Size(129, 34);
+      label15.TabIndex = 7;
+      label15.Text = "画面分辨率\n 801*481~2038*1178";
+      // 
       // label14
       // 
       label14.AutoSize = true;
-      label14.Location = new Point(0, 150);
+      label14.Location = new Point(0, 160);
       label14.Name = "label14";
       label14.Size = new Size(176, 17);
       label14.TabIndex = 6;
@@ -281,7 +291,7 @@ namespace ScreenCaptureApp.UI
       // label13
       // 
       label13.AutoSize = true;
-      label13.Location = new Point(21, 102);
+      label13.Location = new Point(21, 101);
       label13.Name = "label13";
       label13.Size = new Size(61, 17);
       label13.TabIndex = 5;
@@ -290,7 +300,7 @@ namespace ScreenCaptureApp.UI
       // label12
       // 
       label12.AutoSize = true;
-      label12.Location = new Point(21, 40);
+      label12.Location = new Point(21, 53);
       label12.Name = "label12";
       label12.Size = new Size(56, 17);
       label12.TabIndex = 4;
@@ -311,7 +321,7 @@ namespace ScreenCaptureApp.UI
       comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
       comboBox4.FormattingEnabled = true;
       comboBox4.Items.AddRange(new object[] { "", "开始画面", "结算画面" });
-      comboBox4.Location = new Point(21, 122);
+      comboBox4.Location = new Point(21, 121);
       comboBox4.Name = "comboBox4";
       comboBox4.Size = new Size(121, 25);
       comboBox4.TabIndex = 1;
@@ -321,7 +331,7 @@ namespace ScreenCaptureApp.UI
       comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
       comboBox3.FormattingEnabled = true;
       comboBox3.Items.AddRange(new object[] { "", "任意御魂副本通用", "任意觉醒副本通用", "任意御灵副本通用" });
-      comboBox3.Location = new Point(21, 74);
+      comboBox3.Location = new Point(21, 73);
       comboBox3.Name = "comboBox3";
       comboBox3.Size = new Size(121, 25);
       comboBox3.TabIndex = 0;
@@ -335,16 +345,6 @@ namespace ScreenCaptureApp.UI
       label11.Size = new Size(176, 17);
       label11.TabIndex = 0;
       label11.Text = "首次使用或开始后无反应时使用";
-      // 
-      // label15
-      // 
-      label15.AutoSize = true;
-      label15.ForeColor = Color.Red;
-      label15.Location = new Point(0, 23);
-      label15.Name = "label15";
-      label15.Size = new Size(178, 17);
-      label15.TabIndex = 7;
-      label15.Text = "画面分辨率760*450~1152*679";
       // 
       // Form1
       // 

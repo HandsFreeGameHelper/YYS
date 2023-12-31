@@ -55,8 +55,8 @@ namespace ScreenCaptureApp.UI
 
             using (Bitmap bmp = Bitmap.FromHbitmap(hBitmap))
             {
-              int newWidth = (int)(ImagesConfig.RegionWidth * 0.5);
-              int newHeight = (int)(ImagesConfig.RegionHeight * 0.5);
+              int newWidth = (int)(bmp.Width * 0.5);
+              int newHeight = (int)(bmp.Height * 0.5);
               Bitmap scaledBmp = new Bitmap(bmp, newWidth, newHeight);
 
               WindowsRuntimes.SelectObject(hdcMemDC, hOld);
@@ -95,9 +95,12 @@ namespace ScreenCaptureApp.UI
                   this.label14.ForeColor = Color.Red;
                   this.label14.Text = $@"校准失败!{Environment.NewLine}请点击 停止 按钮后重试";
                 }
-                Console.WriteLine(@"校准成功");
-                this.label14.ForeColor = Color.Red;
-                this.label14.Text = $@"校准成功!{Environment.NewLine}请设置好参数后开始挑战";
+                else
+                {
+                  Console.WriteLine(@"校准成功");
+                  this.label14.ForeColor = Color.Red;
+                  this.label14.Text = $@"校准成功!{Environment.NewLine}请设置好参数后开始挑战";
+                }
                 this.isRestModel = false;
                 timer.Stop();
               }
