@@ -7,18 +7,27 @@ namespace ScreenCaptureApp.Main;
 public static class ChallengeFactory
 {
 
-  public static bool Challenge(this Random random, string? type, RECT windowRect, Bitmap scaledBmp, string? energyValue)
+  public static bool Challenge(this Random random, string? type, RECT windowRect, Bitmap scaledBmp, string? energyValue,bool isTeam)
   {
     var widthAndHeight = windowRect.GetWidthAndHeight();
     if (ChallengeType.NOMAL.Equals(type))
     {
-      Point elementPosition_start = new Point(ImagesConfig.RegionStartX, ImagesConfig.RegionStartY);
-      var startPosition = random.GetRandomPoint(
+      Point elementPosition_start = isTeam ? 
+        new Point((int)(scaledBmp.Width * ImagesConfig.StartXRateTeam), (int)(scaledBmp.Height * ImagesConfig.StartYRateTeam)) :
+        new Point((int)(scaledBmp.Width * ImagesConfig.StartXRate), (int)(scaledBmp.Height * ImagesConfig.StartYRate));
+      var startPosition = isTeam ? 
+        random.GetRandomPoint(
+          windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.StartPointXLeftTeamRate),
+          windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.StartPointXRightTeamRate),
+          windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYTopTeamRate),
+          windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYBottomTeamRate)): 
+        random.GetRandomPoint(
           windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.StartPointXLeftRate), 
           windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.StartPointXRightRate), 
           windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYTopRate), 
           windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYBottomRate));
-      if (ExcuteEnvent(random, $@"./Resource/Start/start_{energyValue}.png", scaledBmp, elementPosition_start, startPosition, windowRect))
+      var team = isTeam ? "_team" : "";
+      if (ExcuteEnvent(random, $@"./Resource/Start/start_{energyValue}{team}.png", scaledBmp, elementPosition_start, startPosition, windowRect))
       {
         Console.WriteLine(@"该轮挑战开始");
         return true;
@@ -36,7 +45,7 @@ public static class ChallengeFactory
     var widthAndHeight = windowRect.GetWidthAndHeight();
     if (ChallengeType.NOMAL.Equals(type))
     {
-      Point elementPosition_end = new Point(ImagesConfig.RegionEndX, ImagesConfig.RegionEndY);
+      Point elementPosition_end = new Point((int)(scaledBmp.Width * ImagesConfig.EndXRate), (int)(scaledBmp.Height * ImagesConfig.EndYRate));
       var endclickPoint = random.GetRandomPoint(
           windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.EndPointXLeftRate), 
           windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.EndPointXRightRate), 

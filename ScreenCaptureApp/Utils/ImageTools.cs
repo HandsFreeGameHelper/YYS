@@ -1,4 +1,5 @@
-﻿using static ScreenCaptureApp.Utils.Contains;
+﻿using System.IO;
+using static ScreenCaptureApp.Utils.Contains;
 using static ScreenCaptureApp.Utils.SystemRuntimes;
 
 namespace ScreenCaptureApp.Utils;
@@ -14,7 +15,7 @@ public static class ImageTools
 
     Rectangle elementRect = new Rectangle(position, elementImage.Size);
     Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
-
+    //sourceRegion.Save("test.png", System.Drawing.Imaging.ImageFormat.Png);
     if (AreBitmapsEqual(sourceRegion, elementImage))
     {
       return true;
@@ -66,14 +67,22 @@ public static class ImageTools
     return null;
   }
 
-  public static bool RestImages(this Bitmap sourceImage, string? restType, string? restModel)
+  public static bool RestImages(this Bitmap sourceImage, string? restType, string? restModel, bool isTeam)
   {
     try
     {
       if (!EMPTY.Equals(restType) && !EMPTY.Equals(restModel))
       {
-        var size = ImagesConfig.START.Equals(restModel) ? new Size((int)(sourceImage.Width * ImagesConfig.StartXSizeRate),(int)(sourceImage.Height * ImagesConfig.StartYSizeRate)) : new Size((int)(sourceImage.Width * ImagesConfig.EndXSizeRate), (int)(sourceImage.Height * ImagesConfig.EndYSizeRate));
-        Point position = ImagesConfig.START.Equals(restModel) ? new Point((int)(sourceImage.Width * ImagesConfig.StartXRate), (int)(sourceImage.Height * ImagesConfig.StartYRate)) : new Point((int)(sourceImage.Width * ImagesConfig.EndXRate), (int)(sourceImage.Height * ImagesConfig.EndYRate));
+        var size = ImagesConfig.START.Equals(restModel) ? 
+            isTeam ? 
+            new Size((int)(sourceImage.Width * ImagesConfig.StartXSizeRateTeam), (int)(sourceImage.Height * ImagesConfig.StartYSizeRate)) : 
+            new Size((int)(sourceImage.Width * ImagesConfig.StartXSizeRate),(int)(sourceImage.Height * ImagesConfig.StartYSizeRate)) 
+          : new Size((int)(sourceImage.Width * ImagesConfig.EndXSizeRate), (int)(sourceImage.Height * ImagesConfig.EndYSizeRate));
+        Point position = ImagesConfig.START.Equals(restModel) ? 
+            isTeam ? 
+            new Point((int)(sourceImage.Width * ImagesConfig.StartXRateTeam), (int)(sourceImage.Height * ImagesConfig.StartYRateTeam)) : 
+            new Point((int)(sourceImage.Width * ImagesConfig.StartXRate), (int)(sourceImage.Height * ImagesConfig.StartYRate)) 
+          : new Point((int)(sourceImage.Width * ImagesConfig.EndXRate), (int)(sourceImage.Height * ImagesConfig.EndYRate));
         Rectangle elementRect = new Rectangle(position, size);
         Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
         var type =
@@ -81,9 +90,10 @@ public static class ImageTools
           ImagesConfig.JUEXIN.Equals(restType) ? EnergyValue.JUEXING :
           ImagesConfig.YULIN.Equals(restType) ? EnergyValue.YULIN :
           EMPTY;
+        var team = isTeam ? "_team" : "";
         var path =
           ImagesConfig.END.Equals(restModel) ? $@"./Resource/End/end.png" :
-          $@"./Resource/Start/start_{type}.png";
+          $@"./Resource/Start/start_{type}{team}.png";
         sourceRegion.Save(path, System.Drawing.Imaging.ImageFormat.Png);
         return true;
       }

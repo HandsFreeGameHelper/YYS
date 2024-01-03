@@ -1,6 +1,5 @@
 using ScreenCaptureApp.Main;
 using ScreenCaptureApp.Utils;
-using static ScreenCaptureApp.Utils.Contains;
 
 namespace ScreenCaptureApp.UI
 {
@@ -10,13 +9,14 @@ namespace ScreenCaptureApp.UI
     private int RCount = 0;
     private Random Random = new Random();
     private System.Windows.Forms.Timer timer;
-    private IntPtr targetHWnd;
+    private List<IntPtr> targetHWnds = new List<IntPtr>();
     private string? CType { get; set; } = new(Utils.Contains.EMPTY);
     private string? CEnergyValue { get; set; } = new(Utils.Contains.EMPTY);
     private string? RestType { get; set; } = new(Utils.Contains.EMPTY);
     private string? RestModel { get; set; } = new(Utils.Contains.EMPTY);
     private bool islocked = false;
     private bool isRestModel = false;
+    private bool isTeam = false;
     public Form1()
     {
       InitializeComponent();
@@ -28,8 +28,8 @@ namespace ScreenCaptureApp.UI
       RestLable10();
       RestSelectBox();
       // 替换窗口标题或类名为目标窗口的标题或类名
-      string windowTitle = "阴阳师-网易游戏";
-      targetHWnd = SystemRuntimes.FindWindow(null, windowTitle);
+      WindowsFilter.GetWindows();
+      targetHWnds = WindowsFilter.WindowHandles;
     }
 
     private void Timer_Tick(object sender, EventArgs e)
@@ -38,80 +38,10 @@ namespace ScreenCaptureApp.UI
       {
         if (sender != null)
         {
-          if (targetHWnd != IntPtr.Zero)
+          targetHWnds.ForEach(x =>
           {
-            SystemRuntimes.RECT windowRect;
-            SystemRuntimes.GetWindowRect(targetHWnd, out windowRect);
-
-            var widthAndHeight = windowRect.GetWidthAndHeight();
-            IntPtr hdcWindow = SystemRuntimes.GetDC(targetHWnd);
-            IntPtr hdcMemDC = WindowsRuntimes.CreateCompatibleDC(hdcWindow);
-            IntPtr hBitmap = WindowsRuntimes.CreateCompatibleBitmap(hdcWindow, widthAndHeight.Item1, widthAndHeight.Item2);
-            IntPtr hOld = WindowsRuntimes.SelectObject(hdcMemDC, hBitmap);
-
-            WindowsRuntimes.BitBlt(hdcMemDC, 0, 0, widthAndHeight.Item1, widthAndHeight.Item2, hdcWindow, 0, 0, 13369376); // 13369376 is SRCCOPY constant
-
-            pictureBox1.Image = pictureBox1.Image.ReMoveImage();
-
-            using (Bitmap bmp = Bitmap.FromHbitmap(hBitmap))
-            {
-              int newWidth = (int)(bmp.Width * 0.5);
-              int newHeight = (int)(bmp.Height * 0.5);
-              Bitmap scaledBmp = new Bitmap(bmp, newWidth, newHeight);
-
-              WindowsRuntimes.SelectObject(hdcMemDC, hOld);
-              WindowsRuntimes.DeleteObject(hBitmap);
-              WindowsRuntimes.DeleteDC(hdcMemDC);
-              SystemRuntimes.ReleaseDC(targetHWnd, hdcWindow);
-              pictureBox1.Image = scaledBmp;
-              if (!this.isRestModel)
-              {
-                if (!islocked && Random.Challenge(CType, windowRect, scaledBmp, this.CEnergyValue))
-                {
-                  islocked = !islocked;
-                  this.label10.ForeColor = Color.Blue;
-                  this.label10.Text = @"挑战开始，等待挑战结束";
-                }
-                if (islocked && Random.Challenge(CType, windowRect, scaledBmp))
-                {
-                  islocked = !islocked;
-                  RCount++;
-                  this.label10.ForeColor = Color.Blue;
-                  this.label10.Text = @"挑战结束，等待挑战开始";
-                  Console.WriteLine($@"已成功挑战{RCount}次");
-                }
-                if (RCount >= MaxCount)
-                {
-                  Console.WriteLine($@"挑战结束");
-                  button2_Click(sender, e);
-                }
-                UpdateLable8();
-              }
-              else
-              {
-                if (!scaledBmp.RestImages(this.RestType, this.RestModel))
-                {
-                  Console.WriteLine(@"校准失败");
-                  this.label14.ForeColor = Color.Red;
-                  this.label14.Text = $@"校准失败!{Environment.NewLine}请点击 停止 按钮后重试";
-                }
-                else
-                {
-                  Console.WriteLine(@"校准成功");
-                  this.label14.ForeColor = Color.Red;
-                  this.label14.Text = $@"校准成功!{Environment.NewLine}请设置好参数后开始挑战";
-                }
-                this.isRestModel = false;
-                timer.Stop();
-              }
-            }
-            GC.Collect();
-          }
-          else
-          {
-            Console.WriteLine("Window not found.");
-            button2_Click(sender, e);
-          }
+            StartTask(x, sender, e);
+          });
         }
       }
       catch { }
@@ -185,6 +115,7 @@ namespace ScreenCaptureApp.UI
       UpdateLable8();
       RestLable10();
       RestSelectBox();
+      ReSetCheckbox1();
       Console.WriteLine(@"已重置");
     }
 
@@ -213,6 +144,94 @@ namespace ScreenCaptureApp.UI
       this.RestType = this.comboBox3.SelectedItem.ToString();
       this.RestModel = this.comboBox4.SelectedItem.ToString();
       this.timer.Start();
+    }
+
+    private void UpdateCheckbox1Checked()
+    { 
+      this.isTeam = this.checkBox1.Checked;
+    }
+
+    private void ReSetCheckbox1() 
+    {
+      this.checkBox1.Checked = false;
+    }
+    private void StartTask(IntPtr intPtr, object sender, EventArgs e)
+    {
+      if (intPtr != IntPtr.Zero)
+      {
+        UpdateCheckbox1Checked();
+        SystemRuntimes.RECT windowRect;
+        SystemRuntimes.GetWindowRect(intPtr, out windowRect);
+
+        var widthAndHeight = windowRect.GetWidthAndHeight();
+        IntPtr hdcWindow = SystemRuntimes.GetDC(intPtr);
+        IntPtr hdcMemDC = WindowsRuntimes.CreateCompatibleDC(hdcWindow);
+        IntPtr hBitmap = WindowsRuntimes.CreateCompatibleBitmap(hdcWindow, widthAndHeight.Item1, widthAndHeight.Item2);
+        IntPtr hOld = WindowsRuntimes.SelectObject(hdcMemDC, hBitmap);
+
+        WindowsRuntimes.BitBlt(hdcMemDC, 0, 0, widthAndHeight.Item1, widthAndHeight.Item2, hdcWindow, 0, 0, 13369376); // 13369376 is SRCCOPY constant
+
+        pictureBox1.Image = pictureBox1.Image.ReMoveImage();
+
+        using (Bitmap bmp = Bitmap.FromHbitmap(hBitmap))
+        {
+          int newWidth = (int)(bmp.Width * 0.5);
+          int newHeight = (int)(bmp.Height * 0.5);
+          Bitmap scaledBmp = new Bitmap(bmp, newWidth, newHeight);
+
+          WindowsRuntimes.SelectObject(hdcMemDC, hOld);
+          WindowsRuntimes.DeleteObject(hBitmap);
+          WindowsRuntimes.DeleteDC(hdcMemDC);
+          SystemRuntimes.ReleaseDC(intPtr, hdcWindow);
+          pictureBox1.Image = scaledBmp;
+          if (!this.isRestModel)
+          {
+            if (!islocked && Random.Challenge(CType, windowRect, scaledBmp, this.CEnergyValue, this.isTeam))
+            {
+              islocked = this.isTeam ? islocked : !islocked;
+              RCount++;
+              this.label10.ForeColor = Color.Blue;
+              this.label10.Text = @"挑战开始，等待挑战结束";
+            }
+            if ((islocked || isTeam) && Random.Challenge(CType, windowRect, scaledBmp))
+            {
+              islocked = this.isTeam ? islocked : !islocked;
+              this.label10.ForeColor = Color.Blue;
+              this.label10.Text = @"挑战结束，等待挑战开始";
+              Console.WriteLine($@"已成功挑战{RCount}次");
+            }
+            if (RCount >= MaxCount)
+            {
+              Console.WriteLine($@"挑战结束");
+              button2_Click(sender, e);
+            }
+            UpdateLable8();
+          }
+          else
+          {
+            if (!scaledBmp.RestImages(this.RestType, this.RestModel, this.isTeam))
+            {
+              Console.WriteLine(@"校准失败");
+              this.label14.ForeColor = Color.Red;
+              this.label14.Text = $@"校准失败!{Environment.NewLine}请点击 停止 按钮后重试";
+            }
+            else
+            {
+              Console.WriteLine(@"校准成功");
+              this.label14.ForeColor = Color.Red;
+              this.label14.Text = $@"校准成功!{Environment.NewLine}请设置好参数后开始挑战";
+            }
+            this.isRestModel = false;
+            timer.Stop();
+          }
+        }
+        GC.Collect();
+      }
+      else
+      {
+        Console.WriteLine("Window not found.");
+        button2_Click(sender, e);
+      }
     }
   }
 }

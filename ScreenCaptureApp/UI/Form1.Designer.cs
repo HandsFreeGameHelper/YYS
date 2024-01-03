@@ -65,6 +65,7 @@ namespace ScreenCaptureApp.UI
       comboBox4 = new ComboBox();
       comboBox3 = new ComboBox();
       label11 = new Label();
+      checkBox1 = new CheckBox();
       ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
       groupBox1.SuspendLayout();
       SuspendLayout();
@@ -138,7 +139,7 @@ namespace ScreenCaptureApp.UI
       // 
       comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
       comboBox2.FormattingEnabled = true;
-      comboBox2.Items.AddRange(new object[] { "", "觉醒副本任意层", "御灵任意层", "八岐大蛇1-10层", "八岐大蛇11层", "八岐大蛇12层", "卑弥呼1层", "卑弥呼2层", "卑弥呼3层", "业原火贪", "业原火嗔", "业原火痴", "永生之海1层", "永生之海2层", "永生之海3-4层", "", "任意御魂副本通用", "任意御灵副本通用", "任意觉醒副本通用", "", "开始画面", "结算画面" });
+      comboBox2.Items.AddRange(new object[] { "", "觉醒副本任意层", "御灵任意层", "八岐大蛇1-10层", "八岐大蛇11层", "八岐大蛇12层", "卑弥呼1层", "卑弥呼2层", "卑弥呼3层", "业原火贪", "业原火嗔", "业原火痴", "永生之海1层", "永生之海2层", "永生之海3-4层" });
       comboBox2.Location = new Point(179, 371);
       comboBox2.Name = "comboBox2";
       comboBox2.Size = new Size(121, 25);
@@ -346,11 +347,22 @@ namespace ScreenCaptureApp.UI
       label11.TabIndex = 0;
       label11.Text = "首次使用或开始后无反应时使用";
       // 
+      // checkBox1
+      // 
+      checkBox1.AutoSize = true;
+      checkBox1.Location = new Point(711, 395);
+      checkBox1.Name = "checkBox1";
+      checkBox1.Size = new Size(75, 21);
+      checkBox1.TabIndex = 21;
+      checkBox1.Text = "组队挑战";
+      checkBox1.UseVisualStyleBackColor = true;
+      // 
       // Form1
       // 
       AutoScaleDimensions = new SizeF(7F, 17F);
       AutoScaleMode = AutoScaleMode.Font;
       ClientSize = new Size(1032, 484);
+      Controls.Add(checkBox1);
       Controls.Add(label11);
       Controls.Add(groupBox1);
       Controls.Add(label10);
@@ -410,5 +422,6 @@ namespace ScreenCaptureApp.UI
     private Label label12;
     private Button button6;
     private Label label15;
+    private CheckBox checkBox1;
   }
 }
