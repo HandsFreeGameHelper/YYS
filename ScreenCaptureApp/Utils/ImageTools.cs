@@ -1,11 +1,10 @@
-﻿using System.IO;
-using static ScreenCaptureApp.Utils.Contains;
-using static ScreenCaptureApp.Utils.SystemRuntimes;
+﻿using static ScreenCaptureApp.Utils.Contains;
 
 namespace ScreenCaptureApp.Utils;
 
 public static class ImageTools
 {
+  public static int BoxCount = -1;
   public static bool IsElementPresent(Bitmap sourceImage, Bitmap elementImage, Point position)
   {
     if (position.X < 0 || position.Y < 0 || position.X + elementImage.Width > sourceImage.Width || position.Y + elementImage.Height > sourceImage.Height)
@@ -20,7 +19,6 @@ public static class ImageTools
     {
       return true;
     }
-
     return false;
   }
 
@@ -73,15 +71,15 @@ public static class ImageTools
     {
       if (!EMPTY.Equals(restType) && !EMPTY.Equals(restModel))
       {
-        var size = ImagesConfig.START.Equals(restModel) ? 
-            isTeam ? 
-            new Size((int)(sourceImage.Width * ImagesConfig.StartXSizeRateTeam), (int)(sourceImage.Height * ImagesConfig.StartYSizeRate)) : 
-            new Size((int)(sourceImage.Width * ImagesConfig.StartXSizeRate),(int)(sourceImage.Height * ImagesConfig.StartYSizeRate)) 
+        var size = ImagesConfig.START.Equals(restModel) ?
+            isTeam ?
+            new Size((int)(sourceImage.Width * ImagesConfig.StartXSizeRateTeam), (int)(sourceImage.Height * ImagesConfig.StartYSizeRate)) :
+            new Size((int)(sourceImage.Width * ImagesConfig.StartXSizeRate), (int)(sourceImage.Height * ImagesConfig.StartYSizeRate))
           : new Size((int)(sourceImage.Width * ImagesConfig.EndXSizeRate), (int)(sourceImage.Height * ImagesConfig.EndYSizeRate));
-        Point position = ImagesConfig.START.Equals(restModel) ? 
-            isTeam ? 
-            new Point((int)(sourceImage.Width * ImagesConfig.StartXRateTeam), (int)(sourceImage.Height * ImagesConfig.StartYRateTeam)) : 
-            new Point((int)(sourceImage.Width * ImagesConfig.StartXRate), (int)(sourceImage.Height * ImagesConfig.StartYRate)) 
+        Point position = ImagesConfig.START.Equals(restModel) ?
+            isTeam ?
+            new Point((int)(sourceImage.Width * ImagesConfig.StartXRateTeam), (int)(sourceImage.Height * ImagesConfig.StartYRateTeam)) :
+            new Point((int)(sourceImage.Width * ImagesConfig.StartXRate), (int)(sourceImage.Height * ImagesConfig.StartYRate))
           : new Point((int)(sourceImage.Width * ImagesConfig.EndXRate), (int)(sourceImage.Height * ImagesConfig.EndYRate));
         Rectangle elementRect = new Rectangle(position, size);
         Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
@@ -106,5 +104,16 @@ public static class ImageTools
     {
       return false;
     }
+  }
+
+  public static PictureBox Next(this List<PictureBox> pictureBoxes)
+  {
+    var pictureBoxesCount = pictureBoxes.Count;
+    BoxCount += 1;
+    if (BoxCount + 1 > pictureBoxesCount)
+    {
+      throw new ArgumentOutOfRangeException();
+    }
+    return pictureBoxes[BoxCount];
   }
 }

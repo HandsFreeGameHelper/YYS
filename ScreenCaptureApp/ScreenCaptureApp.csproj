@@ -15,9 +15,6 @@
     <None Update="Resource\Start\start_juexing.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resource\Start\start_yuhun.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Resource\Start\start_12.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -44,6 +41,9 @@
     </None>
     <None Update="Resource\Start\start_tan.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resource\Start\start_yuhun.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resource\Start\start_yuhun_team.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

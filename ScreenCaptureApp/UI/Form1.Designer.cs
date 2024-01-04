@@ -12,6 +12,8 @@ namespace ScreenCaptureApp.UI
     /// </summary>
     private System.ComponentModel.IContainer components = null;
     private PictureBox pictureBox1;
+    private PictureBox pictureBox2;
+    private List<PictureBox> pictureBoxes = new();
     private Button button1;
     private Button button2;
 
@@ -39,6 +41,7 @@ namespace ScreenCaptureApp.UI
       button1 = new Button();
       button2 = new Button();
       pictureBox1 = new PictureBox();
+      pictureBox2 = new PictureBox();
       richTextBox1 = new RichTextBox();
       button3 = new Button();
       comboBox1 = new ComboBox();
@@ -67,6 +70,7 @@ namespace ScreenCaptureApp.UI
       label11 = new Label();
       checkBox1 = new CheckBox();
       ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
       groupBox1.SuspendLayout();
       SuspendLayout();
       // 
@@ -92,11 +96,19 @@ namespace ScreenCaptureApp.UI
       // 
       // pictureBox1
       // 
-      pictureBox1.Location = new Point(0, 0);
+      pictureBox1.Location = new Point(10, 96);
       pictureBox1.Name = "pictureBox1";
-      pictureBox1.Size = new Size(576, 320);
+      pictureBox1.Size = new Size(278, 174);
       pictureBox1.TabIndex = 2;
       pictureBox1.TabStop = false;
+      // 
+      // pictureBox2
+      // 
+      pictureBox2.Location = new Point(294, 96);
+      pictureBox2.Name = "pictureBox2";
+      pictureBox2.Size = new Size(270, 174);
+      pictureBox2.TabIndex = 22;
+      pictureBox2.TabStop = false;
       // 
       // richTextBox1
       // 
@@ -383,11 +395,13 @@ namespace ScreenCaptureApp.UI
       Controls.Add(button3);
       Controls.Add(richTextBox1);
       Controls.Add(pictureBox1);
+      Controls.Add(pictureBox2);
       Controls.Add(button2);
       Controls.Add(button1);
       Name = "Form1";
       Text = "Form1";
       ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+      ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
       groupBox1.ResumeLayout(false);
       groupBox1.PerformLayout();
       ResumeLayout(false);
@@ -395,7 +409,6 @@ namespace ScreenCaptureApp.UI
     }
 
     #endregion
-
     private RichTextBox richTextBox1;
     private Button button3;
     private ComboBox comboBox1;
