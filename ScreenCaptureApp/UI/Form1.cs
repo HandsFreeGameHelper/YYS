@@ -51,7 +51,7 @@ namespace ScreenCaptureApp.UI
     {
       Console.WriteLine($@"开始");
       this.isRequestToStop = false;
-      this.pictureBoxes.ForEach(x => 
+      this.pictureBoxes.ForEach(x =>
       {
         x.Show();
       });
@@ -71,31 +71,28 @@ namespace ScreenCaptureApp.UI
     {
       try
       {
-        label5.Text = Utils.Contains.EMPTY;
+        label16.Text = Utils.Contains.EMPTY;
         this.MaxCount = int.Parse(this.textBox1.Text);
         this.CType = comboBox1.SelectedItem?.ToString();
         var selection = comboBox2.SelectedItem?.ToString();
         var energyValue = "";
         if (!ChallengeFactory.TryJudgeChallengeModel(this.CType, selection, out energyValue))
         {
-          label5.Location = new Point(70, 460);
-          label5.ForeColor = Color.Red;
-          label5.Text = "请正确地选择挑战类型或挑战关卡，请点击停止后重新选择";
+          label16.ForeColor = Color.Red;
+          label16.Text = "请正确地选择挑战类型或挑战关卡，请点击停止后重新选择";
         }
         else
         {
-          label5.Location = new Point(30, 460);
           this.CEnergyValue = energyValue;
-          label5.ForeColor = Color.Green;
-          label5.Text = $@"设置成功 当前选择的是进行 {this.CType} 模式下 的 {selection} 关卡 挑战 {this.MaxCount} 次，请点击开始";
+          label16.ForeColor = Color.Green;
+          label16.Text = $@"设置成功 {Environment.NewLine}当前选择的是进行 {this.CType} 模式下 的 {selection} 关卡 挑战 {this.MaxCount} 次，请点击开始";
           ResetLable8();
         }
       }
       catch (Exception)
       {
-        label5.Location = new Point(70, 460);
-        label5.ForeColor = Color.Red;
-        label5.Text = "请输入正确的挑战次数，例：30";
+        label16.ForeColor = Color.Red;
+        label16.Text = "请输入正确的挑战次数，例：30";
         ResetLable8();
       }
 
@@ -118,13 +115,14 @@ namespace ScreenCaptureApp.UI
     private void button5_Click(object sender, EventArgs e)
     {
       button2_Click(sender, e);
-      this.label5.Text = Utils.Contains.EMPTY;
+      this.label16.Text = Utils.Contains.EMPTY;
       this.textBox1.Clear();
       this.CType = Utils.Contains.EMPTY;
       this.CEnergyValue = Utils.Contains.EMPTY;
       richTextBox1.Clear();
       this.isRestModel = false;
       this.isRequestToReset = true;
+      this.MaxCount = 0;
       ResetLable8();
       RestLable10();
       RestSelectBox();
@@ -193,24 +191,21 @@ namespace ScreenCaptureApp.UI
 
             using (Bitmap bmp = Bitmap.FromHbitmap(hBitmap))
             {
-              int newWidth = (int)(bmp.Width * 0.5);
-              int newHeight = (int)(bmp.Height * 0.5);
-              Bitmap scaledBmp = new Bitmap(bmp, newWidth, newHeight);
-
               WindowsRuntimes.SelectObject(hdcMemDC, hOld);
               WindowsRuntimes.DeleteObject(hBitmap);
               WindowsRuntimes.DeleteDC(hdcMemDC);
               SystemRuntimes.ReleaseDC(intPtr, hdcWindow);
               if (!this.isRestModel)
               {
-                if (!islocked && Random.Challenge(CType, windowRect, scaledBmp, this.CEnergyValue, this.isTeam))
+                if (!islocked && Random.Challenge(CType, windowRect, bmp, this.CEnergyValue, this.isTeam))
                 {
                   islocked = this.isTeam ? islocked : !islocked;
                   RCount++;
+                  this.label8.Text = $@"{RCount}/{this.MaxCount}";
                   this.label10.ForeColor = Color.Blue;
                   this.label10.Text = @"挑战开始，等待挑战结束";
                 }
-                if ((islocked || isTeam) && Random.Challenge(CType, windowRect, scaledBmp))
+                if ((islocked || isTeam) && Random.Challenge(CType, windowRect, bmp))
                 {
                   islocked = this.isTeam ? islocked : !islocked;
                   this.label10.ForeColor = Color.Blue;
@@ -222,11 +217,10 @@ namespace ScreenCaptureApp.UI
                   Console.WriteLine($@"挑战结束");
                   Stop();
                 }
-                this.label8.Text = $@"{RCount}/{this.MaxCount}";
               }
               else
               {
-                if (!scaledBmp.RestImages(this.RestType, this.RestModel, this.isTeam))
+                if (!bmp.RestImages(this.RestType, this.RestModel, this.isTeam))
                 {
                   Console.WriteLine(@"校准失败");
                   this.label14.ForeColor = Color.Red;
@@ -251,7 +245,7 @@ namespace ScreenCaptureApp.UI
           }
         }
         if (isRequestToReset)
-        { 
+        {
           islocked = false;
           RCount = 0;
         }
@@ -279,8 +273,8 @@ namespace ScreenCaptureApp.UI
 
             using (Bitmap bmp = Bitmap.FromHbitmap(hBitmap))
             {
-              int newWidth = (int)(bmp.Width * 0.5 * 0.5);
-              int newHeight = (int)(bmp.Height * 0.5 * 0.5);
+              int newWidth = (int)(bmp.Width * 0.5 * 0.88);
+              int newHeight = (int)(bmp.Height * 0.5 * 0.88);
               Bitmap scaledBmp = new Bitmap(bmp, newWidth, newHeight);
 
               WindowsRuntimes.SelectObject(hdcMemDC, hOld);
@@ -297,8 +291,13 @@ namespace ScreenCaptureApp.UI
             Stop();
           }
         }
-        Thread.Sleep(0);
+        Thread.Sleep(1);
       }
+    }
+
+    private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      System.Environment.Exit(0);
     }
   }
 }

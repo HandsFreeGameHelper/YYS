@@ -11,7 +11,7 @@ public static class WindowsFilter
     SystemRuntimes.EnumWindows(EnumWindowsCallback, IntPtr.Zero);
   }
 
-  public static bool EnumWindowsCallback(IntPtr hWnd, IntPtr lParam)
+  private static bool EnumWindowsCallback(IntPtr hWnd, IntPtr lParam)
   {
     string targetWindowTitle = "阴阳师-网易游戏"; 
 
@@ -22,7 +22,7 @@ public static class WindowsFilter
     return true;
   }
 
-  public static string GetWindowTitleByHandle(IntPtr hWnd)
+  private static string GetWindowTitleByHandle(IntPtr hWnd)
   {
     const int nChars = 256;
     StringBuilder title = new StringBuilder(nChars);
