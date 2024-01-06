@@ -142,7 +142,7 @@ namespace ScreenCaptureApp.UI
       // 
       comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
       comboBox1.FormattingEnabled = true;
-      comboBox1.Items.AddRange(new object[] { "", "普通副本" });
+      comboBox1.Items.AddRange(new object[] { "", "普通副本", "突破" });
       comboBox1.Location = new Point(66, 52);
       comboBox1.Name = "comboBox1";
       comboBox1.Size = new Size(121, 25);
@@ -161,7 +161,7 @@ namespace ScreenCaptureApp.UI
       // 
       comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
       comboBox2.FormattingEnabled = true;
-      comboBox2.Items.AddRange(new object[] { "", "觉醒副本任意层", "御灵任意层", "八岐大蛇1-10层", "八岐大蛇11层", "八岐大蛇12层", "卑弥呼1层", "卑弥呼2层", "卑弥呼3层", "业原火贪", "业原火嗔", "业原火痴", "永生之海1层", "永生之海2层", "永生之海3-4层" });
+      comboBox2.Items.AddRange(new object[] { "", "个人", "阴阳寮", "觉醒副本任意层", "御灵任意层", "八岐大蛇1-10层", "八岐大蛇11层", "八岐大蛇12层", "卑弥呼1层", "卑弥呼2层", "卑弥呼3层", "业原火贪", "业原火嗔", "业原火痴", "永生之海1层", "永生之海2层", "永生之海3-4层" });
       comboBox2.Location = new Point(66, 97);
       comboBox2.Name = "comboBox2";
       comboBox2.Size = new Size(121, 25);

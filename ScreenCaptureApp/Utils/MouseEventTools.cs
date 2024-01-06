@@ -4,7 +4,7 @@ namespace ScreenCaptureApp.Utils;
 
 public static class MouseEventTools
 {
-  public static void MoveAndClick(this Random random, Point eventPoint, RECT windowRect, int randomPointCount = 3)
+  public static void MoveAndClick(this Random random, Point eventPoint, RECT windowRect, int clickTimes,int randomPointCount = 3)
   {
     Point mousePosition = Cursor.Position;
     for (int i = 0; i < randomPointCount; i++)
@@ -20,14 +20,10 @@ public static class MouseEventTools
       SetCursorPos(xOrY.Item1 ? mousePosition.X : currentPoint.X, xOrY.Item2 ? mousePosition.Y : currentPoint.Y);
       //Console.WriteLine(@$"强制重置 X:{xOrY.Item1} Y:{xOrY.Item2} ");
     }
-    PressAndHoldMouseLeftButton(random.Next(100, 150));
-    PressAndHoldMouseLeftButton(random.Next(100, 150));
-    PressAndHoldMouseLeftButton(random.Next(100, 150));
-    PressAndHoldMouseLeftButton(random.Next(100, 150));
-    PressAndHoldMouseLeftButton(random.Next(100, 150));
-    PressAndHoldMouseLeftButton(0);
-    PressAndHoldMouseLeftButton(0);
-    PressAndHoldMouseLeftButton(0);
+    for (int i = 0; i < clickTimes; i++)
+    {
+      PressAndHoldMouseLeftButton(random.Next(100, 150));
+    }
     currentPoint = Cursor.Position;
     Console.WriteLine(@$"鼠标双击({mousePosition.X},{mousePosition.Y})({currentPoint.X},{currentPoint.Y})");
   }
@@ -154,5 +150,11 @@ public static class MouseEventTools
   {
     mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, _x * 65535 / Screen.PrimaryScreen.Bounds.Width, _y * 65535 / Screen.PrimaryScreen.Bounds.Height, 0, 0);
 
+  }
+  public static void ScrollWheelDown()
+  {
+    int WHEEL_DELTA = -120 * 6;
+    mouse_event(MOUSEEVENTF_WHEEL, 0, 0, WHEEL_DELTA, 0);
+    Thread.Sleep(100);
   }
 }

@@ -5,7 +5,7 @@ namespace ScreenCaptureApp.Utils;
 public static class ImageTools
 {
   public static int BoxCount = -1;
-  public static bool IsElementPresent(Bitmap sourceImage, Bitmap elementImage, Point position)
+  public static bool IsElementPresent(Bitmap sourceImage, Bitmap elementImage, Point position, bool isTupo = false)
   {
     if (position.X < 0 || position.Y < 0 || position.X + elementImage.Width > sourceImage.Width || position.Y + elementImage.Height > sourceImage.Height)
     {
@@ -14,26 +14,28 @@ public static class ImageTools
 
     Rectangle elementRect = new Rectangle(position, elementImage.Size);
     Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
-    //sourceRegion.Save("test.png", System.Drawing.Imaging.ImageFormat.Png);
-    if (AreBitmapsEqual(sourceRegion, elementImage))
+
+    //sourceRegion.Save($@"./Test/sourceRegion_{position.X}_{position.Y}.png", System.Drawing.Imaging.ImageFormat.Png);
+    if (AreBitmapsEqual(sourceRegion, elementImage, isTupo))
     {
+      //sourceRegion.Save("sourceRegion.png", System.Drawing.Imaging.ImageFormat.Png);
       return true;
     }
     return false;
   }
 
-  public static bool AreBitmapsEqual(Bitmap bmp1, Bitmap bmp2)
+  public static bool AreBitmapsEqual(Bitmap bmp1, Bitmap bmp2,bool isTupo = false)
   {
     if (bmp1.Size != bmp2.Size)
     {
       return false;
     }
-
+    var rate = isTupo ? 0.1 : 0.3;
     for (int i = 0; i < bmp1.Width; i++)
     {
       for (int j = 0; j < bmp1.Height; j++)
       {
-        if (!AreColorsWithinThreshold(bmp1.GetPixel(i, j), bmp2.GetPixel(i, j), 0.34))
+        if (!AreColorsWithinThreshold(bmp1.GetPixel(i, j), bmp2.GetPixel(i, j), rate))
         {
           return false;
         }
@@ -83,6 +85,8 @@ public static class ImageTools
           new Size((int)(sourceImage.Width * TuPo.AttackSizeWidthRate), (int)(sourceImage.Height * TuPo.AttackSizeHeightRate)) :
           TuPo.REFRESH.Equals(restModel) ?
           new Size((int)(sourceImage.Width * TuPo.RefreshSizeWidthRate), (int)(sourceImage.Height * TuPo.RefreshSizeHeightRate)) :
+          ImagesConfig.SHIBAI.Equals(restModel) ?
+          new Size((int)(sourceImage.Width * ImagesConfig.SHIBAISizeWidthRate), (int)(sourceImage.Height * ImagesConfig.SHIBAISizeHeightRate)) :
           new Size((int)(sourceImage.Width * ImagesConfig.EndXSizeRate), (int)(sourceImage.Height * ImagesConfig.EndYSizeRate));
         Point position =
           ImagesConfig.START.Equals(restModel) ?
@@ -90,7 +94,7 @@ public static class ImageTools
             new Point((int)(sourceImage.Width * ImagesConfig.StartXRateTeam), (int)(sourceImage.Height * ImagesConfig.StartYRateTeam)) :
             new Point((int)(sourceImage.Width * ImagesConfig.StartXRate), (int)(sourceImage.Height * ImagesConfig.StartYRate)) :
           TuPo.TUPO.Equals(restModel) ?
-          new Point((int)(sourceImage.Width * TuPo.TuPoPanelMarginLeftGeRen3Rate), (int)(sourceImage.Height * TuPo.TuPoPanelMarginTopGeRenRate)) :
+          new Point((int)(sourceImage.Width * TuPo.TuPoPanelMarginLeftYinYangLiao1Rate), (int)(sourceImage.Height * TuPo.TuPoPanelMarginTopYinYangLiaoRate)) :
           TuPo.GEREN.Equals(restModel) ?
           new Point((int)(sourceImage.Width * TuPo.TuPoSectionMarginLeftRate), (int)(sourceImage.Height * TuPo.TuPoGeRenMarginTopRate)) :
           TuPo.YINYANGLIAO.Equals(restModel) ?
@@ -99,6 +103,8 @@ public static class ImageTools
           new Point((int)(sourceImage.Width * TuPo.AttackMarginLeftGeRenRate3), (int)(sourceImage.Height * TuPo.AttackMarginTopGeRenRate)) :
           TuPo.REFRESH.Equals(restModel) ?
           new Point((int)(sourceImage.Width * TuPo.RefreshMarginLeftRate), (int)(sourceImage.Height * TuPo.RefreshMarginTopRate)) :
+          ImagesConfig.SHIBAI.Equals(restModel) ?
+          new Point((int)(sourceImage.Width * ImagesConfig.SHIBAISizeMarginLeftRate), (int)(sourceImage.Height * ImagesConfig.SHIBAISizeMarginTopRate)) :
           new Point((int)(sourceImage.Width * ImagesConfig.EndXRate), (int)(sourceImage.Height * ImagesConfig.EndYRate));
         Rectangle elementRect = new Rectangle(position, size);
         Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
@@ -119,6 +125,7 @@ public static class ImageTools
         var team = isTeam ? "_team" : "";
         var path =
           ImagesConfig.END.Equals(restModel) ? $@"./Resource/End/end.png" :
+          ImagesConfig.SHIBAI.Equals(restModel) ? $@"./Resource/End/failed.png" :
           ImagesConfig.START.Equals(restModel) ? $@"./Resource/Start/start_{type}{team}.png" :
         $@"./Resource/tupo_{type}.png";
 
@@ -156,7 +163,7 @@ public static class ImageTools
     return pictureBoxes[BoxCount];
   }
 
-  public static Bitmap GetBitmap(IntPtr intPtr)
+  public static Bitmap GetBitmap(this IntPtr intPtr)
   {
     SystemRuntimes.RECT windowRect;
     SystemRuntimes.GetWindowRect(intPtr, out windowRect);

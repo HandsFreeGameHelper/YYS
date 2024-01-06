@@ -4,6 +4,8 @@ public static class Contains
 {
   public static string NONE = "无";
   public static string EMPTY = string.Empty;
+  public static readonly int RegionWidth = 1152;
+  public static readonly int RegionHeight = 679;
   public static class EnergyValue
   {
     public static readonly string SIX = "6";
@@ -24,6 +26,7 @@ public static class Contains
   {
     public static readonly string NOMAL = "普通副本";
     public static readonly string ACTIVITIES = "活动副本";
+    public static readonly string TUPO = "突破";
   }
 
   public static class ChallengeSelection
@@ -42,6 +45,8 @@ public static class Contains
     public static readonly string YONGSHEN_1 = "永生之海1层";
     public static readonly string YONGSHEN_2 = "永生之海2层";
     public static readonly string YONGSHEN_3_4 = "永生之海3-4层";
+    public static readonly string GEREN = "个人";
+    public static readonly string YINYANGLIAO = "阴阳寮";
   }
 
   public static class ImagesConfig
@@ -51,8 +56,8 @@ public static class Contains
     public static readonly string YULIN = "任意御灵副本通用";
     public static readonly string START = "开始画面";
     public static readonly string END = "结算画面";
-    public static readonly int RegionWidth = 1152;
-    public static readonly int RegionHeight = 679;
+    public static readonly string SHIBAI = "失败";
+
     public static readonly int RegionStartX = 498 * 2;
     public static readonly int RegionStartXTeam = 523 * 2;
     public static readonly int RegionStartY = 259 * 2;
@@ -87,6 +92,15 @@ public static class Contains
     public static readonly double EndPointXRightRate = 11 / 1152.0;
     public static readonly double EndPointYTopRate = 324 / 679.0;
     public static readonly double EndPointYBottomRate = 11 / 679.0;
+    public static readonly int SHIBAISizeWidth = 60;
+    public static readonly int SHIBAISizeHeight = 60;
+    public static readonly int SHIBAISizeMarginLeft = 360;
+    public static readonly int SHIBAISizeMarginTop = 130;
+    public static readonly double SHIBAISizeWidthRate = SHIBAISizeWidth * 1.0 / RegionWidth;
+    public static readonly double SHIBAISizeHeightRate = SHIBAISizeHeight * 1.0 / RegionHeight;
+    public static readonly double SHIBAISizeMarginLeftRate = SHIBAISizeMarginLeft * 1.0 / RegionWidth;
+    public static readonly double SHIBAISizeMarginTopRate = SHIBAISizeMarginTop * 1.0 / RegionHeight;
+
   }
 
   public static class TuPo 
@@ -112,34 +126,34 @@ public static class Contains
     public static readonly string ATTACK_TYPE = "attack";
     public static readonly string REFRESH = "刷新";
     public static readonly string REFRESH_TYPE = "refresh";
-    public static readonly int TuPoPanelSizeWidth = 56;
-    public static readonly int TuPoPanelSizeHeight = 40;
-    public static readonly int TuPoPanelMarginLeft_YinYangLiao1 = 606;
-    public static readonly int TuPoPanelMarginLeft_YinYangLiao2 = 606 + 300;
+    public static readonly int TuPoPanelSizeWidth = 36;
+    public static readonly int TuPoPanelSizeHeight = 36;
+    public static readonly int TuPoPanelMarginLeft_YinYangLiao1 = 625;
+    public static readonly int TuPoPanelMarginLeft_YinYangLiao2 = 625 + 300;
     public static readonly int TuPoPanelMarginLeft_GeRen1 = 362;
     public static readonly int TuPoPanelMarginLeft_GeRen2 = 362 + 295;
     public static readonly int TuPoPanelMarginLeft_GeRen3 = 362 + 295 * 2;
-    public static readonly int TuPoPanelMarginTop_YinYangLiao = 120;
+    public static readonly int TuPoPanelMarginTop_YinYangLiao = 118;
     public static readonly int TuPoPanelMarginTop_GeRen = 126;
-    public static readonly double TuPoPanelSizeWidthRate = TuPoPanelSizeWidth * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double TuPoPanelSizeHeightRate = TuPoPanelSizeHeight * 1.0 / ImagesConfig.RegionHeight;
-    public static readonly double TuPoPanelMarginLeftYinYangLiao1Rate = TuPoPanelMarginLeft_YinYangLiao1 * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double TuPoPanelMarginLeftYinYangLiao2Rate = TuPoPanelMarginLeft_YinYangLiao2 * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double TuPoPanelMarginLeftGeRen1Rate = TuPoPanelMarginLeft_GeRen1 * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double TuPoPanelMarginLeftGeRen2Rate = TuPoPanelMarginLeft_GeRen2 * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double TuPoPanelMarginLeftGeRen3Rate = TuPoPanelMarginLeft_GeRen3 * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double TuPoPanelMarginTopYinYangLiaoRate = TuPoPanelMarginTop_YinYangLiao * 1.0 / ImagesConfig.RegionHeight;
-    public static readonly double TuPoPanelMarginTopGeRenRate = TuPoPanelMarginTop_GeRen * 1.0 / ImagesConfig.RegionHeight;
+    public static readonly double TuPoPanelSizeWidthRate = TuPoPanelSizeWidth * 1.0 / RegionWidth;
+    public static readonly double TuPoPanelSizeHeightRate = TuPoPanelSizeHeight * 1.0 / RegionHeight;
+    public static readonly double TuPoPanelMarginLeftYinYangLiao1Rate = TuPoPanelMarginLeft_YinYangLiao1 * 1.0 / RegionWidth;
+    public static readonly double TuPoPanelMarginLeftYinYangLiao2Rate = TuPoPanelMarginLeft_YinYangLiao2 * 1.0 / RegionWidth;
+    public static readonly double TuPoPanelMarginLeftGeRen1Rate = TuPoPanelMarginLeft_GeRen1 * 1.0 / RegionWidth;
+    public static readonly double TuPoPanelMarginLeftGeRen2Rate = TuPoPanelMarginLeft_GeRen2 * 1.0 / RegionWidth;
+    public static readonly double TuPoPanelMarginLeftGeRen3Rate = TuPoPanelMarginLeft_GeRen3 * 1.0 / RegionWidth;
+    public static readonly double TuPoPanelMarginTopYinYangLiaoRate = TuPoPanelMarginTop_YinYangLiao * 1.0 / RegionHeight;
+    public static readonly double TuPoPanelMarginTopGeRenRate = TuPoPanelMarginTop_GeRen * 1.0 / RegionHeight;
     public static readonly int TuPoSectionSizeWidth = 54;
     public static readonly int TuPoSectionSizeHeight = 94;
     public static readonly int TuPoGeRenMarginTop = 208;
     public static readonly int TuPoYinYangLiaoMarginTop = 318;
     public static readonly int TuPoSectionMarginLeft = 1065;
-    public static readonly double TuPoSectionSizeWidthRate = TuPoSectionSizeWidth * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double TuPoSectionSizeHeightRate = TuPoSectionSizeHeight * 1.0 / ImagesConfig.RegionHeight;
-    public static readonly double TuPoGeRenMarginTopRate = TuPoGeRenMarginTop * 1.0 / ImagesConfig.RegionHeight;
-    public static readonly double TuPoYinYangLiaoMarginTopRate = TuPoYinYangLiaoMarginTop * 1.0 / ImagesConfig.RegionHeight;
-    public static readonly double TuPoSectionMarginLeftRate = TuPoSectionMarginLeft * 1.0 / ImagesConfig.RegionWidth;
+    public static readonly double TuPoSectionSizeWidthRate = TuPoSectionSizeWidth * 1.0 / RegionWidth;
+    public static readonly double TuPoSectionSizeHeightRate = TuPoSectionSizeHeight * 1.0 / RegionHeight;
+    public static readonly double TuPoGeRenMarginTopRate = TuPoGeRenMarginTop * 1.0 / RegionHeight;
+    public static readonly double TuPoYinYangLiaoMarginTopRate = TuPoYinYangLiaoMarginTop * 1.0 / RegionHeight;
+    public static readonly double TuPoSectionMarginLeftRate = TuPoSectionMarginLeft * 1.0 / RegionWidth;
     public static readonly int AttackSizeWidth = 116;
     public static readonly int AttackSizeHeight = 52;
     public static readonly int AttackMarginLeft_YinYangLiao1 = 526;
@@ -149,22 +163,40 @@ public static class Contains
     public static readonly int AttackMarginLeft_GeRen3 = 282 + 295 * 2;
     public static readonly int AttackMarginTop_YinYangLiao = 309;
     public static readonly int AttackMarginTop_GeRen = 315;
-    public static readonly double AttackSizeWidthRate = AttackSizeWidth * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double AttackSizeHeightRate = AttackSizeHeight * 1.0 / ImagesConfig.RegionHeight;
-    public static readonly double AttackMarginLeftYinYangLiaoRate1 = AttackMarginLeft_YinYangLiao1 * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double AttackMarginLeftYinYangLiaoRate2 = AttackMarginLeft_YinYangLiao2 * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double AttackMarginLeftGeRenRate1 = AttackMarginLeft_GeRen1 * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double AttackMarginLeftGeRenRate2 = AttackMarginLeft_GeRen2 * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double AttackMarginLeftGeRenRate3 = AttackMarginLeft_GeRen3 * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double AttackMarginTopYinYangLiaoRate = AttackMarginTop_YinYangLiao * 1.0 / ImagesConfig.RegionHeight;
-    public static readonly double AttackMarginTopGeRenRate = AttackMarginTop_GeRen * 1.0 / ImagesConfig.RegionHeight;
+    public static readonly double AttackSizeWidthRate = AttackSizeWidth * 1.0 / RegionWidth;
+    public static readonly double AttackSizeHeightRate = AttackSizeHeight * 1.0 / RegionHeight;
+    public static readonly double AttackMarginLeftYinYangLiaoRate1 = AttackMarginLeft_YinYangLiao1 * 1.0 / RegionWidth;
+    public static readonly double AttackMarginLeftYinYangLiaoRate2 = AttackMarginLeft_YinYangLiao2 * 1.0 / RegionWidth;
+    public static readonly double AttackMarginLeftGeRenRate1 = AttackMarginLeft_GeRen1 * 1.0 / RegionWidth;
+    public static readonly double AttackMarginLeftGeRenRate2 = AttackMarginLeft_GeRen2 * 1.0 / RegionWidth;
+    public static readonly double AttackMarginLeftGeRenRate3 = AttackMarginLeft_GeRen3 * 1.0 / RegionWidth;
+    public static readonly double AttackMarginTopYinYangLiaoRate = AttackMarginTop_YinYangLiao * 1.0 / RegionHeight;
+    public static readonly double AttackMarginTopGeRenRate = AttackMarginTop_GeRen * 1.0 / RegionHeight;
     public static readonly int RefreshSizeWidth = 158;
     public static readonly int RefreshSizeHeight = 54;
     public static readonly int RefreshMarginLeft = 852;
     public static readonly int RefreshMarginTop = 504;
-    public static readonly double RefreshSizeWidthRate = RefreshSizeWidth * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double RefreshSizeHeightRate = RefreshSizeHeight * 1.0 / ImagesConfig.RegionHeight;
-    public static readonly double RefreshMarginLeftRate = RefreshMarginLeft * 1.0 / ImagesConfig.RegionWidth;
-    public static readonly double RefreshMarginTopRate = RefreshMarginTop * 1.0 / ImagesConfig.RegionHeight;
+    public static readonly double RefreshSizeWidthRate = RefreshSizeWidth * 1.0 / RegionWidth;
+    public static readonly double RefreshSizeHeightRate = RefreshSizeHeight * 1.0 / RegionHeight;
+    public static readonly double RefreshMarginLeftRate = RefreshMarginLeft * 1.0 / RegionWidth;
+    public static readonly double RefreshMarginTopRate = RefreshMarginTop * 1.0 / RegionHeight;
+    public static readonly int YinYangLiaoEndY = 480;
+    public static readonly int ResetMarginLeft = 521;
+    public static readonly int ResetMarginTop = 214;
+    public static readonly double YinYangLiaoEndYRate = YinYangLiaoEndY * 1.0 / RegionHeight;
+    public static readonly double ResetMarginLeftRate = ResetMarginLeft * 1.0 / RegionWidth;
+    public static readonly double ResetMarginTopRate = ResetMarginTop * 1.0 / RegionHeight;
+  }
+
+  public static class EventImagePath 
+  {
+    public static readonly string TuPo_YinYangLiaoUnSelectedPath = $@"./Resource/TuPo/tupo_yinyangliao_unselected.png";
+    public static readonly string TuPo_YinYangLiaoSelectedPath = $@"./Resource/TuPo/tupo_yinyangliao_selected.png";
+    public static readonly string TuPo_GeRenUnSelectedPath = $@"./Resource/TuPo/tupo_geren_unselected.png";
+    public static readonly string TuPo_GeRenSelectedPath = $@"./Resource/TuPo/tupo_geren_selected.png";
+    public static readonly string TuPo_UnTuPo = @"./Resource/TuPo/tupo_untupo.png";
+    public static readonly string TuPo_Attack = @"./Resource/TuPo/tupo_attack.png";
+    public static readonly string End = $@"./Resource/End/end.png";
+    public static readonly string Failed = $@"./Resource/End/failed.png";
   }
 }

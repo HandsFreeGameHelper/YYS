@@ -1,7 +1,6 @@
 using ScreenCaptureApp.Main;
 using ScreenCaptureApp.Utils;
-using System;
-using System.Windows.Forms;
+using static ScreenCaptureApp.Utils.Contains;
 
 namespace ScreenCaptureApp.UI
 {
@@ -10,10 +9,10 @@ namespace ScreenCaptureApp.UI
     private int MaxCount = 0;
     private Random Random = new Random();
     private List<IntPtr> targetHWnds = new List<IntPtr>();
-    private string? CType { get; set; } = new(Utils.Contains.EMPTY);
-    private string? CEnergyValue { get; set; } = new(Utils.Contains.EMPTY);
-    private string? RestType { get; set; } = new(Utils.Contains.EMPTY);
-    private string? RestModel { get; set; } = new(Utils.Contains.EMPTY);
+    private string CType { get; set; } = new(EMPTY);
+    private string CEnergyValue { get; set; } = new(EMPTY);
+    private string? RestType { get; set; } = new(EMPTY);
+    private string? RestModel { get; set; } = new(EMPTY);
     private bool isRestModel = false;
     private bool isTeam = false;
     private bool isRequestToStop;
@@ -69,33 +68,42 @@ namespace ScreenCaptureApp.UI
 
     private void button4_Click(object sender, EventArgs e)
     {
-      try
+      this.CType = comboBox1.SelectedItem?.ToString() ?? EMPTY;
+      var selection = comboBox2.SelectedItem?.ToString();
+      var energyValue = "";
+      var judgeRes = ChallengeFactory.TryJudgeChallengeModel(this.CType, selection, out energyValue);
+      this.CEnergyValue = energyValue;
+      if (!ChallengeType.TUPO.Equals(this.CType))
       {
-        label16.Text = Utils.Contains.EMPTY;
-        this.MaxCount = int.Parse(this.textBox1.Text);
-        this.CType = comboBox1.SelectedItem?.ToString();
-        var selection = comboBox2.SelectedItem?.ToString();
-        var energyValue = "";
-        if (!ChallengeFactory.TryJudgeChallengeModel(this.CType, selection, out energyValue))
+        try
+        {
+          label16.Text = EMPTY;
+          this.MaxCount = int.Parse(this.textBox1.Text);
+          if (!judgeRes)
+          {
+            label16.ForeColor = Color.Red;
+            label16.Text = "请正确地选择挑战类型或挑战关卡，请点击停止后重新选择";
+          }
+          else
+          {
+            label16.ForeColor = Color.Green;
+            label16.Text = $@"设置成功 {Environment.NewLine}当前选择的是进行 {this.CType} 模式下 的 {selection} 关卡 挑战 {this.MaxCount} 次，请点击开始";
+            ResetLable8();
+          }
+        }
+        catch (Exception)
         {
           label16.ForeColor = Color.Red;
-          label16.Text = "请正确地选择挑战类型或挑战关卡，请点击停止后重新选择";
-        }
-        else
-        {
-          this.CEnergyValue = energyValue;
-          label16.ForeColor = Color.Green;
-          label16.Text = $@"设置成功 {Environment.NewLine}当前选择的是进行 {this.CType} 模式下 的 {selection} 关卡 挑战 {this.MaxCount} 次，请点击开始";
+          label16.Text = "请输入正确的挑战次数，例：30";
           ResetLable8();
         }
       }
-      catch (Exception)
+      else
       {
-        label16.ForeColor = Color.Red;
-        label16.Text = "请输入正确的挑战次数，例：30";
-        ResetLable8();
+        label16.ForeColor = Color.Green;
+        label16.Text = $@"设置成功 {Environment.NewLine}当前选择的是进行 {this.CType} 模式下 的 {selection} 关卡 ，请点击开始";
       }
-
+     
     }
 
     private void Stop()
@@ -115,10 +123,10 @@ namespace ScreenCaptureApp.UI
     private void button5_Click(object sender, EventArgs e)
     {
       button2_Click(sender, e);
-      this.label16.Text = Utils.Contains.EMPTY;
+      this.label16.Text = EMPTY;
       this.textBox1.Clear();
-      this.CType = Utils.Contains.EMPTY;
-      this.CEnergyValue = Utils.Contains.EMPTY;
+      this.CType = EMPTY;
+      this.CEnergyValue = EMPTY;
       richTextBox1.Clear();
       this.isRestModel = false;
       this.isRequestToReset = true;
@@ -143,10 +151,10 @@ namespace ScreenCaptureApp.UI
 
     private void RestSelectBox()
     {
-      comboBox1.SelectedItem = Utils.Contains.ChallengeType.NOMAL;
-      comboBox2.SelectedItem = Utils.Contains.ChallengeSelection.BAQI_11;
-      comboBox3.SelectedItem = Utils.Contains.EMPTY;
-      comboBox4.SelectedItem = Utils.Contains.EMPTY;
+      comboBox1.SelectedItem = ChallengeType.NOMAL;
+      comboBox2.SelectedItem = ChallengeSelection.BAQI_11;
+      comboBox3.SelectedItem = EMPTY;
+      comboBox4.SelectedItem = EMPTY;
     }
 
     private void button6_Click(object sender, EventArgs e)
@@ -197,12 +205,15 @@ namespace ScreenCaptureApp.UI
               SystemRuntimes.ReleaseDC(intPtr, hdcWindow);
               if (!this.isRestModel)
               {
-                if (!islocked && Random.Challenge(CType, windowRect, bmp, this.CEnergyValue, this.isTeam))
+                if (!islocked && Random.Challenge(CType, windowRect, bmp, this.CEnergyValue, this.isTeam , intPtr))
                 {
                   islocked = this.isTeam ? islocked : !islocked;
-                  RCount++;
-                  this.label8.Text = $@"{RCount}/{this.MaxCount}";
-                  this.label10.ForeColor = Color.Blue;
+                  if (!ChallengeType.TUPO.Equals(CType))
+                  {
+                    RCount++;
+                    this.label8.Text = $@"{RCount}/{this.MaxCount}";
+                    this.label10.ForeColor = Color.Blue;
+                  }
                   this.label10.Text = @"挑战开始，等待挑战结束";
                 }
                 if ((islocked || isTeam) && Random.Challenge(CType, windowRect, bmp))
@@ -212,7 +223,7 @@ namespace ScreenCaptureApp.UI
                   this.label10.Text = @"挑战结束，等待挑战开始";
                   Console.WriteLine($@"已成功挑战{RCount}次");
                 }
-                if (RCount >= MaxCount)
+                if (!ChallengeType.TUPO.Equals(CType) && RCount >= MaxCount)
                 {
                   Console.WriteLine($@"挑战结束");
                   Stop();
