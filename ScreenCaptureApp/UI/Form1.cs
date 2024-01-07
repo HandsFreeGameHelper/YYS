@@ -208,9 +208,9 @@ namespace ScreenCaptureApp.UI
                 if (!islocked && Random.Challenge(CType, windowRect, bmp, this.CEnergyValue, this.isTeam , intPtr))
                 {
                   islocked = this.isTeam ? islocked : !islocked;
+                  RCount++;
                   if (!ChallengeType.TUPO.Equals(CType))
                   {
-                    RCount++;
                     this.label8.Text = $@"{RCount}/{this.MaxCount}";
                     this.label10.ForeColor = Color.Blue;
                   }

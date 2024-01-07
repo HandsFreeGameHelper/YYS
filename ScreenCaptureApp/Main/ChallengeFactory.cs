@@ -103,6 +103,15 @@ public static class ChallengeFactory
 
     var elementAndEventPosition = new List<(Point, KeyValuePair<Point, Point>)>();
     var elements = new List<(Point, Point)>();
+    using (Bitmap noChance = new Bitmap(EventImagePath.NoChance))
+    {
+      var noChancePosition = new Point((int)(scaledBmp.Width * TuPo.NoChanceMarginLeftRate), (int)(scaledBmp.Height * TuPo.NoChanceMarginTopRate));
+      if (ImageTools.IsElementPresent(scaledBmp, noChance, noChancePosition))
+      {
+        Console.WriteLine("挑战次数为0，等待恢复");
+        return false;
+      }
+    }
     for (int i = startScanY; i < endScanY; i++)
     {
       elements.Clear();
@@ -122,7 +131,7 @@ public static class ChallengeFactory
       if (random.ExcuteTuPoEnvent(
                  EventImagePath.TuPo_UnTuPo,
                  EventImagePath.TuPo_Attack,
-                 elements, 
+                 elements,
                  elementAndEventPosition,
                  scaledBmp,
                  windowRect,
@@ -177,8 +186,8 @@ public static class ChallengeFactory
     // 在这里进行图像识别和鼠标操作
     if (ImageTools.IsElementPresent(scaledBmp, eventBmp, elementAndEventPosition.Key,true))
     {
-      scaledBmp.Save("scaledBmp.png", System.Drawing.Imaging.ImageFormat.Png);
-      eventBmp.Save("eventBmp.png", System.Drawing.Imaging.ImageFormat.Png);
+      //scaledBmp.Save("scaledBmp.png", System.Drawing.Imaging.ImageFormat.Png);
+      //eventBmp.Save("eventBmp.png", System.Drawing.Imaging.ImageFormat.Png);
       lock (MoveLock)
       {
         random.MoveAndClick(elementAndEventPosition.Value, windowRect, clickTimes, 10);

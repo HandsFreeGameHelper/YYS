@@ -63,6 +63,9 @@
     <None Update="Resource\TuPo\tupo_geren_unselected.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resource\TuPo\tupo_nochance.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resource\TuPo\tupo_refresh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

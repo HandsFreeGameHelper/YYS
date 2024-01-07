@@ -126,13 +126,15 @@ public static class Contains
     public static readonly string ATTACK_TYPE = "attack";
     public static readonly string REFRESH = "刷新";
     public static readonly string REFRESH_TYPE = "refresh";
-    public static readonly int TuPoPanelSizeWidth = 36;
-    public static readonly int TuPoPanelSizeHeight = 36;
-    public static readonly int TuPoPanelMarginLeft_YinYangLiao1 = 625;
-    public static readonly int TuPoPanelMarginLeft_YinYangLiao2 = 625 + 300;
-    public static readonly int TuPoPanelMarginLeft_GeRen1 = 362;
-    public static readonly int TuPoPanelMarginLeft_GeRen2 = 362 + 295;
-    public static readonly int TuPoPanelMarginLeft_GeRen3 = 362 + 295 * 2;
+    public static readonly string NOCHANCE = "没次数";
+    public static readonly string NOCHANCE_TYPE = "nochance";
+    public static readonly int TuPoPanelSizeWidth = 26;
+    public static readonly int TuPoPanelSizeHeight = 26;
+    public static readonly int TuPoPanelMarginLeft_YinYangLiao1 = 635;
+    public static readonly int TuPoPanelMarginLeft_YinYangLiao2 = 635 + 300;
+    public static readonly int TuPoPanelMarginLeft_GeRen1 = 372;
+    public static readonly int TuPoPanelMarginLeft_GeRen2 = 372 + 295;
+    public static readonly int TuPoPanelMarginLeft_GeRen3 = 372 + 295 * 2;
     public static readonly int TuPoPanelMarginTop_YinYangLiao = 118;
     public static readonly int TuPoPanelMarginTop_GeRen = 126;
     public static readonly double TuPoPanelSizeWidthRate = TuPoPanelSizeWidth * 1.0 / RegionWidth;
@@ -186,6 +188,14 @@ public static class Contains
     public static readonly double YinYangLiaoEndYRate = YinYangLiaoEndY * 1.0 / RegionHeight;
     public static readonly double ResetMarginLeftRate = ResetMarginLeft * 1.0 / RegionWidth;
     public static readonly double ResetMarginTopRate = ResetMarginTop * 1.0 / RegionHeight;
+    public static readonly int NoChanceSizeWidth = 50;
+    public static readonly int NoChanceSizeHeight = 26;
+    public static readonly int NoChanceMarginLeft = 237;
+    public static readonly int NoChanceMarginTop = 500;
+    public static readonly double NoChanceSizeWidthRate = NoChanceSizeWidth * 1.0 / RegionWidth;
+    public static readonly double NoChanceSizeHeightRate = NoChanceSizeHeight * 1.0 / RegionHeight;
+    public static readonly double NoChanceMarginLeftRate = NoChanceMarginLeft * 1.0 / RegionWidth;
+    public static readonly double NoChanceMarginTopRate = NoChanceMarginTop * 1.0 / RegionHeight;
   }
 
   public static class EventImagePath 
@@ -198,5 +208,6 @@ public static class Contains
     public static readonly string TuPo_Attack = @"./Resource/TuPo/tupo_attack.png";
     public static readonly string End = $@"./Resource/End/end.png";
     public static readonly string Failed = $@"./Resource/End/failed.png";
+    public static readonly string NoChance = @"./Resource/TuPo/tupo_nochance.png";
   }
 }

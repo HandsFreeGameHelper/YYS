@@ -1,4 +1,5 @@
-﻿using static ScreenCaptureApp.Utils.SystemRuntimes;
+﻿using static ScreenCaptureApp.Utils.Contains;
+using static ScreenCaptureApp.Utils.SystemRuntimes;
 
 namespace ScreenCaptureApp.Utils;
 
@@ -47,11 +48,12 @@ public static class CalculateTools
 
   public static Point GetRandomPoint(this Random random, Point point, RECT windowRect, int width, int height)
   {
+    var temp = windowRect.GetWidthAndHeight();
     return random.GetRandomPoint(
-          windowRect.Left + point.X + 10,
+          windowRect.Left + point.X + (int)(temp.Item1 * 15 * 1.0 / RegionWidth),
           windowRect.Left + point.X + width,
-          windowRect.Top + point.Y + 35,
-          windowRect.Top + point.Y + height);
+          windowRect.Top + point.Y + (int)(temp.Item2 * 60 * 1.0 / RegionHeight),
+          windowRect.Top + point.Y + height + (int)(temp.Item2 * 20 * 1.0 / RegionHeight));
   }
 
   public static (int, int) GetWidthAndHeight(this RECT windowRect)

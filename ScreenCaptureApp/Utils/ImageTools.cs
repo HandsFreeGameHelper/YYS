@@ -87,6 +87,8 @@ public static class ImageTools
           new Size((int)(sourceImage.Width * TuPo.RefreshSizeWidthRate), (int)(sourceImage.Height * TuPo.RefreshSizeHeightRate)) :
           ImagesConfig.SHIBAI.Equals(restModel) ?
           new Size((int)(sourceImage.Width * ImagesConfig.SHIBAISizeWidthRate), (int)(sourceImage.Height * ImagesConfig.SHIBAISizeHeightRate)) :
+           TuPo.NOCHANCE.Equals(restModel) ?
+          new Size((int)(sourceImage.Width * TuPo.NoChanceSizeWidthRate), (int)(sourceImage.Height * TuPo.NoChanceSizeHeightRate)) :
           new Size((int)(sourceImage.Width * ImagesConfig.EndXSizeRate), (int)(sourceImage.Height * ImagesConfig.EndYSizeRate));
         Point position =
           ImagesConfig.START.Equals(restModel) ?
@@ -105,6 +107,8 @@ public static class ImageTools
           new Point((int)(sourceImage.Width * TuPo.RefreshMarginLeftRate), (int)(sourceImage.Height * TuPo.RefreshMarginTopRate)) :
           ImagesConfig.SHIBAI.Equals(restModel) ?
           new Point((int)(sourceImage.Width * ImagesConfig.SHIBAISizeMarginLeftRate), (int)(sourceImage.Height * ImagesConfig.SHIBAISizeMarginTopRate)) :
+          TuPo.NOCHANCE.Equals(restModel) ?
+          new Point((int)(sourceImage.Width * TuPo.NoChanceMarginLeftRate), (int)(sourceImage.Height * TuPo.NoChanceMarginTopRate)) :
           new Point((int)(sourceImage.Width * ImagesConfig.EndXRate), (int)(sourceImage.Height * ImagesConfig.EndYRate));
         Rectangle elementRect = new Rectangle(position, size);
         Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
@@ -121,6 +125,7 @@ public static class ImageTools
           TuPo.TUPOFAILED.Equals(restType) ? TuPo.TUPOFAILED_TYPE :
           TuPo.ATTACK.Equals(restType) ? TuPo.ATTACK_TYPE :
           TuPo.REFRESH.Equals(restType) ? TuPo.REFRESH_TYPE :
+          TuPo.NOCHANCE.Equals(restType) ? TuPo.NOCHANCE_TYPE :
           EMPTY;
         var team = isTeam ? "_team" : "";
         var path =

@@ -12,7 +12,7 @@ internal class TuPoCapcutureTest
   {
     WindowsFilter.GetWindows();
     var targetHWnds = WindowsFilter.WindowHandles;
-    ImageTools.RestImages(targetHWnds.First().GetBitmap(), ImagesConfig.SHIBAI, ImagesConfig.SHIBAI, false);
+    ImageTools.RestImages(targetHWnds.First().GetBitmap(), TuPo.NOCHANCE, TuPo.NOCHANCE, false);
   }
   [Test]
   public void Test2() 
