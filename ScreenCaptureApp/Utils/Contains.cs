@@ -4,6 +4,8 @@ public static class Contains
 {
   public static string NONE = "无";
   public static string EMPTY = string.Empty;
+  public static string DEFAULT = "default";
+  public static string LOGGINGSERVICE = @"http://bxy.bio/logging";
   public static readonly int RegionWidth = 1152;
   public static readonly int RegionHeight = 679;
   public static class EnergyValue
@@ -56,7 +58,8 @@ public static class Contains
     public static readonly string YULIN = "任意御灵副本通用";
     public static readonly string START = "开始画面";
     public static readonly string END = "结算画面";
-    public static readonly string SHIBAI = "失败";
+    public static readonly string FAILED = "失败";
+    public static readonly string VECTORY = "失败";
 
     public static readonly int RegionStartX = 498 * 2;
     public static readonly int RegionStartXTeam = 523 * 2;
@@ -92,14 +95,22 @@ public static class Contains
     public static readonly double EndPointXRightRate = 11 / 1152.0;
     public static readonly double EndPointYTopRate = 324 / 679.0;
     public static readonly double EndPointYBottomRate = 11 / 679.0;
-    public static readonly int SHIBAISizeWidth = 60;
-    public static readonly int SHIBAISizeHeight = 60;
-    public static readonly int SHIBAISizeMarginLeft = 360;
-    public static readonly int SHIBAISizeMarginTop = 130;
-    public static readonly double SHIBAISizeWidthRate = SHIBAISizeWidth * 1.0 / RegionWidth;
-    public static readonly double SHIBAISizeHeightRate = SHIBAISizeHeight * 1.0 / RegionHeight;
-    public static readonly double SHIBAISizeMarginLeftRate = SHIBAISizeMarginLeft * 1.0 / RegionWidth;
-    public static readonly double SHIBAISizeMarginTopRate = SHIBAISizeMarginTop * 1.0 / RegionHeight;
+    public static readonly int FAILEDSizeWidth = 60;
+    public static readonly int FAILEDSizeHeight = 60;
+    public static readonly int FAILEDSizeMarginLeft = 360;
+    public static readonly int FAILEDSizeMarginTop = 130;
+    public static readonly double FAILEDSizeWidthRate = FAILEDSizeWidth * 1.0 / RegionWidth;
+    public static readonly double FAILEDSizeHeightRate = FAILEDSizeHeight * 1.0 / RegionHeight;
+    public static readonly double FAILEDSizeMarginLeftRate = FAILEDSizeMarginLeft * 1.0 / RegionWidth;
+    public static readonly double FAILEDSizeMarginTopRate = FAILEDSizeMarginTop * 1.0 / RegionHeight;
+    public static readonly int VictorySizeWidth = 60;
+    public static readonly int VictorySizeHeight = 60;
+    public static readonly int VictorySizeMarginLeft = 360;
+    public static readonly int VictorySizeMarginTop = 130;
+    public static readonly double VictorySizeWidthRate = VictorySizeWidth * 1.0 / RegionWidth;
+    public static readonly double VictorySizeHeightRate = VictorySizeHeight * 1.0 / RegionHeight;
+    public static readonly double VictorySizeMarginLeftRate = VictorySizeMarginLeft * 1.0 / RegionWidth;
+    public static readonly double VictorySizeMarginTopRate = VictorySizeMarginTop * 1.0 / RegionHeight;
 
   }
 
@@ -208,6 +219,7 @@ public static class Contains
     public static readonly string TuPo_Attack = @"./Resource/TuPo/tupo_attack.png";
     public static readonly string End = $@"./Resource/End/end.png";
     public static readonly string Failed = $@"./Resource/End/failed.png";
+    public static readonly string Victory = $@"./Resource/End/victory.png";
     public static readonly string NoChance = @"./Resource/TuPo/tupo_nochance.png";
   }
 }

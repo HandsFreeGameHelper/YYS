@@ -1,5 +1,5 @@
-﻿using ScreenCaptureApp.Utils;
-using System.IO;
+﻿using NLog;
+using ScreenCaptureApp.Utils;
 using static ScreenCaptureApp.Utils.Contains;
 using static ScreenCaptureApp.Utils.SystemRuntimes;
 
@@ -7,7 +7,10 @@ namespace ScreenCaptureApp.Main;
 
 public static class ChallengeFactory
 {
+  private static Logger logger = LoggerHelper.GetLogger();
+  private static List<IntPtr> needLogs= new List<IntPtr>();
   private static object MoveLock = new object();
+
   public static bool Challenge(this Random random, string type, RECT windowRect, Bitmap scaledBmp, string energyValue, bool isTeam, IntPtr intPtr)
   {
     var widthAndHeight = windowRect.GetWidthAndHeight();
@@ -21,16 +24,16 @@ public static class ChallengeFactory
           windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.StartPointXLeftTeamRate),
           windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.StartPointXRightTeamRate),
           windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYTopTeamRate),
-          windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYBottomTeamRate)) :
+          windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYBottomTeamRate) - (int)(widthAndHeight.Item2 * 30 * 1.0 / RegionWidth)) :
         random.GetRandomPoint(
           windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.StartPointXLeftRate),
           windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.StartPointXRightRate),
           windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYTopRate),
           windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.StartPointYBottomRate));
       var team = isTeam ? "_team" : "";
-      if (ExcuteEnvent(random, $@"./Resource/Start/start_{energyValue}{team}.png", scaledBmp, elementPosition_start, startPosition, windowRect))
+      if (ExcuteEnvent(random, $@"./Resource/Start/start_{energyValue}{team}.png", scaledBmp, elementPosition_start, startPosition, windowRect, 3))
       {
-        Console.WriteLine(@"该轮挑战开始");
+        logger.Logs(LogLevel.Info, @"该轮挑战开始");
         return true;
       };
       return false;
@@ -41,7 +44,7 @@ public static class ChallengeFactory
     }
     else if (ChallengeType.TUPO.Equals(type))
     {
-      return random.TuPoChallenge(energyValue, windowRect,scaledBmp , intPtr);
+      return random.TuPoChallenge(energyValue, windowRect, scaledBmp, intPtr);
     }
     return false;
   }
@@ -51,21 +54,33 @@ public static class ChallengeFactory
     if (ChallengeType.NOMAL.Equals(type) || ChallengeType.TUPO.Equals(type))
     {
       Point elementPosition_end = new Point((int)(scaledBmp.Width * ImagesConfig.EndXRate), (int)(scaledBmp.Height * ImagesConfig.EndYRate));
-      Point elementPosition_shibai = new Point((int)(scaledBmp.Width * ImagesConfig.SHIBAISizeMarginLeftRate), (int)(scaledBmp.Height * ImagesConfig.SHIBAISizeMarginTopRate));
-      var endclickPoint = random.GetRandomPoint(
+      Point elementPosition_failed = new Point((int)(scaledBmp.Width * ImagesConfig.FAILEDSizeMarginLeftRate), (int)(scaledBmp.Height * ImagesConfig.FAILEDSizeMarginTopRate));
+      Point elementPosition_victory = new Point((int)(scaledBmp.Width * ImagesConfig.VictorySizeMarginLeftRate), (int)(scaledBmp.Height * ImagesConfig.VictorySizeMarginTopRate));
+      var endClickPoint = random.GetRandomPoint(
           windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.EndPointXLeftRate),
           windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.EndPointXRightRate),
           windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.EndPointYTopRate),
           windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.EndPointYBottomRate));
-      var shibaiclickPoint = random.GetRandomPoint(
-        elementPosition_shibai,
+      var failedClickPoint = random.GetRandomPoint(
+        elementPosition_failed,
         windowRect,
-        (int)(scaledBmp.Width * ImagesConfig.SHIBAISizeWidthRate),
-        (int)(scaledBmp.Height * ImagesConfig.SHIBAISizeHeightRate));
-      if (ExcuteEnvent(random, EventImagePath.End, scaledBmp, elementPosition_end, endclickPoint, windowRect)
-        || ExcuteEnvent(random, EventImagePath.Failed, scaledBmp, elementPosition_shibai, shibaiclickPoint, windowRect))
+        (int)(scaledBmp.Width * ImagesConfig.FAILEDSizeWidthRate),
+        (int)(scaledBmp.Height * ImagesConfig.FAILEDSizeHeightRate));
+      var victoryClickPoint = random.GetRandomPoint(
+        elementPosition_failed,
+        windowRect,
+        (int)(scaledBmp.Width * ImagesConfig.VictorySizeWidthRate),
+        (int)(scaledBmp.Height * ImagesConfig.VictorySizeHeightRate));
+
+      if (ExcuteEnvent(random, EventImagePath.Victory, scaledBmp, elementPosition_victory, victoryClickPoint, windowRect))
       {
-        Console.WriteLine(@"该轮挑战结束");
+        logger.Logs(LogLevel.Info, @"挑战成功，跳转结算画面");
+      };
+
+      if (ExcuteEnvent(random, EventImagePath.End, scaledBmp, elementPosition_end, endClickPoint, windowRect)
+        || ExcuteEnvent(random, EventImagePath.Failed, scaledBmp, elementPosition_failed, failedClickPoint, windowRect))
+      {
+        logger.Logs(LogLevel.Info, @"该轮挑战结束");
         return true;
       };
       return false;
@@ -106,10 +121,19 @@ public static class ChallengeFactory
     using (Bitmap noChance = new Bitmap(EventImagePath.NoChance))
     {
       var noChancePosition = new Point((int)(scaledBmp.Width * TuPo.NoChanceMarginLeftRate), (int)(scaledBmp.Height * TuPo.NoChanceMarginTopRate));
+      var needLogItem = needLogs.Where(x => x == intPtr).FirstOrDefault();
       if (ImageTools.IsElementPresent(scaledBmp, noChance, noChancePosition))
       {
-        Console.WriteLine("挑战次数为0，等待恢复");
+        if (needLogItem == IntPtr.Zero)
+        {
+          needLogs.Add(intPtr);
+          logger.Logs(LogLevel.Info, @"挑战次数为0，等待恢复");
+        }
         return false;
+      }
+      if (needLogItem != IntPtr.Zero)
+      { 
+        needLogs.Remove(intPtr);
       }
     }
     for (int i = startScanY; i < endScanY; i++)
@@ -146,11 +170,11 @@ public static class ChallengeFactory
     }
     using (Bitmap yinyangliaoSelected = new Bitmap(EventImagePath.TuPo_YinYangLiaoSelectedPath))
     {
-      using (Bitmap gerenSelected = new Bitmap(EventImagePath.TuPo_GeRenSelectedPath)) 
+      using (Bitmap gerenSelected = new Bitmap(EventImagePath.TuPo_GeRenSelectedPath))
       {
         var yinyangliaoSelectedPosition = new Point((int)(scaledBmp.Width * TuPo.TuPoSectionMarginLeftRate), (int)(scaledBmp.Height * TuPo.TuPoYinYangLiaoMarginTopRate));
         var gerenSelectedPosition = new Point((int)(scaledBmp.Width * TuPo.TuPoSectionMarginLeftRate), (int)(scaledBmp.Height * TuPo.TuPoGeRenMarginTopRate));
-        if (ImageTools.IsElementPresent(scaledBmp,yinyangliaoSelected, yinyangliaoSelectedPosition)
+        if (ImageTools.IsElementPresent(scaledBmp, yinyangliaoSelected, yinyangliaoSelectedPosition)
           || ImageTools.IsElementPresent(scaledBmp, gerenSelected, gerenSelectedPosition))
         {
           Point mousePosition = Cursor.Position;
@@ -184,7 +208,7 @@ public static class ChallengeFactory
   private static bool ExcuteEnvent(this Random random, Bitmap eventBmp, Bitmap scaledBmp, KeyValuePair<Point, Point> elementAndEventPosition, RECT windowRect, int clickTimes = 5)
   {
     // 在这里进行图像识别和鼠标操作
-    if (ImageTools.IsElementPresent(scaledBmp, eventBmp, elementAndEventPosition.Key,true))
+    if (ImageTools.IsElementPresent(scaledBmp, eventBmp, elementAndEventPosition.Key, true))
     {
       //scaledBmp.Save("scaledBmp.png", System.Drawing.Imaging.ImageFormat.Png);
       //eventBmp.Save("eventBmp.png", System.Drawing.Imaging.ImageFormat.Png);
@@ -196,7 +220,7 @@ public static class ChallengeFactory
     }
     return false;
   }
-  private static bool ExcuteEnvent(this Random random, Bitmap openTuPoEventBmp, Bitmap attackEventBmp, Bitmap scaledBmp, List<(Point, KeyValuePair<Point, Point>)> elementAndEventPosition, RECT windowRect, int startY,IntPtr intPtr, int clickTimes = 5)
+  private static bool ExcuteEnvent(this Random random, Bitmap openTuPoEventBmp, Bitmap attackEventBmp, Bitmap scaledBmp, List<(Point, KeyValuePair<Point, Point>)> elementAndEventPosition, RECT windowRect, int startY, IntPtr intPtr, int clickTimes = 5)
   {
     for (int i = 0; i < elementAndEventPosition.Count; i++)
     {
@@ -204,7 +228,7 @@ public static class ChallengeFactory
       if (random.ExcuteEnvent(openTuPoEventBmp, scaledBmp, elementAndEventPosition[i].Item2, windowRect, clickTimes))
       {
         isOpened = true;
-        Console.WriteLine(@"点开挑战界面");
+        logger.Logs(LogLevel.Info, @"点开挑战界面");
         Thread.Sleep(1500);
         scaledBmp = intPtr.GetBitmap();
       }
@@ -215,13 +239,13 @@ public static class ChallengeFactory
           var attackPoint = elementAndEventPosition[i].Item1;
           attackPoint.Y = k;
           var attackYinYnagLiaoEventPoint = random.GetRandomPoint(
-            attackPoint, 
-            windowRect, 
-            (int)(scaledBmp.Width * TuPo.AttackSizeWidthRate), 
+            attackPoint,
+            windowRect,
+            (int)(scaledBmp.Width * TuPo.AttackSizeWidthRate),
             (int)(scaledBmp.Height * TuPo.AttackSizeHeightRate));
           if (random.ExcuteEnvent(attackEventBmp, scaledBmp, new(attackPoint, attackYinYnagLiaoEventPoint), windowRect, clickTimes))
           {
-            Console.WriteLine(@"点击进攻");
+            logger.Logs(LogLevel.Info, @"点击进攻");
             return true;
           }
         }
@@ -261,7 +285,7 @@ public static class ChallengeFactory
               tuPoPanelSizeHeight);
           elementAndEventPosition.Add(new(x.Item1, new(yinYnagLiaoPoint, yinYnagLiaoEventPoint)));
         });
-        return random.ExcuteEnvent(openTuPoEventBmp, attackEventBmp, scaledBmp, elementAndEventPosition, windowRect, startScanY,intPtr, 1);
+        return random.ExcuteEnvent(openTuPoEventBmp, attackEventBmp, scaledBmp, elementAndEventPosition, windowRect, startScanY, intPtr, 1);
       }
     }
   }
@@ -272,7 +296,7 @@ public static class ChallengeFactory
     {
       return false;
     }
-    outPut = 
+    outPut =
      type.Equals(ChallengeType.NOMAL) ?
           challengeSelection.Equals(ChallengeSelection.JUEXIN_ANY) ?
           EnergyValue.JUEXING :
@@ -291,14 +315,14 @@ public static class ChallengeFactory
           EnergyValue.YUHUN :
           challengeSelection.Equals(ChallengeSelection.YULIN_ANY) ?
           EnergyValue.YULIN :
-          EMPTY: 
-           
+          EMPTY :
+
      type.Equals(ChallengeType.TUPO) ?
           challengeSelection.Equals(ChallengeSelection.GEREN) ?
           TuPo.GEREN :
           challengeSelection.Equals(ChallengeSelection.YINYANGLIAO) ?
           TuPo.YINYANGLIAO :
-          EMPTY:
+          EMPTY :
      EMPTY;
     return true;
   }

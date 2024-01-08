@@ -1,10 +1,13 @@
-﻿using static ScreenCaptureApp.Utils.Contains;
+﻿using System.Linq.Expressions;
+using static ScreenCaptureApp.Utils.Contains;
 
 namespace ScreenCaptureApp.Utils;
 
 public static class ImageTools
 {
-  public static int BoxCount = -1;
+  private static readonly Dictionary<List<PictureBox>, int> currentIndexDict = new Dictionary<List<PictureBox>, int>();
+  private static readonly object lockObject = new object();
+
   public static bool IsElementPresent(Bitmap sourceImage, Bitmap elementImage, Point position, bool isTupo = false)
   {
     if (position.X < 0 || position.Y < 0 || position.X + elementImage.Width > sourceImage.Width || position.Y + elementImage.Height > sourceImage.Height)
@@ -24,7 +27,7 @@ public static class ImageTools
     return false;
   }
 
-  public static bool AreBitmapsEqual(Bitmap bmp1, Bitmap bmp2,bool isTupo = false)
+  public static bool AreBitmapsEqual(Bitmap bmp1, Bitmap bmp2, bool isTupo = false)
   {
     if (bmp1.Size != bmp2.Size)
     {
@@ -85,8 +88,8 @@ public static class ImageTools
           new Size((int)(sourceImage.Width * TuPo.AttackSizeWidthRate), (int)(sourceImage.Height * TuPo.AttackSizeHeightRate)) :
           TuPo.REFRESH.Equals(restModel) ?
           new Size((int)(sourceImage.Width * TuPo.RefreshSizeWidthRate), (int)(sourceImage.Height * TuPo.RefreshSizeHeightRate)) :
-          ImagesConfig.SHIBAI.Equals(restModel) ?
-          new Size((int)(sourceImage.Width * ImagesConfig.SHIBAISizeWidthRate), (int)(sourceImage.Height * ImagesConfig.SHIBAISizeHeightRate)) :
+          ImagesConfig.FAILED.Equals(restModel) ?
+          new Size((int)(sourceImage.Width * ImagesConfig.FAILEDSizeWidthRate), (int)(sourceImage.Height * ImagesConfig.FAILEDSizeHeightRate)) :
            TuPo.NOCHANCE.Equals(restModel) ?
           new Size((int)(sourceImage.Width * TuPo.NoChanceSizeWidthRate), (int)(sourceImage.Height * TuPo.NoChanceSizeHeightRate)) :
           new Size((int)(sourceImage.Width * ImagesConfig.EndXSizeRate), (int)(sourceImage.Height * ImagesConfig.EndYSizeRate));
@@ -105,8 +108,8 @@ public static class ImageTools
           new Point((int)(sourceImage.Width * TuPo.AttackMarginLeftGeRenRate3), (int)(sourceImage.Height * TuPo.AttackMarginTopGeRenRate)) :
           TuPo.REFRESH.Equals(restModel) ?
           new Point((int)(sourceImage.Width * TuPo.RefreshMarginLeftRate), (int)(sourceImage.Height * TuPo.RefreshMarginTopRate)) :
-          ImagesConfig.SHIBAI.Equals(restModel) ?
-          new Point((int)(sourceImage.Width * ImagesConfig.SHIBAISizeMarginLeftRate), (int)(sourceImage.Height * ImagesConfig.SHIBAISizeMarginTopRate)) :
+          ImagesConfig.FAILED.Equals(restModel) ?
+          new Point((int)(sourceImage.Width * ImagesConfig.FAILEDSizeMarginLeftRate), (int)(sourceImage.Height * ImagesConfig.FAILEDSizeMarginTopRate)) :
           TuPo.NOCHANCE.Equals(restModel) ?
           new Point((int)(sourceImage.Width * TuPo.NoChanceMarginLeftRate), (int)(sourceImage.Height * TuPo.NoChanceMarginTopRate)) :
           new Point((int)(sourceImage.Width * ImagesConfig.EndXRate), (int)(sourceImage.Height * ImagesConfig.EndYRate));
@@ -130,7 +133,7 @@ public static class ImageTools
         var team = isTeam ? "_team" : "";
         var path =
           ImagesConfig.END.Equals(restModel) ? $@"./Resource/End/end.png" :
-          ImagesConfig.SHIBAI.Equals(restModel) ? $@"./Resource/End/failed.png" :
+          ImagesConfig.FAILED.Equals(restModel) ? $@"./Resource/End/failed.png" :
           ImagesConfig.START.Equals(restModel) ? $@"./Resource/Start/start_{type}{team}.png" :
         $@"./Resource/tupo_{type}.png";
 
@@ -138,11 +141,11 @@ public static class ImageTools
 
         if (TuPo.GEREN_SELECTED.Equals(restType))
         {
-          return  RestImages(sourceImage, TuPo.YINYANGLIAO_UNSELECTED, TuPo.YINYANGLIAO, false);
+          return RestImages(sourceImage, TuPo.YINYANGLIAO_UNSELECTED, TuPo.YINYANGLIAO, false);
         }
         else if (TuPo.YINYANGLIAO_SELECTED.Equals(restType))
         {
-          return  RestImages(sourceImage, TuPo.GEREN_UNSELECTED, TuPo.GEREN, false);
+          return RestImages(sourceImage, TuPo.GEREN_UNSELECTED, TuPo.GEREN, false);
         }
         return true;
       }
@@ -159,13 +162,57 @@ public static class ImageTools
 
   public static PictureBox Next(this List<PictureBox> pictureBoxes)
   {
-    var pictureBoxesCount = pictureBoxes.Count;
-    BoxCount += 1;
-    if (BoxCount + 1 > pictureBoxesCount)
+    if (pictureBoxes == null)
     {
-      throw new ArgumentOutOfRangeException();
+      throw new ArgumentNullException(nameof(pictureBoxes));
     }
-    return pictureBoxes[BoxCount];
+
+    if (pictureBoxes.Count == 0)
+    {
+      throw new InvalidOperationException("The PictureBox list is empty.");
+    }
+
+    lock (lockObject)
+    {
+      if (!currentIndexDict.ContainsKey(pictureBoxes))
+      {
+        currentIndexDict[pictureBoxes] = -1;
+      }
+
+      int currentIndex = currentIndexDict[pictureBoxes];
+
+      if (currentIndex + 1 >= pictureBoxes.Count)
+      {
+        throw new InvalidOperationException("All PictureBoxes have been processed.");
+      }
+
+      currentIndexDict[pictureBoxes] = currentIndex + 1;
+      return pictureBoxes[currentIndex + 1];
+    }
+  }
+
+  public static PictureBox TryGetNext(this List<PictureBox> pictureBoxes)
+  {
+    if (pictureBoxes == null)
+    {
+      throw new ArgumentNullException(nameof(pictureBoxes));
+    }
+
+    if (pictureBoxes.Count == 0)
+    {
+      throw new InvalidOperationException("The PictureBox list is empty.");
+    }
+
+    lock (lockObject)
+    {
+      if (!currentIndexDict.ContainsKey(pictureBoxes))
+      {
+        currentIndexDict[pictureBoxes] = -1;
+      }
+
+      currentIndexDict[pictureBoxes] = (currentIndexDict[pictureBoxes] + 1) % pictureBoxes.Count;
+      return pictureBoxes[currentIndexDict[pictureBoxes]];
+    }
   }
 
   public static Bitmap GetBitmap(this IntPtr intPtr)
@@ -187,6 +234,5 @@ public static class ImageTools
     WindowsRuntimes.DeleteDC(hdcMemDC);
     SystemRuntimes.ReleaseDC(intPtr, hdcWindow);
     return bmp;
-
   }
 }

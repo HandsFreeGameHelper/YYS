@@ -1,9 +1,11 @@
-﻿using static ScreenCaptureApp.Utils.SystemRuntimes;
+﻿using NLog;
+using static ScreenCaptureApp.Utils.SystemRuntimes;
 
 namespace ScreenCaptureApp.Utils;
 
 public static class MouseEventTools
 {
+  private static Logger logger = LoggerHelper.GetLogger();
   public static void MoveAndClick(this Random random, Point eventPoint, RECT windowRect, int clickTimes,int randomPointCount = 3)
   {
     Point mousePosition = Cursor.Position;
@@ -25,7 +27,7 @@ public static class MouseEventTools
       PressAndHoldMouseLeftButton(random.Next(100, 150));
     }
     currentPoint = Cursor.Position;
-    Console.WriteLine(@$"鼠标双击({mousePosition.X},{mousePosition.Y})({currentPoint.X},{currentPoint.Y})");
+    logger.Logs(LogLevel.Info, @$"鼠标双击({mousePosition.X},{mousePosition.Y})({currentPoint.X},{currentPoint.Y})");
   }
 
   /// <summary>
@@ -156,5 +158,6 @@ public static class MouseEventTools
     int WHEEL_DELTA = -120 * 6;
     mouse_event(MOUSEEVENTF_WHEEL, 0, 0, WHEEL_DELTA, 0);
     Thread.Sleep(100);
+    logger.Logs(LogLevel.Info, @$"鼠标滚动");
   }
 }

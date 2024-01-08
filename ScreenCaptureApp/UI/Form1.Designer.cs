@@ -86,7 +86,7 @@ namespace ScreenCaptureApp.UI
       // 
       // button1
       // 
-      button1.Location = new Point(731, 335);
+      button1.Location = new Point(441, 335);
       button1.Name = "button1";
       button1.Size = new Size(75, 23);
       button1.TabIndex = 0;
@@ -96,7 +96,7 @@ namespace ScreenCaptureApp.UI
       // 
       // button2
       // 
-      button2.Location = new Point(849, 335);
+      button2.Location = new Point(620, 335);
       button2.Name = "button2";
       button2.Size = new Size(75, 23);
       button2.TabIndex = 1;
@@ -122,7 +122,7 @@ namespace ScreenCaptureApp.UI
       // 
       // richTextBox1
       // 
-      richTextBox1.Location = new Point(350, 54);
+      richTextBox1.Location = new Point(441, 6);
       richTextBox1.Name = "richTextBox1";
       richTextBox1.Size = new Size(254, 292);
       richTextBox1.TabIndex = 3;
@@ -130,7 +130,7 @@ namespace ScreenCaptureApp.UI
       // 
       // button3
       // 
-      button3.Location = new Point(419, 357);
+      button3.Location = new Point(527, 304);
       button3.Name = "button3";
       button3.Size = new Size(75, 23);
       button3.TabIndex = 4;
@@ -385,7 +385,9 @@ namespace ScreenCaptureApp.UI
       // tabPage1
       // 
       tabPage1.Controls.Add(label16);
+      tabPage1.Controls.Add(button3);
       tabPage1.Controls.Add(button2);
+      tabPage1.Controls.Add(richTextBox1);
       tabPage1.Controls.Add(button1);
       tabPage1.Controls.Add(label10);
       tabPage1.Controls.Add(label9);
@@ -443,9 +445,7 @@ namespace ScreenCaptureApp.UI
       // tabPage3
       // 
       tabPage3.Controls.Add(label11);
-      tabPage3.Controls.Add(button3);
       tabPage3.Controls.Add(groupBox1);
-      tabPage3.Controls.Add(richTextBox1);
       tabPage3.Location = new Point(4, 26);
       tabPage3.Name = "tabPage3";
       tabPage3.Padding = new Padding(3);
@@ -458,7 +458,7 @@ namespace ScreenCaptureApp.UI
       // 
       AutoScaleDimensions = new SizeF(7F, 17F);
       AutoScaleMode = AutoScaleMode.Font;
-      ClientSize = new Size(1034, 436);
+      ClientSize = new Size(1036, 438);
       Controls.Add(YYS);
       FormBorderStyle = FormBorderStyle.Fixed3D;
       MaximizeBox = false;

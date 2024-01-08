@@ -1,7 +1,11 @@
+using NLog.Config;
+using NLog;
 using ScreenCaptureApp.UI;
+using ScreenCaptureApp.Utils;
+
 namespace ScreenCaptureApp
 {
-  internal static class Program
+  public static class Program
   {
     /// <summary>
     ///  The main entry point for the application.

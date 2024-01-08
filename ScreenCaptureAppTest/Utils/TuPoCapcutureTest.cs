@@ -12,7 +12,7 @@ internal class TuPoCapcutureTest
   {
     WindowsFilter.GetWindows();
     var targetHWnds = WindowsFilter.WindowHandles;
-    ImageTools.RestImages(targetHWnds.First().GetBitmap(), TuPo.NOCHANCE, TuPo.NOCHANCE, false);
+    ImageTools.RestImages(targetHWnds.First().GetBitmap(), ImagesConfig.FAILED, ImagesConfig.FAILED, false);
   }
   [Test]
   public void Test2() 
@@ -52,5 +52,18 @@ internal class TuPoCapcutureTest
       var res20 =  ImageTools.AreBitmapsEqual(bmp9, bmp10);
     }
     catch { }
+  }
+  [Test]
+  public void Test3() 
+  {
+    var a = new List<IntPtr>();
+
+    var res = a.Where(x => x == new IntPtr(1)).FirstOrDefault() == IntPtr.Zero;
+  }
+  [Test]
+  public void Test4()
+  {
+    var a = DateTime.Now.ToString(@"yyyy_MM_dd_HH_mm_ss");
+
   }
 }
