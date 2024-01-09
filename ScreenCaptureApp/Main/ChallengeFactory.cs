@@ -7,7 +7,7 @@ namespace ScreenCaptureApp.Main;
 
 public static class ChallengeFactory
 {
-  private static Logger logger = LoggerHelper.GetLogger();
+  private static Logger logger = LoggerHelper.DefualtLogger;
   private static List<IntPtr> needLogs= new List<IntPtr>();
   private static object MoveLock = new object();
 

@@ -1,5 +1,7 @@
-﻿using NLog;
+﻿using Newtonsoft.Json;
+using NLog;
 using NLog.Config;
+using System.Data;
 using System.IO.Compression;
 using System.Net;
 using System.Text;
@@ -11,11 +13,13 @@ public static class LoggerHelper
 {
   private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-  public static Logger GetLogger() 
+  static LoggerHelper() 
   {
-    LogManager.Configuration = new XmlLoggingConfiguration(@"./nlog.config");
     InitProperties();
-    return logger; 
+  }
+  public static Logger DefualtLogger
+  {
+    get { return logger; } 
   }
 
   public static void Logs(this Logger logger, LogLevel logLevel, string message) 
@@ -37,7 +41,6 @@ public static class LoggerHelper
 
   public static async void OnPostUpLoad() 
   {
-    LogManager.Setup();
     // 指定目录路径
     string directoryPath = @"Logs";
 
@@ -52,7 +55,6 @@ public static class LoggerHelper
         // Send base64 content to the server asynchronously
         await SendToServerAsync(base64Content, filePath);
       }
-    
   }
 
   private async static Task<bool> SendToServerAsync(string base64Content,string filePath)
@@ -60,7 +62,8 @@ public static class LoggerHelper
     try
     {
       string url = Contains.LOGGINGSERVICE;
-      string jsonData = $"{{ \"Base64Content\": \"{base64Content}\" }}";
+      var model = new OnPostUpLoadModel { Base64Content = base64Content };
+      string jsonData = JsonConvert.SerializeObject(new[] { model });
 
       using (HttpClient client = new HttpClient())
       {
@@ -94,14 +97,14 @@ public static class LoggerHelper
   {
     logger.Properties["request-ipv6"] = NetTools.GetLocalIPv6Address();
     ZipLog();
-    //OnPostUpLoad();
+    OnPostUpLoad();
   }
 
   private static void CompressLogFileToZip(string filePath)
   {
     try
     {
-      LogManager.Shutdown();
+      logger.ShutDown();
 
       string zipFilePath =$@"{filePath}_{DateTime.Now.ToString(@"yyyy_MM_dd_HH_mm_ss")}.zip";
 
@@ -119,18 +122,45 @@ public static class LoggerHelper
 
       // 删除原始的非压缩日志文件
       File.Delete(filePath);
-      LogManager.Setup();
+      EnableDefaultLogger();
       logger.Info($"日志文件已压缩至 {zipFilePath}");
     }
     catch (Exception e)
     {
-      LogManager.Setup();
       logger.Error(e.ToString());
     }
     finally 
     {
+      EnableDefaultLogger();
       LogManager.Flush();
-      LogManager.Shutdown();
     }
+  }
+
+  private static void EnableLogger(this Logger logger,LogLevel logLevel)
+  {
+    var rules = LogManager.Configuration.LoggingRules;
+
+    // 遍历规则，找到与传入的 Logger 相关的规则并更改其日志级别
+    foreach (LoggingRule rule in rules)
+    {
+      if (rule.LoggerNamePattern == logger.Name)
+      {
+        rule.EnableLoggingForLevel(logLevel);
+        break;
+      }
+    }
+  }
+  private static void ShutDown(this Logger logger) 
+  {
+    logger.Factory.Shutdown();
+  }
+  private static void EnableDefaultLogger() 
+  {
+    LogManager.Configuration = new XmlLoggingConfiguration(@"./nlog.config");
+  }
+
+  private class OnPostUpLoadModel
+  {
+    public string? Base64Content { get; set; }
   }
 }

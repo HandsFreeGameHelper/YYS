@@ -5,7 +5,7 @@ public static class Contains
   public static string NONE = "无";
   public static string EMPTY = string.Empty;
   public static string DEFAULT = "default";
-  public static string LOGGINGSERVICE = @"http://bxy.bio/logging";
+  public static string LOGGINGSERVICE = @"http://192.168.1.32:5176/api/OnPostUpLoad";
   public static readonly int RegionWidth = 1152;
   public static readonly int RegionHeight = 679;
   public static class EnergyValue

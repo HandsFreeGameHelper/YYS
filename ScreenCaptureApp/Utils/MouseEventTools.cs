@@ -5,7 +5,7 @@ namespace ScreenCaptureApp.Utils;
 
 public static class MouseEventTools
 {
-  private static Logger logger = LoggerHelper.GetLogger();
+  private static Logger logger = LoggerHelper.DefualtLogger;
   public static void MoveAndClick(this Random random, Point eventPoint, RECT windowRect, int clickTimes,int randomPointCount = 3)
   {
     Point mousePosition = Cursor.Position;

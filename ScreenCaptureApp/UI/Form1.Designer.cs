@@ -86,7 +86,7 @@ namespace ScreenCaptureApp.UI
       // 
       // button1
       // 
-      button1.Location = new Point(441, 335);
+      button1.Location = new Point(487, 332);
       button1.Name = "button1";
       button1.Size = new Size(75, 23);
       button1.TabIndex = 0;
@@ -96,7 +96,7 @@ namespace ScreenCaptureApp.UI
       // 
       // button2
       // 
-      button2.Location = new Point(620, 335);
+      button2.Location = new Point(666, 335);
       button2.Name = "button2";
       button2.Size = new Size(75, 23);
       button2.TabIndex = 1;
@@ -106,9 +106,9 @@ namespace ScreenCaptureApp.UI
       // 
       // pictureBox1
       // 
-      pictureBox1.Location = new Point(495, 50);
+      pictureBox1.Location = new Point(380, 50);
       pictureBox1.Name = "pictureBox1";
-      pictureBox1.Size = new Size(483, 276);
+      pictureBox1.Size = new Size(354, 209);
       pictureBox1.TabIndex = 2;
       pictureBox1.TabStop = false;
       // 
@@ -116,13 +116,13 @@ namespace ScreenCaptureApp.UI
       // 
       pictureBox2.Location = new Point(6, 50);
       pictureBox2.Name = "pictureBox2";
-      pictureBox2.Size = new Size(483, 276);
+      pictureBox2.Size = new Size(361, 209);
       pictureBox2.TabIndex = 22;
       pictureBox2.TabStop = false;
       // 
       // richTextBox1
       // 
-      richTextBox1.Location = new Point(441, 6);
+      richTextBox1.Location = new Point(487, 6);
       richTextBox1.Name = "richTextBox1";
       richTextBox1.Size = new Size(254, 292);
       richTextBox1.TabIndex = 3;
@@ -130,7 +130,7 @@ namespace ScreenCaptureApp.UI
       // 
       // button3
       // 
-      button3.Location = new Point(527, 304);
+      button3.Location = new Point(584, 304);
       button3.Name = "button3";
       button3.Size = new Size(75, 23);
       button3.TabIndex = 4;
@@ -379,7 +379,7 @@ namespace ScreenCaptureApp.UI
       YYS.Location = new Point(12, 12);
       YYS.Name = "YYS";
       YYS.SelectedIndex = 0;
-      YYS.Size = new Size(1013, 418);
+      YYS.Size = new Size(781, 409);
       YYS.TabIndex = 23;
       // 
       // tabPage1
@@ -407,7 +407,7 @@ namespace ScreenCaptureApp.UI
       tabPage1.Location = new Point(4, 26);
       tabPage1.Name = "tabPage1";
       tabPage1.Padding = new Padding(3);
-      tabPage1.Size = new Size(1005, 388);
+      tabPage1.Size = new Size(773, 379);
       tabPage1.TabIndex = 0;
       tabPage1.Text = "设定";
       tabPage1.UseVisualStyleBackColor = true;
@@ -426,7 +426,7 @@ namespace ScreenCaptureApp.UI
       tabPage2.Location = new Point(4, 26);
       tabPage2.Name = "tabPage2";
       tabPage2.Padding = new Padding(3);
-      tabPage2.Size = new Size(1005, 388);
+      tabPage2.Size = new Size(773, 379);
       tabPage2.TabIndex = 1;
       tabPage2.Text = "开始";
       tabPage2.UseVisualStyleBackColor = true;
@@ -435,9 +435,9 @@ namespace ScreenCaptureApp.UI
       // 
       groupBox2.Controls.Add(pictureBox1);
       groupBox2.Controls.Add(pictureBox2);
-      groupBox2.Location = new Point(8, 27);
+      groupBox2.Location = new Point(14, 25);
       groupBox2.Name = "groupBox2";
-      groupBox2.Size = new Size(986, 335);
+      groupBox2.Size = new Size(744, 298);
       groupBox2.TabIndex = 23;
       groupBox2.TabStop = false;
       groupBox2.Text = "画面";
@@ -449,7 +449,7 @@ namespace ScreenCaptureApp.UI
       tabPage3.Location = new Point(4, 26);
       tabPage3.Name = "tabPage3";
       tabPage3.Padding = new Padding(3);
-      tabPage3.Size = new Size(1005, 388);
+      tabPage3.Size = new Size(773, 379);
       tabPage3.TabIndex = 2;
       tabPage3.Text = "校准";
       tabPage3.UseVisualStyleBackColor = true;
@@ -458,7 +458,7 @@ namespace ScreenCaptureApp.UI
       // 
       AutoScaleDimensions = new SizeF(7F, 17F);
       AutoScaleMode = AutoScaleMode.Font;
-      ClientSize = new Size(1036, 438);
+      ClientSize = new Size(808, 428);
       Controls.Add(YYS);
       FormBorderStyle = FormBorderStyle.Fixed3D;
       MaximizeBox = false;

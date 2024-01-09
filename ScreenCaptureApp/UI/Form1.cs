@@ -8,7 +8,7 @@ namespace ScreenCaptureApp.UI
 {
   public partial class Form1 : Form
   {
-    private Logger logger = LoggerHelper.GetLogger();
+    private Logger logger = LoggerHelper.DefualtLogger;
     private int MaxCount = 0;
     private int RCount = 0;
     private Random Random = new Random();
@@ -179,8 +179,8 @@ namespace ScreenCaptureApp.UI
 
             using (Bitmap bmp = Bitmap.FromHbitmap(hBitmap))
             {
-              int newWidth = (int)(bmp.Width * 0.5 * 0.88);
-              int newHeight = (int)(bmp.Height * 0.5 * 0.88);
+              int newWidth = (int)(bmp.Width * 0.5 * 0.68);
+              int newHeight = (int)(bmp.Height * 0.5 * 0.68);
               Bitmap scaledBmp = new Bitmap(bmp, newWidth, newHeight);
 
               WindowsRuntimes.SelectObject(hdcMemDC, hOld);
