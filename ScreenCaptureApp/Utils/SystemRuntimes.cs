@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Text;
 
 namespace ScreenCaptureApp.Utils;
 
@@ -35,6 +36,16 @@ public static class SystemRuntimes
     public int Right;
     public int Bottom;
   }
+
+  [DllImport("user32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+  public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+  [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+  public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
   [DllImport("user32.dll")]
   public static extern IntPtr GetDC(IntPtr hwnd);
   [DllImport("user32.dll")]

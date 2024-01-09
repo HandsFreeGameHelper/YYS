@@ -1,6 +1,9 @@
 ﻿using NUnit.Framework;
 using ScreenCaptureApp.Utils;
+using System;
 using System.Drawing;
+using System.Windows.Forms;
+using static ScreenCaptureApp.Utils.Contains;
 using static ScreenCaptureApp.Utils.SystemRuntimes;
 
 namespace ScreenCaptureAppTest.Utils;
@@ -25,5 +28,19 @@ public class MouseEventToolsTest
     {
       random.MoveAndClick(eventPoint,windowRect,randomPointCount);
     }
+  }
+  [Test]
+  public void ScrollWheelDown() 
+  {
+    var random = new Random();
+    WindowsFilter.GetWindows();
+    var targetHWnds = WindowsFilter.WindowHandles;
+    SystemRuntimes.RECT windowRect;
+    SystemRuntimes.GetWindowRect(targetHWnds.First(), out windowRect);
+    //random.MoveAndClick(new Point(windowRect.Left + TuPo.ResetMarginLeft, windowRect.Top + TuPo.ResetMarginTop), windowRect, 2);
+    Point mousePosition = Cursor.Position;
+    MouseEventTools.MoveTo(mousePosition, new Point(windowRect.Left + TuPo.ResetMarginLeft, windowRect.Top + TuPo.ResetMarginTop), 2);
+    Thread.Sleep(1000);
+    MouseEventTools.ScrollWheelDown();
   }
 }

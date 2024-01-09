@@ -1,4 +1,5 @@
-﻿using static ScreenCaptureApp.Utils.SystemRuntimes;
+﻿using static ScreenCaptureApp.Utils.Contains;
+using static ScreenCaptureApp.Utils.SystemRuntimes;
 
 namespace ScreenCaptureApp.Utils;
 
@@ -18,10 +19,10 @@ public static class CalculateTools
   {
     return dir ? currentNum < borderNum : currentNum > borderNum;
   }
-  public static bool IsInRange(this Point currentPoint, RECT windowRect, Point eventPoint, out (bool,bool) xOrY )
+  public static bool IsInRange(this Point currentPoint, RECT windowRect, Point eventPoint, out (bool, bool) xOrY)
   {
-    xOrY.Item1 = Math.Abs(currentPoint.X - eventPoint.X) >= 10 ;
-    xOrY.Item2 = Math.Abs(currentPoint.Y - eventPoint.Y) >= 10 ;
+    xOrY.Item1 = Math.Abs(currentPoint.X - eventPoint.X) >= 10;
+    xOrY.Item2 = Math.Abs(currentPoint.Y - eventPoint.Y) >= 10;
 
     return currentPoint.X >= windowRect.Left &&
            currentPoint.X <= windowRect.Right &&
@@ -43,6 +44,16 @@ public static class CalculateTools
                      start_y > end_y ?
                       random.Next(end_y, start_y) :
                       random.Next(start_y, end_y)); ;
+  }
+
+  public static Point GetRandomPoint(this Random random, Point point, RECT windowRect, int width, int height)
+  {
+    var temp = windowRect.GetWidthAndHeight();
+    return random.GetRandomPoint(
+          windowRect.Left + point.X + (int)(temp.Item1 * 15 * 1.0 / RegionWidth),
+          windowRect.Left + point.X + width,
+          windowRect.Top + point.Y + (int)(temp.Item2 * 60 * 1.0 / RegionHeight),
+          windowRect.Top + point.Y + height + (int)(temp.Item2 * 20 * 1.0 / RegionHeight));
   }
 
   public static (int, int) GetWidthAndHeight(this RECT windowRect)
