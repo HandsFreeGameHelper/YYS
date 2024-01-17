@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NLog;
 using NLog.Config;
-using System.Data;
 using System.IO.Compression;
-using System.Net;
 using System.Text;
 
 namespace ScreenCaptureApp.Utils;
@@ -13,22 +11,22 @@ public static class LoggerHelper
 {
   private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-  static LoggerHelper() 
+  static LoggerHelper()
   {
-    InitProperties();
+    logger.Properties["request-ipv6"] = NetTools.GetLocalIPv6Address();
   }
   public static Logger DefualtLogger
   {
-    get { return logger; } 
+    get { return logger; }
   }
 
-  public static void Logs(this Logger logger, LogLevel logLevel, string message) 
+  public static void Logs(this Logger logger, LogLevel logLevel, string message)
   {
     logger.Log(logLevel, message);
     Console.WriteLine(message);
   }
 
-  public static void ZipLog() 
+  public static void ZipLog()
   {
     string logDirectory = LogManager.Configuration.Variables["logDirectory"].ToString()!;
     string logFilePath = Path.Combine(logDirectory, "sqlLog.sql");
@@ -39,7 +37,7 @@ public static class LoggerHelper
     CompressLogFileToZip(logFilePath);
   }
 
-  public static async void OnPostUpLoad() 
+  public static async void OnPostUpLoad()
   {
     // 指定目录路径
     string directoryPath = @"Logs";
@@ -48,16 +46,16 @@ public static class LoggerHelper
     string[] zipFiles = Directory.GetFiles(directoryPath, "*.zip");
 
     foreach (string filePath in zipFiles)
-      {
-        byte[] fileBytes = File.ReadAllBytes(filePath);
-        string base64Content = Convert.ToBase64String(fileBytes);
+    {
+      byte[] fileBytes = File.ReadAllBytes(filePath);
+      string base64Content = Convert.ToBase64String(fileBytes);
 
-        // Send base64 content to the server asynchronously
-        await SendToServerAsync(base64Content, filePath);
-      }
+      // Send base64 content to the server asynchronously
+      await SendToServerAsync(base64Content, filePath);
+    }
   }
 
-  private async static Task<bool> SendToServerAsync(string base64Content,string filePath)
+  private async static Task<bool> SendToServerAsync(string base64Content, string filePath)
   {
     try
     {
@@ -93,9 +91,8 @@ public static class LoggerHelper
     }
     return false;
   }
-  private static void InitProperties()
+  public static void ZipAndUploadLogs()
   {
-    logger.Properties["request-ipv6"] = NetTools.GetLocalIPv6Address();
     ZipLog();
     OnPostUpLoad();
   }
@@ -106,7 +103,7 @@ public static class LoggerHelper
     {
       logger.ShutDown();
 
-      string zipFilePath =$@"{filePath}_{DateTime.Now.ToString(@"yyyy_MM_dd_HH_mm_ss")}.zip";
+      string zipFilePath = $@"{filePath}_{DateTime.Now.ToString(@"yyyy_MM_dd_HH_mm_ss")}.zip";
 
       using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
       using (FileStream zipFileStream = new FileStream(zipFilePath, FileMode.Create, FileAccess.Write))
@@ -122,21 +119,19 @@ public static class LoggerHelper
 
       // 删除原始的非压缩日志文件
       File.Delete(filePath);
-      EnableDefaultLogger();
-      logger.Info($"日志文件已压缩至 {zipFilePath}");
     }
     catch (Exception e)
     {
       logger.Error(e.ToString());
     }
-    finally 
+    finally
     {
       EnableDefaultLogger();
       LogManager.Flush();
     }
   }
 
-  private static void EnableLogger(this Logger logger,LogLevel logLevel)
+  private static void EnableLogger(this Logger logger, LogLevel logLevel)
   {
     var rules = LogManager.Configuration.LoggingRules;
 
@@ -150,11 +145,11 @@ public static class LoggerHelper
       }
     }
   }
-  private static void ShutDown(this Logger logger) 
+  private static void ShutDown(this Logger logger)
   {
     logger.Factory.Shutdown();
   }
-  private static void EnableDefaultLogger() 
+  private static void EnableDefaultLogger()
   {
     LogManager.Configuration = new XmlLoggingConfiguration(@"./nlog.config");
   }

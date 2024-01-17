@@ -1,7 +1,4 @@
-using NLog.Config;
-using NLog;
 using ScreenCaptureApp.UI;
-using ScreenCaptureApp.Utils;
 
 namespace ScreenCaptureApp
 {

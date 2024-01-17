@@ -8,11 +8,16 @@ public partial class Form1 : Form
 {
   private void button1_Click(object sender, EventArgs e)
   {
+    this.isRequestToReset = false;
     logger.Logs(NLog.LogLevel.Info, $@"开始");
-    this.isRequestToStop = false;
     this.pictureBoxes.ForEach(x =>
     {
       x.Show();
+    });
+    this.Pics.ForEach(x =>
+    {
+      x.Value.IsRequestToStop = false;
+      x.Value.IsLocked = false;
     });
   }
 
@@ -93,7 +98,6 @@ public partial class Form1 : Form
     this.isRestModel = true;
     this.RestType = this.comboBox3.SelectedItem.ToString();
     this.RestModel = this.comboBox4.SelectedItem.ToString();
-    this.isRequestToStop = false;
   }
 
   private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -138,10 +142,14 @@ public partial class Form1 : Form
       x.Image = x.Image.ReMoveImage();
       x.Hide();
     });
-
+    this.Pics.ForEach(x =>
+    {
+      x.Value.IsRequestToStop = true;
+    });
+    this.isRequestToReset = false;
     this.label10.ForeColor = Color.Red;
     this.label10.Text = @"挑战停止";
     logger.Logs(NLog.LogLevel.Info, $@"停止");
-    this.isRequestToStop = true;
+    LoggerHelper.ZipAndUploadLogs();
   }
 }

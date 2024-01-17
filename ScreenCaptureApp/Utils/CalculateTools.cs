@@ -63,4 +63,14 @@ public static class CalculateTools
     res.Item2 = windowRect.Bottom - windowRect.Top;
     return res;
   }
+
+  public static int Multiply(this Bitmap scaledBmp, double rate ,bool isXOrWidth)
+  {
+    return isXOrWidth ? (int)(scaledBmp.Width * rate) : (int)(scaledBmp.Height * rate);
+  }
+
+  public static Point GetElementPoint(this Bitmap scaledBmp, double ratex, double ratey) 
+  {
+    return new Point(scaledBmp.Multiply(ratex, true), scaledBmp.Multiply(ratey, false));
+  }
 }

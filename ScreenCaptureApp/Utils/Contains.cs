@@ -5,29 +5,16 @@ public static class Contains
   public static string NONE = "无";
   public static string EMPTY = string.Empty;
   public static string DEFAULT = "default";
-  public static string LOGGINGSERVICE = @"http://192.168.1.32:5176/api/OnPostUpLoad";
+  public static string LOGGINGSERVICE = @"http://localhost:5176/api/OnPostUpLoad";
   public static readonly int RegionWidth = 1152;
   public static readonly int RegionHeight = 679;
-  public static class EnergyValue
-  {
-    public static readonly string SIX = "6";
-    public static readonly string NINE = "9";
-    public static readonly string TWELVE = "12";
-    public static readonly string EIGHTEEN = "18";
-    public static readonly string TWENTYFOUR = "24";
-    public static readonly string THIRTY = "30";
-    public static readonly string TAN = "tan";
-    public static readonly string CHEN = "chen";
-    public static readonly string CHI = "chi";
-    public static readonly string YULIN = "yulin";
-    public static readonly string JUEXING = "juexing";
-    public static readonly string YUHUN = "yuhun";
-  }
+
+  #region CommenConfig
 
   public static class ChallengeType
   {
     public static readonly string NOMAL = "普通副本";
-    public static readonly string ACTIVITIES = "活动副本";
+    public static readonly string ACTIVITIES = "活动爬塔";
     public static readonly string TUPO = "突破";
   }
 
@@ -49,6 +36,11 @@ public static class Contains
     public static readonly string YONGSHEN_3_4 = "永生之海3-4层";
     public static readonly string GEREN = "个人";
     public static readonly string YINYANGLIAO = "阴阳寮";
+    public static readonly string GOLDENNIGHTTIRP = "黄金夜航-藏金阁楼";
+    public static readonly string GOLDENNIGHTTIRP_1 = "黄金夜航-藏金阁楼-活动室";
+    public static readonly string GOLDENNIGHTTIRP_2 = "黄金夜航-藏金阁楼-战术厅";
+    public static readonly string GOLDENNIGHTTIRP_3 = "黄金夜航-藏金阁楼-船员室";
+    public static readonly string GOLDENNIGHTTIRP_4 = "黄金夜航-藏金阁楼-黄金阁";
   }
 
   public static class ImagesConfig
@@ -95,6 +87,22 @@ public static class Contains
     public static readonly double EndPointXRightRate = 11 / 1152.0;
     public static readonly double EndPointYTopRate = 324 / 679.0;
     public static readonly double EndPointYBottomRate = 11 / 679.0;
+    public static readonly int EndSizeWidth = 80;
+    public static readonly int EndSizeHeight = 80;
+    public static readonly int EndSizeMarginLeft = 568;
+    public static readonly int EndSizeMarginTop = 474;
+    public static readonly double EndSizeWidthRate = EndSizeWidth * 1.0 / RegionWidth;
+    public static readonly double EndSizeHeightRate = EndSizeHeight * 1.0 / RegionHeight;
+    public static readonly double EndSizeMarginLeftRate = EndSizeMarginLeft * 1.0 / RegionWidth;
+    public static readonly double EndSizeMarginTopRate = EndSizeMarginTop * 1.0 / RegionHeight;
+    public static readonly int EndClickSizeWidth = 190;
+    public static readonly int EndClickSizeHeight = 150;
+    public static readonly int EndClickSizeMarginLeft = 830;
+    public static readonly int EndClickSizeMarginTop = 481;
+    public static readonly double EndClickSizeWidthRate = EndClickSizeWidth * 1.0 / RegionWidth;
+    public static readonly double EndClickSizeHeightRate = EndClickSizeHeight * 1.0 / RegionHeight;
+    public static readonly double EndClickSizeMarginLeftRate = EndClickSizeMarginLeft * 1.0 / RegionWidth;
+    public static readonly double EndClickSizeMarginTopRate = EndClickSizeMarginTop * 1.0 / RegionHeight;
     public static readonly int FAILEDSizeWidth = 60;
     public static readonly int FAILEDSizeHeight = 60;
     public static readonly int FAILEDSizeMarginLeft = 360;
@@ -111,7 +119,48 @@ public static class Contains
     public static readonly double VictorySizeHeightRate = VictorySizeHeight * 1.0 / RegionHeight;
     public static readonly double VictorySizeMarginLeftRate = VictorySizeMarginLeft * 1.0 / RegionWidth;
     public static readonly double VictorySizeMarginTopRate = VictorySizeMarginTop * 1.0 / RegionHeight;
+  }
 
+  public static class EventImagePath
+  {
+    public static readonly string TuPo_YinYangLiaoUnSelectedPath = $@"./Resource/TuPo/tupo_yinyangliao_unselected.png";
+    public static readonly string TuPo_YinYangLiaoSelectedPath = $@"./Resource/TuPo/tupo_yinyangliao_selected.png";
+    public static readonly string TuPo_GeRenUnSelectedPath = $@"./Resource/TuPo/tupo_geren_unselected.png";
+    public static readonly string TuPo_GeRenSelectedPath = $@"./Resource/TuPo/tupo_geren_selected.png";
+    public static readonly string TuPo_UnTuPo = @"./Resource/TuPo/tupo_untupo.png";
+    public static readonly string TuPo_Attack = @"./Resource/TuPo/tupo_attack.png";
+    public static readonly string End = $@"./Resource/End/end.png";
+    public static readonly string Failed = $@"./Resource/End/failed.png";
+    public static readonly string Victory = $@"./Resource/End/victory.png";
+    public static readonly string NoChance = @"./Resource/TuPo/tupo_nochance.png";
+
+    public static class GoldenNightTripImagePath
+    {
+      public static readonly string HuodongshiPath = $@"./Resource/Active/240110/GoldenNightTrip/huodongshi_unselected.png";
+      public static readonly string ZhanshutingPath = $@"./Resource/Active/240110/GoldenNightTrip/zhanshuting_unselected.png";
+      public static readonly string ChuanyuanshiPath = $@"./Resource/Active/240110/GoldenNightTrip/chuanyuanshi_unselected.png";
+      public static readonly string HuangjingePath = $@"./Resource/Active/240110/GoldenNightTrip/huangjinge_unselected.png";
+      public static readonly string ChallengePath = $@"./Resource/Active/240110/GoldenNightTrip/challenge.png";
+    }
+  }
+  #endregion
+
+  #region Other
+
+  public static class EnergyValue
+  {
+    public static readonly string SIX = "6";
+    public static readonly string NINE = "9";
+    public static readonly string TWELVE = "12";
+    public static readonly string EIGHTEEN = "18";
+    public static readonly string TWENTYFOUR = "24";
+    public static readonly string THIRTY = "30";
+    public static readonly string TAN = "tan";
+    public static readonly string CHEN = "chen";
+    public static readonly string CHI = "chi";
+    public static readonly string YULIN = "yulin";
+    public static readonly string JUEXING = "juexing";
+    public static readonly string YUHUN = "yuhun";
   }
 
   public static class TuPo 
@@ -209,17 +258,41 @@ public static class Contains
     public static readonly double NoChanceMarginTopRate = NoChanceMarginTop * 1.0 / RegionHeight;
   }
 
-  public static class EventImagePath 
+  public static class GoldenNightTrip 
   {
-    public static readonly string TuPo_YinYangLiaoUnSelectedPath = $@"./Resource/TuPo/tupo_yinyangliao_unselected.png";
-    public static readonly string TuPo_YinYangLiaoSelectedPath = $@"./Resource/TuPo/tupo_yinyangliao_selected.png";
-    public static readonly string TuPo_GeRenUnSelectedPath = $@"./Resource/TuPo/tupo_geren_unselected.png";
-    public static readonly string TuPo_GeRenSelectedPath = $@"./Resource/TuPo/tupo_geren_selected.png";
-    public static readonly string TuPo_UnTuPo = @"./Resource/TuPo/tupo_untupo.png";
-    public static readonly string TuPo_Attack = @"./Resource/TuPo/tupo_attack.png";
-    public static readonly string End = $@"./Resource/End/end.png";
-    public static readonly string Failed = $@"./Resource/End/failed.png";
-    public static readonly string Victory = $@"./Resource/End/victory.png";
-    public static readonly string NoChance = @"./Resource/TuPo/tupo_nochance.png";
+    public static readonly string HUODONGSHI = "活动室";
+    public static readonly string HUODONGSHI_TYPE = "huodongshi";
+    public static readonly string ZHANSHUTING = "战术厅";
+    public static readonly string ZHANSHUTINGI_TYPE = "zhanshuting";
+    public static readonly string CHUANYUANSHI = "船员室";
+    public static readonly string CHUANYUANSHII_TYPE = "chuanyuanshi";
+    public static readonly string HUANGJINGE = "黄金阁";
+    public static readonly string HUANGJINGEI_TYPE = "huangjinge";
+    public static readonly string CHALLENGE = "挑战";
+    public static readonly string CHALLENGEI_TYPE = "challenge";
+    public static readonly int SelectionSizeWidth = 172;
+    public static readonly int SelectionSizeHeight = 40;
+    public static readonly int SelectionMarginLeft = 64;
+    public static readonly int HuoDongShiMarginTop = 112;
+    public static readonly int ZhanShuTingMarginTop = HuoDongShiMarginTop + (SelectionSizeHeight + 50) * 1;
+    public static readonly int ChuanYuanShiMarginTop = HuoDongShiMarginTop + (SelectionSizeHeight + 50) * 2;
+    public static readonly int HuangJinGeMarginTop = HuoDongShiMarginTop + (SelectionSizeHeight + 50) * 3;
+    public static readonly double SelectionSizeWidthRate = SelectionSizeWidth * 1.0 / RegionWidth;
+    public static readonly double SelectionSizeHeightRate = SelectionSizeHeight * 1.0 / RegionHeight;
+    public static readonly double SelectionMarginLefttRate = SelectionMarginLeft * 1.0 / RegionWidth;
+    public static readonly double HuoDongShiMarginTopRate = HuoDongShiMarginTop * 1.0 / RegionHeight;
+    public static readonly double ZhanShuTingMarginTopRate = ZhanShuTingMarginTop * 1.0 / RegionHeight;
+    public static readonly double ChuanYuanShiMarginTopRate = ChuanYuanShiMarginTop * 1.0 / RegionHeight;
+    public static readonly double HuangJinGeMarginTopRate = HuangJinGeMarginTop * 1.0 / RegionHeight;
+    public static readonly int ChallengeSizeWidth = 68;
+    public static readonly int ChallengeSizeHeight = 38;
+    public static readonly int ChallengeMarginLeft = 1010;
+    public static readonly int ChallengeMarginTop = 518;
+    public static readonly double ChallengeSizeWidthRate = ChallengeSizeWidth * 1.0 / RegionWidth;
+    public static readonly double ChallengeSizeHeightRate = ChallengeSizeHeight * 1.0 / RegionHeight;
+    public static readonly double ChallengeMarginLeftRate = ChallengeMarginLeft * 1.0 / RegionWidth;
+    public static readonly double ChallengeMarginTopRate = ChallengeMarginTop * 1.0 / RegionHeight;
   }
+
+  #endregion
 }
