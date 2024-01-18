@@ -1,4 +1,4 @@
-﻿using ScreenCaptureApp.Main;
+﻿using ScreenCaptureApp.Main.Models;
 using ScreenCaptureApp.Utils;
 using static ScreenCaptureApp.Utils.Contains;
 
@@ -36,7 +36,7 @@ public partial class Form1 : Form
     this.CType = challengeTypeComboBox.SelectedItem?.ToString() ?? EMPTY;
     var selection = challengeSelectionComboBox.SelectedItem?.ToString();
     var energyValue = "";
-    var judgeRes = ChallengeFactory.TryJudgeChallengeModel(this.CType, selection, out energyValue);
+    var judgeRes = ModelBase.TryJudgeChallengeModel(this.CType, selection, out energyValue);
     this.CEnergyValue = energyValue;
     if (!ChallengeType.TUPO.Equals(this.CType))
     {
@@ -156,12 +156,12 @@ public partial class Form1 : Form
   private void challengeTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
   {
     var selectedItem = challengeTypeComboBox.SelectedItem;
-    AfterChallengeSelectionList = ChallengeSelectionList.Where(x=>x.StartsWith(selectedItem?.ToString() ?? EMPTY)).ToList();
+    AfterChallengeSelectionList = ChallengeSelectionList.Where(x => x.StartsWith(selectedItem?.ToString() ?? EMPTY)).ToList();
     challengeSelectionComboBox.Items.Clear();
     challengeSelectionComboBox.Items.AddRange(AfterChallengeSelectionList.ToArray());
   }
 
-  private void InitComboboxs() 
+  private void InitComboboxs()
   {
     challengeTypeComboBox.Items.AddRange(ChallengeTypeList.ToArray());
     challengeSelectionComboBox.Items.AddRange(ChallengeSelectionList.ToArray());

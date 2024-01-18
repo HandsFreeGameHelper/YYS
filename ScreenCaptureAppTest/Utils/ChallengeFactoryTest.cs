@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
-using ScreenCaptureApp.Main;
+using ScreenCaptureApp.Main.Models.StartModel.TuPoModel;
 using ScreenCaptureApp.Utils;
-using System;
 using static ScreenCaptureApp.Utils.Contains;
 
 namespace ScreenCaptureAppTest.Utils;
@@ -17,6 +16,6 @@ internal class ChallengeFactoryTest
     SystemRuntimes.RECT windowRect;
     SystemRuntimes.GetWindowRect(targetHWnds.First(), out windowRect);
     var bmp = targetHWnds.First().GetBitmap();
-    random.TuPoChallenge(TuPo.YINYANGLIAO, windowRect, bmp,targetHWnds.First());
+    random.TuPoChallenge(TuPo.YINYANGLIAO, windowRect, bmp, targetHWnds.First());
   }
 }
