@@ -13,7 +13,7 @@ public static class Contains
   public static List<string> ChallengeSelectionList = new();
   public static List<string> AfterChallengeSelectionList = new();
 
-  static Contains() 
+  static Contains()
   {
     Init();
   }
@@ -23,7 +23,7 @@ public static class Contains
   public static class ChallengeType
   {
     public static readonly string EMPTY = string.Empty;
-    public static readonly string NOMAL = "普通副本";
+    public static readonly string NORMAL = "普通副本";
     public static readonly string ACTIVITIES = "活动爬塔";
     public static readonly string TUPO = "突破";
   }
@@ -76,8 +76,8 @@ public static class Contains
     public static readonly int RegionStartXSizeTeam = 25 * 2;
     public static readonly int RegionStartYSize = 22 * 2;
     public static readonly double StartXSizeRate = RegionStartXSize * 1.0 / RegionWidth;
-    public static readonly double StartXSizeRateTeam = RegionStartXSizeTeam * 1.0 / RegionWidth ;
-    public static readonly double StartYSizeRate = RegionStartYSize * 1.0 / RegionHeight ;
+    public static readonly double StartXSizeRateTeam = RegionStartXSizeTeam * 1.0 / RegionWidth;
+    public static readonly double StartYSizeRate = RegionStartYSize * 1.0 / RegionHeight;
     public static readonly double StartPointXLeftRate = 154 / 1152.0;
     public static readonly double StartPointXLeftTeamRate = 104 / 1152.0;
     public static readonly double StartPointXRightRate = 82 / 1152.0;
@@ -162,7 +162,7 @@ public static class Contains
     public static readonly string YUHUN = "yuhun";
   }
 
-  public static class TuPo 
+  public static class TuPo
   {
     public static readonly string TUPO = "突破";
     public static readonly string GEREN = "个人";
@@ -172,7 +172,7 @@ public static class Contains
     public static readonly string GEREN_UNSELECTED_TYPE = "geren_unselected";
     public static readonly string YINYANGLIAO = "阴阳寮";
     public static readonly string YINYANGLIAO_SELECTED = "阴阳寮-选中";
-    public static readonly string YINYANGLIAO_UNSELECTED= "阴阳寮-未选中";
+    public static readonly string YINYANGLIAO_UNSELECTED = "阴阳寮-未选中";
     public static readonly string YINYANGLIAO_SELECTED_TYPE = "yinyangliao_selected";
     public static readonly string YINYANGLIAO_UNSELECTED_TYPE = "yinyangliao_unselected";
     public static readonly string UNTUPO = "未挑战";
@@ -257,7 +257,7 @@ public static class Contains
     public static readonly double NoChanceMarginTopRate = NoChanceMarginTop * 1.0 / RegionHeight;
   }
 
-  public static class GoldenNightTrip 
+  public static class GoldenNightTrip
   {
     public static readonly string HUODONGSHI = "活动室";
     public static readonly string HUODONGSHI_TYPE = "huodongshi";
@@ -295,9 +295,9 @@ public static class Contains
 
   #endregion
 
-  private static void Init() 
+  private static void Init()
   {
-    ChallengeTypeList =  ChallengeTypeList.SetStaticValues(typeof(ChallengeType));
+    ChallengeTypeList = ChallengeTypeList.SetStaticValues(typeof(ChallengeType));
     ChallengeSelectionList = ChallengeSelectionList.SetStaticValues(typeof(ChallengeSelection));
     AfterChallengeSelectionList = ChallengeSelectionList;
   }

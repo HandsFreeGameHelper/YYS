@@ -214,7 +214,7 @@ namespace ScreenCaptureApp.UI
       public bool IsLocked { get; set; } = false;
     }
 
-    private void InitializeFormFunction() 
+    private void InitializeFormFunction()
     {
       pictureBoxes.Add(pictureBox1);
       pictureBoxes.Add(pictureBox2);
