@@ -8,12 +8,13 @@ namespace ScreenCaptureApp.Main;
 public static class ChallengeFactory
 {
   private static Logger logger = LoggerHelper.DefualtLogger;
-  private static List<IntPtr> needLogs= new List<IntPtr>();
+  private static List<IntPtr> needLogs = new List<IntPtr>();
   private static object MoveLock = new object();
 
-  public static bool Challenge(this Random random, string type, RECT windowRect, Bitmap scaledBmp, string energyValue, bool isTeam, IntPtr intPtr)
+  public static bool StartChallenge(this Random random, string type, RECT windowRect, Bitmap scaledBmp, string energyValue, bool isTeam, IntPtr intPtr)
   {
     var widthAndHeight = windowRect.GetWidthAndHeight();
+
     if (ChallengeType.NOMAL.Equals(type))
     {
       Point elementPosition_start = isTeam ?
@@ -40,7 +41,7 @@ public static class ChallengeFactory
     }
     else if (ChallengeType.ACTIVITIES.Equals(type))
     {
-      return false;
+      return random.ActitveGoldenNightTrip20240110(energyValue, windowRect, scaledBmp);
     }
     else if (ChallengeType.TUPO.Equals(type))
     {
@@ -48,47 +49,41 @@ public static class ChallengeFactory
     }
     return false;
   }
-  public static bool Challenge(this Random random, string type, RECT windowRect, Bitmap scaledBmp)
+
+  public static bool EndChallenge(this Random random, string type, RECT windowRect, Bitmap scaledBmp)
   {
-    var widthAndHeight = windowRect.GetWidthAndHeight();
-    if (ChallengeType.NOMAL.Equals(type) || ChallengeType.TUPO.Equals(type))
-    {
-      Point elementPosition_end = new Point((int)(scaledBmp.Width * ImagesConfig.EndXRate), (int)(scaledBmp.Height * ImagesConfig.EndYRate));
-      Point elementPosition_failed = new Point((int)(scaledBmp.Width * ImagesConfig.FAILEDSizeMarginLeftRate), (int)(scaledBmp.Height * ImagesConfig.FAILEDSizeMarginTopRate));
-      Point elementPosition_victory = new Point((int)(scaledBmp.Width * ImagesConfig.VictorySizeMarginLeftRate), (int)(scaledBmp.Height * ImagesConfig.VictorySizeMarginTopRate));
-      var endClickPoint = random.GetRandomPoint(
-          windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.EndPointXLeftRate),
-          windowRect.Right - (int)(widthAndHeight.Item1 * ImagesConfig.EndPointXRightRate),
-          windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.EndPointYTopRate),
-          windowRect.Bottom - (int)(widthAndHeight.Item2 * ImagesConfig.EndPointYBottomRate));
-      var failedClickPoint = random.GetRandomPoint(
-        elementPosition_failed,
-        windowRect,
-        (int)(scaledBmp.Width * ImagesConfig.FAILEDSizeWidthRate),
-        (int)(scaledBmp.Height * ImagesConfig.FAILEDSizeHeightRate));
-      var victoryClickPoint = random.GetRandomPoint(
-        elementPosition_failed,
-        windowRect,
-        (int)(scaledBmp.Width * ImagesConfig.VictorySizeWidthRate),
-        (int)(scaledBmp.Height * ImagesConfig.VictorySizeHeightRate));
+    Point elementPosition_end = scaledBmp.GetElementPoint(ImagesConfig.EndSizeMarginLeftRate, ImagesConfig.EndSizeMarginTopRate);
+    Point elementPosition_failed = scaledBmp.GetElementPoint(ImagesConfig.FAILEDSizeMarginLeftRate, ImagesConfig.FAILEDSizeMarginTopRate); 
+    Point elementPosition_victory = scaledBmp.GetElementPoint(ImagesConfig.VictorySizeMarginLeftRate, ImagesConfig.VictorySizeMarginTopRate);
+    var endClickPoint = random.GetRandomPoint(
+       scaledBmp.GetElementPoint(ImagesConfig.EndClickSizeMarginLeftRate, ImagesConfig.EndClickSizeMarginTopRate),
+       windowRect,
+       scaledBmp.Multiply(ImagesConfig.EndClickSizeWidthRate, true),
+       scaledBmp.Multiply(ImagesConfig.EndClickSizeHeightRate, false)
+      );
+    var failedClickPoint = random.GetRandomPoint(
+      elementPosition_failed,
+      windowRect,
+      (int)(scaledBmp.Width * ImagesConfig.FAILEDSizeWidthRate),
+      (int)(scaledBmp.Height * ImagesConfig.FAILEDSizeHeightRate));
+    var victoryClickPoint = random.GetRandomPoint(
+      elementPosition_failed,
+      windowRect,
+      (int)(scaledBmp.Width * ImagesConfig.VictorySizeWidthRate),
+      (int)(scaledBmp.Height * ImagesConfig.VictorySizeHeightRate));
 
-      if (ExcuteEnvent(random, EventImagePath.Victory, scaledBmp, elementPosition_victory, victoryClickPoint, windowRect))
-      {
-        logger.Logs(LogLevel.Info, @"挑战成功，跳转结算画面");
-      };
-
-      if (ExcuteEnvent(random, EventImagePath.End, scaledBmp, elementPosition_end, endClickPoint, windowRect)
-        || ExcuteEnvent(random, EventImagePath.Failed, scaledBmp, elementPosition_failed, failedClickPoint, windowRect))
-      {
-        logger.Logs(LogLevel.Info, @"该轮挑战结束");
-        return true;
-      };
-      return false;
-    }
-    else if (ChallengeType.ACTIVITIES.Equals(type))
+    if (ExcuteEnvent(random, EventImagePath.Victory, scaledBmp, elementPosition_victory, victoryClickPoint, windowRect))
     {
-      return false;
-    }
+      logger.Logs(LogLevel.Info, @"挑战成功，跳转结算画面");
+    };
+
+    if (ExcuteEnvent(random, EventImagePath.End, scaledBmp, elementPosition_end, endClickPoint, windowRect)
+      || ExcuteEnvent(random, EventImagePath.Failed, scaledBmp, elementPosition_failed, failedClickPoint, windowRect))
+    {
+      logger.Logs(LogLevel.Info, @"该轮挑战结束");
+      return true;
+    };
+
     return false;
   }
 
@@ -111,7 +106,7 @@ public static class ChallengeFactory
 
     var startScanY =
       TuPo.GEREN.Equals(type) ?
-      (int)(scaledBmp.Height * TuPo.TuPoPanelMarginTopGeRenRate) - 20 : (int)(scaledBmp.Height * TuPo.TuPoPanelMarginTopYinYangLiaoRate) - 20;
+      (int)(scaledBmp.Height * TuPo.TuPoPanelMarginTopGeRenRate) - (int)(scaledBmp.Height * 1.0 * 20 / RegionHeight) : (int)(scaledBmp.Height * TuPo.TuPoPanelMarginTopYinYangLiaoRate) - (int)(scaledBmp.Height * 1.0 * 20 / RegionHeight);
     var endScanY =
       TuPo.GEREN.Equals(type) ?
       scaledBmp.Height : (int)(scaledBmp.Height * TuPo.YinYangLiaoEndYRate);
@@ -132,7 +127,7 @@ public static class ChallengeFactory
         return false;
       }
       if (needLogItem != IntPtr.Zero)
-      { 
+      {
         needLogs.Remove(intPtr);
       }
     }
@@ -189,6 +184,8 @@ public static class ChallengeFactory
     }
     return false;
   }
+
+
   private static bool ExcuteEnvent(this Random random, string path, Bitmap scaledBmp, Point elementPosition, Point eventPosition, RECT windowRect, int clickTimes = 5)
   {
     using (Bitmap eventBmp = new Bitmap(path))
@@ -205,6 +202,7 @@ public static class ChallengeFactory
       return false;
     }
   }
+
   private static bool ExcuteEnvent(this Random random, Bitmap eventBmp, Bitmap scaledBmp, KeyValuePair<Point, Point> elementAndEventPosition, RECT windowRect, int clickTimes = 5)
   {
     // 在这里进行图像识别和鼠标操作
@@ -220,6 +218,7 @@ public static class ChallengeFactory
     }
     return false;
   }
+
   private static bool ExcuteEnvent(this Random random, Bitmap openTuPoEventBmp, Bitmap attackEventBmp, Bitmap scaledBmp, List<(Point, KeyValuePair<Point, Point>)> elementAndEventPosition, RECT windowRect, int startY, IntPtr intPtr, int clickTimes = 5)
   {
     for (int i = 0; i < elementAndEventPosition.Count; i++)
@@ -289,6 +288,8 @@ public static class ChallengeFactory
       }
     }
   }
+
+
   public static bool TryJudgeChallengeModel(string? type, string? challengeSelection, out string outPut)
   {
     outPut = EMPTY;
@@ -323,7 +324,72 @@ public static class ChallengeFactory
           challengeSelection.Equals(ChallengeSelection.YINYANGLIAO) ?
           TuPo.YINYANGLIAO :
           EMPTY :
+
+     type.Equals(ChallengeType.ACTIVITIES) ?
+          challengeSelection.Equals(ChallengeSelection.GOLDENNIGHTTIRP_1) ?
+          GoldenNightTrip.HUODONGSHI :
+           challengeSelection.Equals(ChallengeSelection.GOLDENNIGHTTIRP_2) ?
+          GoldenNightTrip.ZHANSHUTING :
+           challengeSelection.Equals(ChallengeSelection.GOLDENNIGHTTIRP_3) ?
+          GoldenNightTrip.CHUANYUANSHI :
+           challengeSelection.Equals(ChallengeSelection.GOLDENNIGHTTIRP_4) ?
+          GoldenNightTrip.HUANGJINGE:
+          EMPTY :
+
      EMPTY;
     return true;
+  }
+
+  /// <summary>
+  /// 黄金夜航-藏金阁楼
+  /// </summary>
+  /// <param name="random"></param>
+  /// <param name="type"></param>
+  /// <param name="windowRect"></param>
+  /// <param name="scaledBmp"></param>
+  /// <param name="intPtr"></param>
+  /// <returns></returns>
+  public static bool ActitveGoldenNightTrip20240110(this Random random, string type, RECT windowRect, Bitmap scaledBmp)
+  {
+    var pointRateAndPath =
+      GoldenNightTrip.HUODONGSHI.Equals(type) ? (GoldenNightTrip.HuoDongShiMarginTopRate, EventImagePath.GoldenNightTripImagePath.HuodongshiPath) :
+      GoldenNightTrip.ZHANSHUTING.Equals(type) ? (GoldenNightTrip.ZhanShuTingMarginTopRate, EventImagePath.GoldenNightTripImagePath.ZhanshutingPath) :
+      GoldenNightTrip.CHUANYUANSHI.Equals(type) ? (GoldenNightTrip.ChuanYuanShiMarginTopRate, EventImagePath.GoldenNightTripImagePath.ChuanyuanshiPath) :
+      GoldenNightTrip.HUANGJINGE.Equals(type) ? (GoldenNightTrip.HuangJinGeMarginTopRate, EventImagePath.GoldenNightTripImagePath.HuangjingePath) :
+      (0, "");
+
+    var selectionWidth = scaledBmp.Multiply(GoldenNightTrip.SelectionSizeWidthRate, true);
+    var selectionHeight = scaledBmp.Multiply(GoldenNightTrip.SelectionSizeHeightRate, false);
+    var selectionElementPoint = scaledBmp.GetElementPoint(GoldenNightTrip.SelectionMarginLefttRate, pointRateAndPath.Item1);
+
+    var selectionEventPoint = random.GetRandomPoint(
+      selectionElementPoint,
+      windowRect,
+      selectionWidth,
+      selectionHeight);
+
+    var challengeWidth = scaledBmp.Multiply(GoldenNightTrip.ChallengeSizeWidthRate, true);
+    var challengeHeight = scaledBmp.Multiply(GoldenNightTrip.ChallengeSizeHeightRate, false);
+    var challengeElementPoint = scaledBmp.GetElementPoint(GoldenNightTrip.ChallengeMarginLeftRate, GoldenNightTrip.ChallengeMarginTopRate);
+
+    var challengeEventPoint = random.GetRandomPoint(
+        challengeElementPoint,
+        windowRect,
+        challengeWidth,
+        challengeHeight
+      );
+
+    if (random.ExcuteEnvent(pointRateAndPath.Item2, scaledBmp, selectionElementPoint, selectionEventPoint, windowRect, 2))
+    {
+      logger.Logs(LogLevel.Info, $@"{type} 未选中，重新选中");
+      return false;
+    }
+
+    if (random.ExcuteEnvent(EventImagePath.GoldenNightTripImagePath.ChallengePath, scaledBmp, challengeElementPoint, challengeEventPoint, windowRect))
+    {
+      logger.Logs(LogLevel.Info, $@"{type} 该轮挑战开始");
+      return true;
+    }
+    return false;
   }
 }

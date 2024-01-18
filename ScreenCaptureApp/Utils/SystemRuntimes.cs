@@ -55,6 +55,9 @@ public static class SystemRuntimes
   [DllImport("user32.dll")]
   [return: MarshalAs(UnmanagedType.Bool)]
   public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+  [DllImport("User32.dll", CharSet = CharSet.Auto)]
+  public static extern int GetWindowThreadProcessId(IntPtr hwnd, out int ID);
   #region MouseKeyBoardEvent
   [DllImport("user32")]
   public static extern int mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);

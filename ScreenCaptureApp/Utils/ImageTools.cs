@@ -5,7 +5,8 @@ namespace ScreenCaptureApp.Utils;
 
 public static class ImageTools
 {
-  private static readonly Dictionary<List<PictureBox>, int> currentIndexDict = new Dictionary<List<PictureBox>, int>();
+  private static readonly Dictionary<object, int> currentIndexDict = new Dictionary<object, int>();
+
   private static readonly object lockObject = new object();
 
   public static bool IsElementPresent(Bitmap sourceImage, Bitmap elementImage, Point position, bool isTupo = false)
@@ -46,6 +47,7 @@ public static class ImageTools
     }
     return true;
   }
+
   private static bool AreColorsWithinThreshold(Color color1, Color color2, double threshold)
   {
     // 计算每个颜色分量的差异
@@ -92,7 +94,7 @@ public static class ImageTools
           new Size((int)(sourceImage.Width * ImagesConfig.FAILEDSizeWidthRate), (int)(sourceImage.Height * ImagesConfig.FAILEDSizeHeightRate)) :
            TuPo.NOCHANCE.Equals(restModel) ?
           new Size((int)(sourceImage.Width * TuPo.NoChanceSizeWidthRate), (int)(sourceImage.Height * TuPo.NoChanceSizeHeightRate)) :
-          new Size((int)(sourceImage.Width * ImagesConfig.EndXSizeRate), (int)(sourceImage.Height * ImagesConfig.EndYSizeRate));
+          new Size((int)(sourceImage.Width * ImagesConfig.EndSizeWidthRate), (int)(sourceImage.Height * ImagesConfig.EndSizeHeightRate));
         Point position =
           ImagesConfig.START.Equals(restModel) ?
             isTeam ?
@@ -112,7 +114,8 @@ public static class ImageTools
           new Point((int)(sourceImage.Width * ImagesConfig.FAILEDSizeMarginLeftRate), (int)(sourceImage.Height * ImagesConfig.FAILEDSizeMarginTopRate)) :
           TuPo.NOCHANCE.Equals(restModel) ?
           new Point((int)(sourceImage.Width * TuPo.NoChanceMarginLeftRate), (int)(sourceImage.Height * TuPo.NoChanceMarginTopRate)) :
-          new Point((int)(sourceImage.Width * ImagesConfig.EndXRate), (int)(sourceImage.Height * ImagesConfig.EndYRate));
+          new Point((int)(sourceImage.Width * ImagesConfig.EndSizeMarginLeftRate), (int)(sourceImage.Height * ImagesConfig.EndSizeMarginTopRate));
+
         Rectangle elementRect = new Rectangle(position, size);
         Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
         var type =
@@ -160,7 +163,7 @@ public static class ImageTools
     }
   }
 
-  public static PictureBox Next(this List<PictureBox> pictureBoxes)
+  public static T Next<T>(this List<T> pictureBoxes)
   {
     if (pictureBoxes == null)
     {
@@ -169,7 +172,7 @@ public static class ImageTools
 
     if (pictureBoxes.Count == 0)
     {
-      throw new InvalidOperationException("The PictureBox list is empty.");
+      throw new InvalidOperationException("The list is empty.");
     }
 
     lock (lockObject)
@@ -183,15 +186,16 @@ public static class ImageTools
 
       if (currentIndex + 1 >= pictureBoxes.Count)
       {
-        throw new InvalidOperationException("All PictureBoxes have been processed.");
+        throw new InvalidOperationException("All items have been processed.");
       }
 
       currentIndexDict[pictureBoxes] = currentIndex + 1;
+
       return pictureBoxes[currentIndex + 1];
     }
   }
 
-  public static PictureBox TryGetNext(this List<PictureBox> pictureBoxes)
+  public static T TryGetNext<T>(this List<T> pictureBoxes)
   {
     if (pictureBoxes == null)
     {
