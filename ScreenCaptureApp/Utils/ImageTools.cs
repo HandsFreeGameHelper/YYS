@@ -94,7 +94,7 @@ public static class ImageTools
           new Size((int)(sourceImage.Width * ImagesConfig.FAILEDSizeWidthRate), (int)(sourceImage.Height * ImagesConfig.FAILEDSizeHeightRate)) :
            TuPo.NOCHANCE.Equals(restModel) ?
           new Size((int)(sourceImage.Width * TuPo.NoChanceSizeWidthRate), (int)(sourceImage.Height * TuPo.NoChanceSizeHeightRate)) :
-          new Size((int)(sourceImage.Width * ImagesConfig.EndXSizeRate), (int)(sourceImage.Height * ImagesConfig.EndYSizeRate));
+          new Size((int)(sourceImage.Width * ImagesConfig.EndSizeWidthRate), (int)(sourceImage.Height * ImagesConfig.EndSizeHeightRate));
         Point position =
           ImagesConfig.START.Equals(restModel) ?
             isTeam ?
@@ -114,7 +114,7 @@ public static class ImageTools
           new Point((int)(sourceImage.Width * ImagesConfig.FAILEDSizeMarginLeftRate), (int)(sourceImage.Height * ImagesConfig.FAILEDSizeMarginTopRate)) :
           TuPo.NOCHANCE.Equals(restModel) ?
           new Point((int)(sourceImage.Width * TuPo.NoChanceMarginLeftRate), (int)(sourceImage.Height * TuPo.NoChanceMarginTopRate)) :
-          new Point((int)(sourceImage.Width * ImagesConfig.EndXRate), (int)(sourceImage.Height * ImagesConfig.EndYRate));
+          new Point((int)(sourceImage.Width * ImagesConfig.EndSizeMarginLeftRate), (int)(sourceImage.Height * ImagesConfig.EndSizeMarginTopRate));
 
         Rectangle elementRect = new Rectangle(position, size);
         Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);

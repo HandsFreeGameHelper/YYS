@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using ScreenCaptureApp.Utils;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using static ScreenCaptureApp.Utils.Contains;
 
@@ -55,7 +54,7 @@ internal class ImageToolsTest
   }
 
   [Test]
-  public void TestSnape2() 
+  public void TestSnape2()
   {
     WindowsFilter.GetWindows();
     var targetHWnds = WindowsFilter.WindowHandles;

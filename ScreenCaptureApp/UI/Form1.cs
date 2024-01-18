@@ -28,6 +28,7 @@ namespace ScreenCaptureApp.UI
     public Form1()
     {
       InitializeComponent();
+      InitComboboxs();
       InitializeFormFunction();
     }
 
@@ -69,17 +70,17 @@ namespace ScreenCaptureApp.UI
                   Thread.Sleep(100);
                   properties.IsLocked = !properties.IsLocked;
                   properties.CurrentCout++;
-                  this.label8.Text = ChallengeType.TUPO.Equals(CType) ? $@"已突破{properties.CurrentCout}次" : $@"{properties.CurrentCout}/{this.MaxCount}";
-                  this.label10.ForeColor = Color.Blue;
-                  this.label10.Text = $@"{threadID}_{processid} : 挑战开始，等待挑战结束";
-                  logger.Info(this.label8.Text);
-                  logger.Info(this.label10.Text);
+                  this.processLable.Text = ChallengeType.TUPO.Equals(CType) ? $@"已突破{properties.CurrentCout}次" : $@"{properties.CurrentCout}/{this.MaxCount}";
+                  this.afterStartLable.ForeColor = Color.Blue;
+                  this.afterStartLable.Text = $@"{threadID}_{processid} : 挑战开始，等待挑战结束";
+                  logger.Info(this.processLable.Text);
+                  logger.Info(this.afterStartLable.Text);
                 }
                 if ((properties.IsLocked || isTeam) && Random.EndChallenge(CType, windowRect, bmp))
                 {
                   properties.IsLocked = !properties.IsLocked;
-                  this.label10.ForeColor = Color.Blue;
-                  this.label10.Text = $@"{threadID}_{processid} : 挑战结束，等待挑战开始";
+                  this.afterStartLable.ForeColor = Color.Blue;
+                  this.afterStartLable.Text = $@"{threadID}_{processid} : 挑战结束，等待挑战开始";
                   logger.Logs(LogLevel.Info, $@"{threadID}_{processid} : 已成功挑战{properties.CurrentCout}次");
                 }
                 if (!ChallengeType.TUPO.Equals(CType) && properties.CurrentCout >= MaxCount)
@@ -219,8 +220,8 @@ namespace ScreenCaptureApp.UI
       pictureBoxes.Add(pictureBox2);
       Console.SetOut(new TextBoxWriter(richTextBox1));
       this.richTextBox1.HideSelection = false;
-      RestLable10();
-      RestSelectBox();
+      ResetAfterStartLable();
+      ResetSelectBox();
       WindowsFilter.GetWindows();
       targetHWnds = WindowsFilter.WindowHandles;
       try

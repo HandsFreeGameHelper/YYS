@@ -9,10 +9,20 @@ public static class Contains
   public static readonly int RegionWidth = 1152;
   public static readonly int RegionHeight = 679;
 
+  public static List<string> ChallengeTypeList = new();
+  public static List<string> ChallengeSelectionList = new();
+  public static List<string> AfterChallengeSelectionList = new();
+
+  static Contains() 
+  {
+    Init();
+  }
+
   #region CommenConfig
 
   public static class ChallengeType
   {
+    public static readonly string EMPTY = string.Empty;
     public static readonly string NOMAL = "普通副本";
     public static readonly string ACTIVITIES = "活动爬塔";
     public static readonly string TUPO = "突破";
@@ -20,27 +30,28 @@ public static class Contains
 
   public static class ChallengeSelection
   {
-    public static readonly string JUEXIN_ANY = "觉醒副本任意层";
-    public static readonly string YULIN_ANY = "御灵任意层";
-    public static readonly string BAQI_1_10 = "八岐大蛇1-10层";
-    public static readonly string BAQI_11 = "八岐大蛇11层";
-    public static readonly string BAQI_12 = "八岐大蛇12层";
-    public static readonly string BEIMIHU_1 = "卑弥呼1层";
-    public static readonly string BEIMIHU_2 = "卑弥呼2层";
-    public static readonly string BEIMIHU_3 = "卑弥呼3层";
-    public static readonly string YEYUANHUO_TAN = "业原火贪";
-    public static readonly string YEYUANHUO_CHEN = "业原火嗔";
-    public static readonly string YEYUANHUO_CHI = "业原火痴";
-    public static readonly string YONGSHEN_1 = "永生之海1层";
-    public static readonly string YONGSHEN_2 = "永生之海2层";
-    public static readonly string YONGSHEN_3_4 = "永生之海3-4层";
-    public static readonly string GEREN = "个人";
-    public static readonly string YINYANGLIAO = "阴阳寮";
+    public static readonly string EMPTY = string.Empty;
+    public static readonly string JUEXIN_ANY = "普通副本_觉醒副本任意层";
+    public static readonly string YULIN_ANY = "普通副本_御灵任意层";
+    public static readonly string BAQI_1_10 = "普通副本_八岐大蛇1-10层";
+    public static readonly string BAQI_11 = "普通副本_八岐大蛇11层";
+    public static readonly string BAQI_12 = "普通副本_八岐大蛇12层";
+    public static readonly string BEIMIHU_1 = "普通副本_卑弥呼1层";
+    public static readonly string BEIMIHU_2 = "普通副本_卑弥呼2层";
+    public static readonly string BEIMIHU_3 = "普通副本_卑弥呼3层";
+    public static readonly string YEYUANHUO_TAN = "普通副本_业原火贪";
+    public static readonly string YEYUANHUO_CHEN = "普通副本_业原火嗔";
+    public static readonly string YEYUANHUO_CHI = "普通副本_业原火痴";
+    public static readonly string YONGSHEN_1 = "普通副本_永生之海1层";
+    public static readonly string YONGSHEN_2 = "普通副本_永生之海2层";
+    public static readonly string YONGSHEN_3_4 = "普通副本_永生之海3-4层";
+    public static readonly string GEREN = "突破_个人";
+    public static readonly string YINYANGLIAO = "突破_阴阳寮";
     public static readonly string GOLDENNIGHTTIRP = "黄金夜航-藏金阁楼";
-    public static readonly string GOLDENNIGHTTIRP_1 = "黄金夜航-藏金阁楼-活动室";
-    public static readonly string GOLDENNIGHTTIRP_2 = "黄金夜航-藏金阁楼-战术厅";
-    public static readonly string GOLDENNIGHTTIRP_3 = "黄金夜航-藏金阁楼-船员室";
-    public static readonly string GOLDENNIGHTTIRP_4 = "黄金夜航-藏金阁楼-黄金阁";
+    public static readonly string GOLDENNIGHTTIRP_1 = "活动爬塔_黄金夜航-藏金阁楼-活动室";
+    public static readonly string GOLDENNIGHTTIRP_2 = "活动爬塔_黄金夜航-藏金阁楼-战术厅";
+    public static readonly string GOLDENNIGHTTIRP_3 = "活动爬塔_黄金夜航-藏金阁楼-船员室";
+    public static readonly string GOLDENNIGHTTIRP_4 = "活动爬塔_黄金夜航-藏金阁楼-黄金阁";
   }
 
   public static class ImagesConfig
@@ -75,18 +86,6 @@ public static class Contains
     public static readonly double StartPointYTopTeamRate = 118 / 679.0;
     public static readonly double StartPointYBottomRate = 30 / 679.0;
     public static readonly double StartPointYBottomTeamRate = 20 / 679.0;
-    public static readonly int RegionEndX = 236 * 2;
-    public static readonly int RegionEndY = 200 * 2;
-    public static readonly double EndXRate = RegionEndX * 1.0 / RegionWidth;
-    public static readonly double EndYRate = RegionEndY * 1.0 / RegionHeight;
-    public static readonly int RegionEndXSize = 70 * 2;
-    public static readonly int RegionEndYSize = 40 * 2;
-    public static readonly double EndXSizeRate = RegionEndXSize * 1.0 / RegionWidth;
-    public static readonly double EndYSizeRate = RegionEndYSize * 1.0 / RegionHeight;
-    public static readonly double EndPointXLeftRate = 374 / 1152.0;
-    public static readonly double EndPointXRightRate = 11 / 1152.0;
-    public static readonly double EndPointYTopRate = 324 / 679.0;
-    public static readonly double EndPointYBottomRate = 11 / 679.0;
     public static readonly int EndSizeWidth = 80;
     public static readonly int EndSizeHeight = 80;
     public static readonly int EndSizeMarginLeft = 568;
@@ -295,4 +294,11 @@ public static class Contains
   }
 
   #endregion
+
+  private static void Init() 
+  {
+    ChallengeTypeList =  ChallengeTypeList.SetStaticValues(typeof(ChallengeType));
+    ChallengeSelectionList = ChallengeSelectionList.SetStaticValues(typeof(ChallengeSelection));
+    AfterChallengeSelectionList = ChallengeSelectionList;
+  }
 }
