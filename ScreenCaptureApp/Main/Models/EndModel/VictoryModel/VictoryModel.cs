@@ -9,14 +9,16 @@ public static class VictoryModel
 {
   public static bool ChallengeVictory(this Random random, string type, RECT windowRect, Bitmap scaledBmp)
   {
-    Point elementPosition_victory = scaledBmp.GetElementPoint(ImagesConfig.VictorySizeMarginLeftRate, ImagesConfig.VictorySizeMarginTopRate);
-
-    var victoryClickPoint = random.GetRandomPoint(
-      elementPosition_victory,
+    scaledBmp.GetElementAndEventPoint(
+      random,
       windowRect,
-      (int)(scaledBmp.Width * ImagesConfig.VictorySizeWidthRate),
-      (int)(scaledBmp.Height * ImagesConfig.VictorySizeHeightRate));
-    if (ModelBase.ExcuteEnvent(random, EventImagePath.Victory, scaledBmp, elementPosition_victory, victoryClickPoint, windowRect))
+      ImagesConfig.VictorySizeWidthRate,
+      ImagesConfig.VictorySizeHeightRate,
+      ImagesConfig.VictorySizeMarginLeftRate,
+      ImagesConfig.VictorySizeMarginTopRate,
+      out var victoryElementAndEventPoint);
+
+    if (ModelBase.ExcuteEnvent(random, EventImagePath.Victory, scaledBmp, victoryElementAndEventPoint.Item1, victoryElementAndEventPoint.Item2, windowRect))
     {
       ModelBase.logger.Logs(LogLevel.Info, @"该轮挑战胜利");
       return true;

@@ -1,4 +1,6 @@
-﻿namespace ScreenCaptureApp.Utils;
+﻿using ScreenCaptureApp.Main.Utils;
+
+namespace ScreenCaptureApp.Utils;
 
 public static class ReflectionTools
 {
@@ -7,6 +9,11 @@ public static class ReflectionTools
     type.GetFields().ToList()
     .ForEach(x =>
     {
+      var attributes = x.GetCustomAttributes(typeof(SetStaticValueIgnoreAttribute), false).ToList();
+      if (attributes.Any())
+      {
+        return;
+      }
       var pro = type.GetField(x.Name)?.GetValue(null);
       if (pro != null)
       {

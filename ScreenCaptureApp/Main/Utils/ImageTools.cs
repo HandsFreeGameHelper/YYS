@@ -80,8 +80,8 @@ public static class ImageTools
         var size =
           ImagesConfig.START.Equals(restModel) ?
             isTeam ?
-            new Size((int)(sourceImage.Width * ImagesConfig.StartXSizeRateTeam), (int)(sourceImage.Height * ImagesConfig.StartYSizeRate)) :
-            new Size((int)(sourceImage.Width * ImagesConfig.StartXSizeRate), (int)(sourceImage.Height * ImagesConfig.StartYSizeRate)) :
+            new Size((int)(sourceImage.Width * ImagesConfig.TeamStartSizeWidthRate), (int)(sourceImage.Height * ImagesConfig.TeamStartSizeHeightRate)) :
+            new Size((int)(sourceImage.Width * ImagesConfig.StartSizeWidthRate), (int)(sourceImage.Height * ImagesConfig.StartSizeHeightRate)) :
           TuPo.TUPO.Equals(restModel) ?
           new Size((int)(sourceImage.Width * TuPo.TuPoPanelSizeWidthRate), (int)(sourceImage.Height * TuPo.TuPoPanelSizeHeightRate)) :
           TuPo.GEREN.Equals(restModel) || TuPo.YINYANGLIAO.Equals(restModel) ?
@@ -98,8 +98,8 @@ public static class ImageTools
         Point position =
           ImagesConfig.START.Equals(restModel) ?
             isTeam ?
-            new Point((int)(sourceImage.Width * ImagesConfig.StartXRateTeam), (int)(sourceImage.Height * ImagesConfig.StartYRateTeam)) :
-            new Point((int)(sourceImage.Width * ImagesConfig.StartXRate), (int)(sourceImage.Height * ImagesConfig.StartYRate)) :
+            new Point((int)(sourceImage.Width * ImagesConfig.TeamStartSizeMarginLeftRate), (int)(sourceImage.Height * ImagesConfig.TeamStartSizeMarginTopRate)) :
+            new Point((int)(sourceImage.Width * ImagesConfig.StartSizeMarginLeftRate), (int)(sourceImage.Height * ImagesConfig.StartSizeMarginTopRate)) :
           TuPo.TUPO.Equals(restModel) ?
           new Point((int)(sourceImage.Width * TuPo.TuPoPanelMarginLeftYinYangLiao1Rate), (int)(sourceImage.Height * TuPo.TuPoPanelMarginTopYinYangLiaoRate)) :
           TuPo.GEREN.Equals(restModel) ?
@@ -120,7 +120,7 @@ public static class ImageTools
         Bitmap sourceRegion = sourceImage.Clone(elementRect, sourceImage.PixelFormat);
         var type =
           ImagesConfig.YUHUN.Equals(restType) ? EnergyValue.YUHUN :
-          ImagesConfig.JUEXIN.Equals(restType) ? EnergyValue.JUEXING :
+          ImagesConfig.JUEXING.Equals(restType) ? EnergyValue.JUEXINGG :
           ImagesConfig.YULIN.Equals(restType) ? EnergyValue.YULIN :
           TuPo.GEREN_SELECTED.Equals(restType) ? TuPo.GEREN_SELECTED_TYPE :
           TuPo.GEREN_UNSELECTED.Equals(restType) ? TuPo.GEREN_UNSELECTED_TYPE :

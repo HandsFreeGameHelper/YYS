@@ -101,8 +101,8 @@ public static class LoggerHelper
   {
     try
     {
-      logger.ShutDown();
-
+      logger.Factory.Shutdown();
+      
       string zipFilePath = $@"{filePath}_{DateTime.Now.ToString(@"yyyy_MM_dd_HH_mm_ss")}.zip";
 
       using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))

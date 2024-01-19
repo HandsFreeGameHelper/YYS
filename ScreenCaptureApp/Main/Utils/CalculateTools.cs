@@ -64,13 +64,49 @@ public static class CalculateTools
     return res;
   }
 
-  public static int Multiply(this Bitmap scaledBmp, double rate ,bool isXOrWidth)
+  public static int Multiply(this Bitmap scaledBmp, double rate, bool isXOrWidth)
   {
     return isXOrWidth ? (int)(scaledBmp.Width * rate) : (int)(scaledBmp.Height * rate);
   }
 
-  public static Point GetElementPoint(this Bitmap scaledBmp, double ratex, double ratey) 
+  public static Point GetElementPoint(this Bitmap scaledBmp, double ratex, double ratey)
   {
     return new Point(scaledBmp.Multiply(ratex, true), scaledBmp.Multiply(ratey, false));
+  }
+
+
+  /// <summary>
+  /// GetElementAndEventPoint
+  /// </summary>
+  /// <param name="scaledBmp"></param>
+  /// <param name="random"></param>
+  /// <param name="windowRect"></param>
+  /// <param name="sizeWidthRate"></param>
+  /// <param name="sizeHeightRate"></param>
+  /// <param name="marginLeftRate"></param>
+  /// <param name="marginTopRate"></param>
+  /// <param name="difmarginLeftRate"></param>
+  /// <param name="diffmarginTopRate"></param>
+  /// <param name="output"></param>
+  /// <returns>item1:ElementPoint,item2:EventPoint</returns>
+  public static (Point, Point) GetElementAndEventPoint(
+    this Bitmap scaledBmp,
+    Random random,
+    RECT windowRect,
+    double sizeWidthRate,
+    double sizeHeightRate,
+    double marginLeftRate,
+    double marginTopRate,
+    out (Point, Point) output,
+    double? difMarginLeftRate = null,
+    double? difMarginTopRate = null)
+  {
+    var elementPoint = scaledBmp.GetElementPoint(marginLeftRate, marginTopRate);
+    output = new(elementPoint, random.GetRandomPoint(
+      difMarginLeftRate != null && difMarginTopRate != null ? scaledBmp.GetElementPoint(difMarginLeftRate ?? 0, difMarginTopRate ?? 0) : elementPoint,
+      windowRect,
+      scaledBmp.Multiply(sizeWidthRate, true),
+      scaledBmp.Multiply(sizeHeightRate, false)));
+    return output;
   }
 }

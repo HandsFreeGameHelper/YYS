@@ -1,4 +1,7 @@
-﻿namespace ScreenCaptureApp.Utils;
+﻿using ScreenCaptureApp.Main.Utils;
+using System.Diagnostics.CodeAnalysis;
+
+namespace ScreenCaptureApp.Utils;
 
 public static class Contains
 {
@@ -31,22 +34,35 @@ public static class Contains
   public static class ChallengeSelection
   {
     public static readonly string EMPTY = string.Empty;
-    public static readonly string JUEXIN_ANY = "普通副本_觉醒副本任意层";
+    public static readonly string GEREN = "突破_个人";
+    public static readonly string YINYANGLIAO = "突破_阴阳寮";
+    [SetStaticValueIgnore]
+    public static readonly string JUEXING = "觉醒";
+    public static readonly string JUEXING_ANY = "普通副本_觉醒副本任意层";
+    [SetStaticValueIgnore]
+    public static readonly string YULIN = "御灵";
     public static readonly string YULIN_ANY = "普通副本_御灵任意层";
+    [SetStaticValueIgnore]
+    public static readonly string BAQI= "八岐大蛇";
     public static readonly string BAQI_1_10 = "普通副本_八岐大蛇1-10层";
     public static readonly string BAQI_11 = "普通副本_八岐大蛇11层";
     public static readonly string BAQI_12 = "普通副本_八岐大蛇12层";
+    [SetStaticValueIgnore]
+    public static readonly string BEIMIHU = "卑弥呼";
     public static readonly string BEIMIHU_1 = "普通副本_卑弥呼1层";
     public static readonly string BEIMIHU_2 = "普通副本_卑弥呼2层";
     public static readonly string BEIMIHU_3 = "普通副本_卑弥呼3层";
+    [SetStaticValueIgnore]
+    public static readonly string YEYUANHUO= "业原火";
     public static readonly string YEYUANHUO_TAN = "普通副本_业原火贪";
     public static readonly string YEYUANHUO_CHEN = "普通副本_业原火嗔";
     public static readonly string YEYUANHUO_CHI = "普通副本_业原火痴";
-    public static readonly string YONGSHEN_1 = "普通副本_永生之海1层";
-    public static readonly string YONGSHEN_2 = "普通副本_永生之海2层";
-    public static readonly string YONGSHEN_3_4 = "普通副本_永生之海3-4层";
-    public static readonly string GEREN = "突破_个人";
-    public static readonly string YINYANGLIAO = "突破_阴阳寮";
+    [SetStaticValueIgnore]
+    public static readonly string YONGSHENG = "永生之海";
+    public static readonly string YONGSHENG_1 = "普通副本_永生之海1层";
+    public static readonly string YONGSHENG_2 = "普通副本_永生之海2层";
+    public static readonly string YONGSHENG_3_4 = "普通副本_永生之海3-4层";
+    [SetStaticValueIgnore]
     public static readonly string GOLDENNIGHTTIRP = "黄金夜航-藏金阁楼";
     public static readonly string GOLDENNIGHTTIRP_1 = "活动爬塔_黄金夜航-藏金阁楼-活动室";
     public static readonly string GOLDENNIGHTTIRP_2 = "活动爬塔_黄金夜航-藏金阁楼-战术厅";
@@ -57,35 +73,31 @@ public static class Contains
   public static class ImagesConfig
   {
     public static readonly string YUHUN = "任意御魂副本通用";
-    public static readonly string JUEXIN = "任意觉醒副本通用";
+    public static readonly string JUEXING = "任意觉醒副本通用";
     public static readonly string YULIN = "任意御灵副本通用";
     public static readonly string START = "开始画面";
     public static readonly string END = "结算画面";
     public static readonly string FAILED = "失败";
     public static readonly string VECTORY = "失败";
 
-    public static readonly int RegionStartX = 498 * 2;
-    public static readonly int RegionStartXTeam = 523 * 2;
-    public static readonly int RegionStartY = 259 * 2;
-    public static readonly int RegionStartYTeam = 270 * 2;
-    public static readonly double StartXRate = RegionStartX * 1.0 / RegionWidth;
-    public static readonly double StartXRateTeam = RegionStartXTeam * 1.0 / RegionWidth;
-    public static readonly double StartYRate = RegionStartY * 1.0 / RegionHeight;
-    public static readonly double StartYRateTeam = RegionStartYTeam * 1.0 / RegionHeight;
-    public static readonly int RegionStartXSize = 30 * 2;
-    public static readonly int RegionStartXSizeTeam = 25 * 2;
-    public static readonly int RegionStartYSize = 22 * 2;
-    public static readonly double StartXSizeRate = RegionStartXSize * 1.0 / RegionWidth;
-    public static readonly double StartXSizeRateTeam = RegionStartXSizeTeam * 1.0 / RegionWidth;
-    public static readonly double StartYSizeRate = RegionStartYSize * 1.0 / RegionHeight;
-    public static readonly double StartPointXLeftRate = 154 / 1152.0;
-    public static readonly double StartPointXLeftTeamRate = 104 / 1152.0;
-    public static readonly double StartPointXRightRate = 82 / 1152.0;
-    public static readonly double StartPointXRightTeamRate = 15 / 1152.0;
-    public static readonly double StartPointYTopRate = 105 / 679.0;
-    public static readonly double StartPointYTopTeamRate = 118 / 679.0;
-    public static readonly double StartPointYBottomRate = 30 / 679.0;
-    public static readonly double StartPointYBottomTeamRate = 20 / 679.0;
+    public static readonly int StartSizeWidth = 60;
+    public static readonly int StartSizeHeight = 25;
+    public static readonly int StartSizeMarginLeft = 990;
+    public static readonly int StartSizeMarginTop = 534;
+    public static readonly double StartSizeWidthRate = StartSizeWidth * 1.0 / RegionWidth;
+    public static readonly double StartSizeHeightRate = StartSizeHeight * 1.0 / RegionHeight;
+    public static readonly double StartSizeMarginLeftRate = StartSizeMarginLeft * 1.0 / RegionWidth;
+    public static readonly double StartSizeMarginTopRate = StartSizeMarginTop * 1.0 / RegionHeight;
+
+    public static readonly int TeamStartSizeWidth = 48;
+    public static readonly int TeamStartSizeHeight = 30;
+    public static readonly int TeamStartSizeMarginLeft = 1058;
+    public static readonly int TeamStartSizeMarginTop = 552;
+    public static readonly double TeamStartSizeWidthRate = TeamStartSizeWidth * 1.0 / RegionWidth;
+    public static readonly double TeamStartSizeHeightRate = TeamStartSizeHeight * 1.0 / RegionHeight;
+    public static readonly double TeamStartSizeMarginLeftRate = TeamStartSizeMarginLeft * 1.0 / RegionWidth;
+    public static readonly double TeamStartSizeMarginTopRate = TeamStartSizeMarginTop * 1.0 / RegionHeight;
+
     public static readonly int EndSizeWidth = 80;
     public static readonly int EndSizeHeight = 80;
     public static readonly int EndSizeMarginLeft = 568;
@@ -158,7 +170,7 @@ public static class Contains
     public static readonly string CHEN = "chen";
     public static readonly string CHI = "chi";
     public static readonly string YULIN = "yulin";
-    public static readonly string JUEXING = "juexing";
+    public static readonly string JUEXINGG = "juexing";
     public static readonly string YUHUN = "yuhun";
   }
 
