@@ -53,8 +53,8 @@ public static class ModelBase
     }
     outPut =
      type.Equals(ChallengeType.NORMAL) ?
-          challengeSelection.Equals(ChallengeSelection.JUEXIN_ANY) ?
-          EnergyValue.JUEXING :
+          challengeSelection.Equals(ChallengeSelection.JUEXING_ANY) ?
+          EnergyValue.JUEXINGG :
           challengeSelection.Equals(ChallengeSelection.BAQI_1_10) ||
           challengeSelection.Equals(ChallengeSelection.BAQI_11) ||
           challengeSelection.Equals(ChallengeSelection.BAQI_12) ||
@@ -64,9 +64,9 @@ public static class ModelBase
           challengeSelection.Equals(ChallengeSelection.BEIMIHU_1) ||
           challengeSelection.Equals(ChallengeSelection.BEIMIHU_2) ||
           challengeSelection.Equals(ChallengeSelection.BEIMIHU_3) ||
-          challengeSelection.Equals(ChallengeSelection.YONGSHEN_1) ||
-          challengeSelection.Equals(ChallengeSelection.YONGSHEN_2) ||
-          challengeSelection.Equals(ChallengeSelection.YONGSHEN_3_4) ?
+          challengeSelection.Equals(ChallengeSelection.YONGSHENG_1) ||
+          challengeSelection.Equals(ChallengeSelection.YONGSHENG_2) ||
+          challengeSelection.Equals(ChallengeSelection.YONGSHENG_3_4) ?
           EnergyValue.YUHUN :
           challengeSelection.Equals(ChallengeSelection.YULIN_ANY) ?
           EnergyValue.YULIN :

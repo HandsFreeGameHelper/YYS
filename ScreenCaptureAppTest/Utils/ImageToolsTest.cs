@@ -84,8 +84,18 @@ internal class ImageToolsTest
     var endElementPoint = scaledBmp.GetElementPoint(ImagesConfig.EndSizeMarginLeftRate, ImagesConfig.EndSizeMarginTopRate);
     var size3 = new Size(endWidth, endHeight);
 
-    var path = $@".\Resource\Test\end.png";
-    Rectangle elementRect = new Rectangle(endElementPoint, size3);
+    var startWidth = scaledBmp.Multiply(ImagesConfig.StartSizeWidthRate, true);
+    var startHeight = scaledBmp.Multiply(ImagesConfig.StartSizeHeightRate, false);
+    var startElementPoint = scaledBmp.GetElementPoint(ImagesConfig.StartSizeMarginLeftRate, ImagesConfig.StartSizeMarginTopRate);
+    var size4 = new Size(startWidth, startHeight);
+
+    var teamStartWidth = scaledBmp.Multiply(ImagesConfig.TeamStartSizeWidthRate, true);
+    var teamStartHeight = scaledBmp.Multiply(ImagesConfig.TeamStartSizeHeightRate, false);
+    var teamStartElementPoint = scaledBmp.GetElementPoint(ImagesConfig.TeamStartSizeMarginLeftRate, ImagesConfig.TeamStartSizeMarginTopRate);
+    var size5 = new Size(teamStartWidth, teamStartHeight);
+
+    var path = $@".\Resource\Test\start_team.png";
+    Rectangle elementRect = new Rectangle(teamStartElementPoint, size5);
 
     Bitmap sourceRegion = scaledBmp.Clone(elementRect, scaledBmp.PixelFormat);
 

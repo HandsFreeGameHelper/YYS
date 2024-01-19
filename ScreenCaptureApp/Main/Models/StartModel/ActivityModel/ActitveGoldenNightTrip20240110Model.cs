@@ -25,34 +25,31 @@ public static class ActitveGoldenNightTrip20240110Model
       GoldenNightTrip.HUANGJINGE.Equals(type) ? (GoldenNightTrip.HuangJinGeMarginTopRate, EventImagePath.GoldenNightTripImagePath.HuangjingePath) :
       (0, "");
 
-    var selectionWidth = scaledBmp.Multiply(GoldenNightTrip.SelectionSizeWidthRate, true);
-    var selectionHeight = scaledBmp.Multiply(GoldenNightTrip.SelectionSizeHeightRate, false);
-    var selectionElementPoint = scaledBmp.GetElementPoint(GoldenNightTrip.SelectionMarginLefttRate, pointRateAndPath.Item1);
+    scaledBmp.GetElementAndEventPoint(
+      random,
+      windowRect, 
+      GoldenNightTrip.SelectionSizeWidthRate, 
+      GoldenNightTrip.SelectionSizeHeightRate, 
+      GoldenNightTrip.SelectionMarginLefttRate, 
+      pointRateAndPath.Item1, 
+      out var selectionElementAndEventPoint);
 
-    var selectionEventPoint = random.GetRandomPoint(
-      selectionElementPoint,
-      windowRect,
-      selectionWidth,
-      selectionHeight);
+    scaledBmp.GetElementAndEventPoint(
+     random,
+     windowRect,
+     GoldenNightTrip.ChallengeSizeWidthRate,
+     GoldenNightTrip.ChallengeSizeHeightRate,
+     GoldenNightTrip.ChallengeMarginLeftRate,
+     GoldenNightTrip.ChallengeMarginTopRate,
+     out var challengeElementAndEventPoint);
 
-    var challengeWidth = scaledBmp.Multiply(GoldenNightTrip.ChallengeSizeWidthRate, true);
-    var challengeHeight = scaledBmp.Multiply(GoldenNightTrip.ChallengeSizeHeightRate, false);
-    var challengeElementPoint = scaledBmp.GetElementPoint(GoldenNightTrip.ChallengeMarginLeftRate, GoldenNightTrip.ChallengeMarginTopRate);
-
-    var challengeEventPoint = random.GetRandomPoint(
-        challengeElementPoint,
-        windowRect,
-        challengeWidth,
-        challengeHeight
-    );
-
-    if (random.ExcuteEnvent(pointRateAndPath.Item2, scaledBmp, selectionElementPoint, selectionEventPoint, windowRect, 2))
+    if (random.ExcuteEnvent(pointRateAndPath.Item2, scaledBmp, selectionElementAndEventPoint.Item1, selectionElementAndEventPoint.Item2, windowRect, 2))
     {
       ModelBase.logger.Logs(LogLevel.Info, $@"{type} 未选中，重新选中");
       return false;
     }
 
-    if (random.ExcuteEnvent(EventImagePath.GoldenNightTripImagePath.ChallengePath, scaledBmp, challengeElementPoint, challengeEventPoint, windowRect))
+    if (random.ExcuteEnvent(EventImagePath.GoldenNightTripImagePath.ChallengePath, scaledBmp, challengeElementAndEventPoint.Item1, challengeElementAndEventPoint.Item2, windowRect))
     {
       ModelBase.logger.Logs(LogLevel.Info, $@"{type} 该轮挑战开始");
       return true;
